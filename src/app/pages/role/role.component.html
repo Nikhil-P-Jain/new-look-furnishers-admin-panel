@@ -1,0 +1,10 @@
+<nb-card>
+    <nb-card-header>
+      Role Table
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [source]="roleData" [settings]="settings" (createConfirm)="addRole($event)" (editConfirm)="editRole($event)" (deleteConfirm)="onDeleteConfirm($event)" >
+      </ng2-smart-table>
+    </nb-card-body>
+</nb-card>
