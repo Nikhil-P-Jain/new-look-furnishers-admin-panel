@@ -20,6 +20,7 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { RoleComponent } from '../pages/role/role.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ActivitiesComponent } from './activities/activities.component';
+import { PermissionComponent } from './permission/permission.component';
 
 @NgModule({
   imports: [
@@ -45,7 +46,7 @@ import { ActivitiesComponent } from './activities/activities.component';
     Ng2SmartTableModule,
   ],
   declarations: [
-    PagesComponent,RoleComponent,ActivitiesComponent
+    PagesComponent,RoleComponent,ActivitiesComponent, PermissionComponent
   ],
 })
 export class PagesModule {
