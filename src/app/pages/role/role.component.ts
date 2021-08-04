@@ -14,6 +14,7 @@ export class RoleComponent {
   constructor(private roleservice:roleservice,public http:HttpClient,private toastrService: NbToastrService) {}
   roleData;
   resp:any;
+  resp1:any;
   dataActive='Active';
   dataDeactive='Deactive';
   config: NbToastrConfig;
@@ -33,7 +34,8 @@ export class RoleComponent {
   add_failure_content='Could not be added!';
   ngOnInit(){
     this.roleservice.getrole().subscribe(res=>{
-      this.roleData=res['data'];
+      this.resp1=res;
+      this.roleData=this.resp1.data.results;
       console.log(this.roleData);
       //To fetch the role status to covert 0 and 1 to Active and Deactive
       this.roleData.forEach(element => {
@@ -119,7 +121,11 @@ export class RoleComponent {
       else{
         this.showToast(this.failure_status, this.title, this.add_failure_content);
       }
-    })
+    },
+    (err)=>{
+        this.showToast(this.failure_status, this.title, this.add_failure_content);
+      }
+    )
 	}
 
   editRole(event){
@@ -139,7 +145,11 @@ export class RoleComponent {
       else{
         this.showToast(this.failure_status, this.title, this.edit_failure_content);
       }
-    })
+    },
+    (err)=>{
+      this.showToast(this.failure_status, this.title, this.add_failure_content);
+    }
+    )
   }
 
   onDeleteConfirm(event) {
@@ -155,7 +165,11 @@ export class RoleComponent {
         else{
           this.showToast(this.failure_status, this.title, this.delete_failure_content);
         }
-      });
+      },
+      (err)=>{
+        this.showToast(this.failure_status, this.title, this.add_failure_content);
+      }
+      );
     }
     else{
       event.confirm.reject();

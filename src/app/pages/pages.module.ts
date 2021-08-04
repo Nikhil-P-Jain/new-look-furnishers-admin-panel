@@ -21,6 +21,9 @@ import { RoleComponent } from '../pages/role/role.component';
 import { Ng2SmartTableModule } from 'ng2-smart-table';
 import { ActivitiesComponent } from './activities/activities.component';
 import { PermissionComponent } from './permission/permission.component';
+import { AddPermissionComponent } from './permission/add-permission/add-permission.component';
+import { EditPermissionComponent } from './permission/edit-permission/edit-permission.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   imports: [
@@ -28,6 +31,8 @@ import { PermissionComponent } from './permission/permission.component';
     ThemeModule,
     NbMenuModule,
     DashboardModule,
+    FormsModule,
+    ReactiveFormsModule,
     ECommerceModule,
     NbCardModule,
     MiscellaneousModule,
@@ -45,8 +50,15 @@ import { PermissionComponent } from './permission/permission.component';
     NbIconModule,
     Ng2SmartTableModule,
   ],
+  entryComponents: [
+    //...
+    AddPermissionComponent,
+    EditPermissionComponent,
+    PermissionComponent
+    //...
+   ],
   declarations: [
-    PagesComponent,RoleComponent,ActivitiesComponent, PermissionComponent
+    PagesComponent,RoleComponent,ActivitiesComponent, PermissionComponent, AddPermissionComponent, EditPermissionComponent
   ],
 })
 export class PagesModule {

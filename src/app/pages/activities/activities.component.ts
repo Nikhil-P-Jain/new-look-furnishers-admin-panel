@@ -11,6 +11,7 @@ import { NbComponentStatus, NbGlobalPhysicalPosition ,NbGlobalPosition,NbToastrC
 })
 export class ActivitiesComponent {
   activitiesData;
+  resp1;
   dataActive='Active';
   dataDeactive='Deactive';
   resp:any;
@@ -32,7 +33,9 @@ export class ActivitiesComponent {
   constructor(private actservice:activitiesservice,public http:HttpClient,private toastrService: NbToastrService) {}
   ngOnInit(){
     this.actservice.getactivities().subscribe(res=>{
-      this.activitiesData=res['data'];
+      // this.activitiesData=res['data'];
+      this.resp1=res;
+      this.activitiesData=this.resp1.data.results;
       console.log(this.activitiesData);
       //To fetch the status to covert 0 and 1 to Active and Deactive
       this.activitiesData.forEach(element => {

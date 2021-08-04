@@ -7,6 +7,7 @@ import { ECommerceComponent } from './e-commerce/e-commerce.component';
 import { NotFoundComponent } from './miscellaneous/not-found/not-found.component';
 import { RoleComponent } from '../pages/role/role.component';
 import { ActivitiesComponent } from './activities/activities.component';
+import { PermissionComponent } from './permission/permission.component';
 
 const routes: Routes = [{
   path: '',
@@ -29,6 +30,11 @@ const routes: Routes = [{
       path:'activities',
       component:ActivitiesComponent,
       data:{breadcrumb:'Activities'},
+    },
+    {
+      path:'permission',
+      component:PermissionComponent,
+      data:{breadcrumb:'Permission'},
     },
     {
       path: 'layout',
