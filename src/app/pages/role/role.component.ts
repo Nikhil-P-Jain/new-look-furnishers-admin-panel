@@ -129,6 +129,8 @@ export class RoleComponent {
 	}
 
   editRole(event){
+    console.log(event.newData,"newDataof");
+    
     if(event.newData.Role_Status == this.dataActive){
       event.newData.Role_Status=1;
     }else if(event.newData.Role_Status == this.dataDeactive){

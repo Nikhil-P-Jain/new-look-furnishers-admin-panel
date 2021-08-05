@@ -14,7 +14,6 @@ import { PermissionComponent } from '../permission.component';
   styleUrls: ['./add-permission.component.scss']
 })
 export class AddPermissionComponent implements OnInit {
-  // @Input() ng = refresh();
   roleData:any;
   formPermission:FormGroup;
   activitiesData:any;
@@ -35,7 +34,6 @@ export class AddPermissionComponent implements OnInit {
   AddEdit:FormGroup;
   // source: LocalDataSource = new LocalDataSource();
   constructor(protected ref: NbDialogRef<AddPermissionComponent>,
-    // private ref1:NbDialogRef<PermissionComponent>,
     private rs:roleservice,
     private as:activitiesservice,
     private permissionService:PermissionService,
@@ -135,13 +133,5 @@ export class AddPermissionComponent implements OnInit {
 
   dismiss() {
     this.ref.close();
-    this.route.navigate(['/pages/permission'])
-    // this.ref.onClose.subscribe(res=>{
-    //   if(res){
-    //     this.permissionService.getRoleName().subscribe(res=>{
-    //       this.resp2=res;
-    //     });
-    //   }
-    // })
   }
 }

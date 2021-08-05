@@ -32,4 +32,8 @@ export class PermissionService {
     return this.http.get<any[]>(api+'/getrolename',{headers:new HttpHeaders({'Content-Type':'application/json'})})
     .map(res=>res);
   }
+  getRoleNamebyid(id:any):Observable<any[]>{
+    return this.http.get<any[]>(api+'/getrolenamebyid/'+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res=>res);
+  }
 }

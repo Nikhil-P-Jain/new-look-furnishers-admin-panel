@@ -46,14 +46,14 @@
 
     <div class="row d-flex">
         <nb-card style="width: 350px !important;">
-            <nb-card-header>Edit Permission</nb-card-header>
+            <nb-card-header>Add Permission</nb-card-header>
             <nb-card-body>
                 <!-- <form [ngSubmit]="save()"> -->
-                <form>
+                <form [formGroup]="formPermission">
                 <div class="form-group row">
                     <label class="label col-sm-3 col-form-label">Role</label>
                     <div class="col-sm-9">
-                        <nb-select selected="0" class="col-md-12">
+                        <nb-select selected="0" formControlName="Role_Name" class="col-md-12">
                             <nb-option value="0" disabled>Select Role</nb-option>
                             <nb-option *ngFor="let role of roleData" value={{role.Role_Id}}>{{role.Role_Name}}</nb-option>
                         </nb-select>
@@ -62,7 +62,7 @@
                 <div class="form-group row">
                     <label class="label col-sm-3 col-form-label">Activity</label>
                     <div class="col-sm-9">
-                        <nb-select class="selectpicker" multiple data-live-search="true" class="col-md-12">
+                        <nb-select class="selectpicker" formControlName="activities_name" multiple data-live-search="true" class="col-md-12">
                             <nb-option disabled>Select Activity</nb-option>
                             <nb-option *ngFor="let activity of activitiesData" value={{activity.activities_id}}>{{activity.activities_name}}</nb-option>
                         </nb-select>
@@ -71,10 +71,10 @@
                 <div class="form-group row">
                     <label class="col-sm-4 label">Permission</label>
                     <div class="col-sm-8">
-                        <nb-checkbox>View</nb-checkbox><br>
-                        <nb-checkbox>Create</nb-checkbox><br>
-                        <nb-checkbox>Update</nb-checkbox><br>
-                        <nb-checkbox>Delete</nb-checkbox><br>
+                        <nb-checkbox formControlName="permission_view">View</nb-checkbox><br>
+                        <nb-checkbox formControlName="permission_create">Create</nb-checkbox><br>
+                        <nb-checkbox formControlName="permission_update">Update</nb-checkbox><br>
+                        <nb-checkbox formControlName="permission_delete">Delete</nb-checkbox><br>
                     </div>
                 </div>
                 <div class="form-group row">

@@ -36,8 +36,10 @@ export class EditPermissionComponent implements OnInit {
     private as:activitiesservice,
     private permissionService:PermissionService,
     public http:HttpClient,
-    private toastrService: NbToastrService) { }
+    private toastrService: NbToastrService) { 
+  }
   ngOnInit(): void {
+
     
   }
 
