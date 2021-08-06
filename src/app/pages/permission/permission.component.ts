@@ -222,7 +222,6 @@ export class PermissionComponent implements OnInit {
         this.resp=res;
         if(this.resp.success==1){
           this.showToast(this.success_status, this.title, this.delete_success_content);
-          this.resp=res;
           this.ngOnInit();
         }
         else{

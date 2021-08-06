@@ -1,0 +1,10 @@
+<nb-card>
+    <nb-card-header>
+      Unit Table
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [source]="unitData" [settings]="settings" (createConfirm)="addUnit($event)" (editConfirm)="editUnit($event)" (deleteConfirm)="onDeleteConfirm($event)" >
+      </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { roleservice } from '../service/role.service';
-import { LocalDataSource } from 'ng2-smart-table';
 import { HttpClient } from '@angular/common/http';
-import { NbToastrService,NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition ,NbComponentStatus} from '@nebular/theme';
-
+import { Component, OnInit } from '@angular/core';
+import { NbToastrService, NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus } from '@nebular/theme';
+import { LocalDataSource } from 'ng2-smart-table';
+import { UnitService } from '../service/unit.service';
 
 @Component({
-  selector: 'ngx-role',
-  templateUrl: './role.component.html',
-  styleUrls: ['./role.component.scss']
+  selector: 'ngx-unit',
+  templateUrl: './unit.component.html',
+  styleUrls: ['./unit.component.scss']
 })
-export class RoleComponent {
-  constructor(private roleservice:roleservice,public http:HttpClient,private toastrService: NbToastrService) {}
-  roleData;
+export class UnitComponent {
+  constructor(private unitservice:UnitService,public http:HttpClient,private toastrService: NbToastrService) {}
+  unitData;
   resp:any;
   resp1:any;
   dataActive='Active';
@@ -25,7 +24,7 @@ export class RoleComponent {
   preventDuplicates = false;
   success_status: NbComponentStatus = 'success';
   failure_status: NbComponentStatus = 'danger';
-  title='Role';
+  title='Unit';
   edit_success_content='Edited Successfully!';
   edit_failure_content='Could not be edited!';
   delete_success_content='Deleted Successfully!';
@@ -33,20 +32,20 @@ export class RoleComponent {
   add_success_content='Added Successfully!';
   add_failure_content='Could not be added!';
   ngOnInit(){
-    this.roleservice.getrole().subscribe(res=>{
+    this.unitservice.getunit().subscribe(res=>{
       this.resp1=res;
-      this.roleData=this.resp1.data.results;
-      console.log(this.roleData);
+      this.unitData=this.resp1.data.results;
+      console.log(this.unitData);
       //To fetch the role status to covert 0 and 1 to Active and Deactive
-      this.roleData.forEach(element => {
-        console.log(element.Role_Status);  
-        if(element.Role_Status == 0){
-          element.Role_Status=this.dataDeactive
-        }else if(element.Role_Status==1){
-          element.Role_Status=this.dataActive
+      this.unitData.forEach(element => {
+        console.log(element.unit_status);  
+        if(element.unit_status == 0){
+          element.unit_status=this.dataDeactive
+        }else if(element.unit_status==1){
+          element.unit_status=this.dataActive
         }
       });
-      this.source.load(this.roleData);
+      this.source.load(this.unitData);
     });
   }
    settings = {
@@ -57,8 +56,8 @@ export class RoleComponent {
       cancelButtonContent: '<i class="nb-close"></i>',
       confirmCreate:true,
       columns: {
-        Role_Name: {
-          title: 'Role Name',
+        unit_name: {
+          title: 'Unit Name',
           type: 'string',
         },
       },
@@ -74,12 +73,12 @@ export class RoleComponent {
       confirmDelete: true,
     },
     columns: {
-      Role_Name: {
-        title: 'Role Name',
+      unit_name: {
+        title: 'Unit Name',
         type: 'string',
       },
-      Role_Status: {
-        title: 'Role Status',
+      unit_status: {
+        title: 'Unit Status',
         type: 'string',
         addable:false,
         editor: {
@@ -92,13 +91,13 @@ export class RoleComponent {
           }
         }
       },
-      Role_Created_Date: {
+      unit_created_date: {
         title: 'Created Date',
         type: 'string',
         editable:false,
         addable:false,
       },
-      Role_Updated_Date: {
+      unit_updated_date: {
         title: 'Updated Date',
         type: 'string',
         editable:false,
@@ -109,9 +108,9 @@ export class RoleComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  addRole(event) {
-    var data = {"Role_Name" : event.newData.Role_Name};
-    this.roleservice.createrole(data).subscribe(res=>{
+  addUnit(event) {
+    var data = {"unit_name" : event.newData.unit_name};
+    this.unitservice.createunit(data).subscribe(res=>{
       this.resp=res;
       if(this.resp.success==1){
         this.showToast(this.success_status, this.title, this.add_success_content);
@@ -128,16 +127,16 @@ export class RoleComponent {
     )
 	}
 
-  editRole(event){
+  editUnit(event){
     console.log(event.newData,"newDataof");
     
-    if(event.newData.Role_Status == this.dataActive){
-      event.newData.Role_Status=1;
-    }else if(event.newData.Role_Status == this.dataDeactive){
-      event.newData.Role_Status=0;
+    if(event.newData.unit_status == this.dataActive){
+      event.newData.unit_status=1;
+    }else if(event.newData.unit_status == this.dataDeactive){
+      event.newData.unit_status=0;
     }
-    var data = {"Role_Name" : event.newData.Role_Name,"Role_Status":event.newData.Role_Status,"Role_Id":event.newData.Role_Id};
-    this.roleservice.updaterole(data).subscribe(res=>{
+    var data = {"unit_name" : event.newData.unit_name,"unit_status":event.newData.unit_status,"unit_id":event.newData.unit_id};
+    this.unitservice.updateunit(data).subscribe(res=>{
       this.resp=res;
       if(this.resp.success==1){
         this.showToast(this.success_status, this.title, this.edit_success_content);
@@ -157,8 +156,7 @@ export class RoleComponent {
   onDeleteConfirm(event) {
     console.log("ID",event.data);
     if(window.confirm('Are you sure you want to delete?')) {
-      this.roleservice.deleterole(event.data.Role_Id).subscribe(res=>{
-        this.resp=res;
+      this.unitservice.deleteunit(event.data.unit_id).subscribe(res=>{
         if(this.resp.success==1){
           this.showToast(this.success_status, this.title, this.delete_success_content);
           event.confirm.resolve(event.source.data);
@@ -166,10 +164,12 @@ export class RoleComponent {
         }
         else{
           this.showToast(this.failure_status, this.title, this.delete_failure_content);
+          this.ngOnInit();
         }
       },
       (err)=>{
         this.showToast(this.failure_status, this.title, this.add_failure_content);
+        this.ngOnInit();
       }
       );
     }

@@ -1,0 +1,10 @@
+<nb-card>
+    <nb-card-header>
+      City Table
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [source]="cityData" [settings]="settings" (createConfirm)="addCity($event)" (editConfirm)="editCity($event)" (deleteConfirm)="onDeleteConfirm($event)" >
+      </ng2-smart-table>
+    </nb-card-body>
+</nb-card>

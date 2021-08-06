@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { roleservice } from '../service/role.service';
-import { LocalDataSource } from 'ng2-smart-table';
 import { HttpClient } from '@angular/common/http';
-import { NbToastrService,NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition ,NbComponentStatus} from '@nebular/theme';
-
+import { Component, OnInit } from '@angular/core';
+import { NbToastrService, NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus } from '@nebular/theme';
+import { LocalDataSource } from 'ng2-smart-table';
+import { StateService } from '../service/state.service';
 
 @Component({
-  selector: 'ngx-role',
-  templateUrl: './role.component.html',
-  styleUrls: ['./role.component.scss']
+  selector: 'ngx-state',
+  templateUrl: './state.component.html',
+  styleUrls: ['./state.component.scss']
 })
-export class RoleComponent {
-  constructor(private roleservice:roleservice,public http:HttpClient,private toastrService: NbToastrService) {}
-  roleData;
+export class StateComponent {
+  constructor(private stateservice:StateService,public http:HttpClient,private toastrService: NbToastrService) {}
+  stateData;
   resp:any;
   resp1:any;
   dataActive='Active';
@@ -25,7 +24,7 @@ export class RoleComponent {
   preventDuplicates = false;
   success_status: NbComponentStatus = 'success';
   failure_status: NbComponentStatus = 'danger';
-  title='Role';
+  title='State';
   edit_success_content='Edited Successfully!';
   edit_failure_content='Could not be edited!';
   delete_success_content='Deleted Successfully!';
@@ -33,20 +32,20 @@ export class RoleComponent {
   add_success_content='Added Successfully!';
   add_failure_content='Could not be added!';
   ngOnInit(){
-    this.roleservice.getrole().subscribe(res=>{
+    this.stateservice.getstate().subscribe(res=>{
       this.resp1=res;
-      this.roleData=this.resp1.data.results;
-      console.log(this.roleData);
+      this.stateData=this.resp1.data.results;
+      console.log(this.stateData);
       //To fetch the role status to covert 0 and 1 to Active and Deactive
-      this.roleData.forEach(element => {
-        console.log(element.Role_Status);  
-        if(element.Role_Status == 0){
-          element.Role_Status=this.dataDeactive
-        }else if(element.Role_Status==1){
-          element.Role_Status=this.dataActive
+      this.stateData.forEach(element => {
+        console.log(element.state_status);  
+        if(element.state_status == 0){
+          element.state_status=this.dataDeactive
+        }else if(element.state_status==1){
+          element.state_status=this.dataActive
         }
       });
-      this.source.load(this.roleData);
+      this.source.load(this.stateData);
     });
   }
    settings = {
@@ -57,8 +56,8 @@ export class RoleComponent {
       cancelButtonContent: '<i class="nb-close"></i>',
       confirmCreate:true,
       columns: {
-        Role_Name: {
-          title: 'Role Name',
+        state_name: {
+          title: 'State Name',
           type: 'string',
         },
       },
@@ -74,12 +73,12 @@ export class RoleComponent {
       confirmDelete: true,
     },
     columns: {
-      Role_Name: {
-        title: 'Role Name',
+      state_name: {
+        title: 'State Name',
         type: 'string',
       },
-      Role_Status: {
-        title: 'Role Status',
+      state_status: {
+        title: 'State Status',
         type: 'string',
         addable:false,
         editor: {
@@ -92,13 +91,13 @@ export class RoleComponent {
           }
         }
       },
-      Role_Created_Date: {
+      state_created_date: {
         title: 'Created Date',
         type: 'string',
         editable:false,
         addable:false,
       },
-      Role_Updated_Date: {
+      state_updated_date: {
         title: 'Updated Date',
         type: 'string',
         editable:false,
@@ -109,9 +108,9 @@ export class RoleComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  addRole(event) {
-    var data = {"Role_Name" : event.newData.Role_Name};
-    this.roleservice.createrole(data).subscribe(res=>{
+  addState(event) {
+    var data = {"state_name" : event.newData.state_name};
+    this.stateservice.createstate(data).subscribe(res=>{
       this.resp=res;
       if(this.resp.success==1){
         this.showToast(this.success_status, this.title, this.add_success_content);
@@ -128,16 +127,16 @@ export class RoleComponent {
     )
 	}
 
-  editRole(event){
+  editState(event){
     console.log(event.newData,"newDataof");
     
-    if(event.newData.Role_Status == this.dataActive){
-      event.newData.Role_Status=1;
-    }else if(event.newData.Role_Status == this.dataDeactive){
-      event.newData.Role_Status=0;
+    if(event.newData.state_status == this.dataActive){
+      event.newData.state_status=1;
+    }else if(event.newData.state_status == this.dataDeactive){
+      event.newData.state_status=0;
     }
-    var data = {"Role_Name" : event.newData.Role_Name,"Role_Status":event.newData.Role_Status,"Role_Id":event.newData.Role_Id};
-    this.roleservice.updaterole(data).subscribe(res=>{
+    var data = {"state_name" : event.newData.state_name,"state_status":event.newData.state_status,"state_id":event.newData.state_id};
+    this.stateservice.updatestate(data).subscribe(res=>{
       this.resp=res;
       if(this.resp.success==1){
         this.showToast(this.success_status, this.title, this.edit_success_content);
@@ -157,8 +156,7 @@ export class RoleComponent {
   onDeleteConfirm(event) {
     console.log("ID",event.data);
     if(window.confirm('Are you sure you want to delete?')) {
-      this.roleservice.deleterole(event.data.Role_Id).subscribe(res=>{
-        this.resp=res;
+      this.stateservice.deletestate(event.data.state_id).subscribe(res=>{
         if(this.resp.success==1){
           this.showToast(this.success_status, this.title, this.delete_success_content);
           event.confirm.resolve(event.source.data);

@@ -8,6 +8,9 @@ import { NotFoundComponent } from './miscellaneous/not-found/not-found.component
 import { RoleComponent } from '../pages/role/role.component';
 import { ActivitiesComponent } from './activities/activities.component';
 import { PermissionComponent } from './permission/permission.component';
+import { StateComponent } from './state/state.component';
+import { UnitComponent } from './unit/unit.component';
+import { CityComponent } from './city/city.component';
 
 const routes: Routes = [{
   path: '',
@@ -35,6 +38,21 @@ const routes: Routes = [{
       path:'permission',
       component:PermissionComponent,
       data:{breadcrumb:'Permission'},
+    },
+    {
+      path:'state',
+      component:StateComponent,
+      data:{breadcrumb:'State'},
+    },
+    {
+      path:'city',
+      component:CityComponent,
+      data:{breadcrumb:'City'},
+    },
+    {
+      path:'unit',
+      component:UnitComponent,
+      data:{breadcrumb:'Unit'},
     },
     {
       path: 'layout',

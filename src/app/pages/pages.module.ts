@@ -24,6 +24,9 @@ import { PermissionComponent } from './permission/permission.component';
 import { AddPermissionComponent } from './permission/add-permission/add-permission.component';
 import { EditPermissionComponent } from './permission/edit-permission/edit-permission.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { StateComponent } from './state/state.component';
+import { CityComponent } from './city/city.component';
+import { UnitComponent } from './unit/unit.component';
 
 @NgModule({
   imports: [
@@ -58,7 +61,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     //...
    ],
   declarations: [
-    PagesComponent,RoleComponent,ActivitiesComponent, PermissionComponent, AddPermissionComponent, EditPermissionComponent
+    PagesComponent,RoleComponent,ActivitiesComponent, PermissionComponent, AddPermissionComponent, EditPermissionComponent, StateComponent, CityComponent, UnitComponent
   ],
 })
 export class PagesModule {

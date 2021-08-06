@@ -13,9 +13,24 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link:'/pages/activities',
   },
   {
-    icon: 'bell-outline',
+    icon: 'alert-triangle-outline',
     title:'Permission',
     link:'/pages/permission',
+  },
+  {
+    icon: 'pin-outline',
+    title:'State',
+    link:'/pages/state',
+  },
+  {
+    icon: 'pin-outline',
+    title:'City',
+    link:'/pages/city',
+  },
+  {
+    icon: 'bar-chart-outline',
+    title:'Unit',
+    link:'/pages/unit',
   },
   {
     title: 'E-commerce',
