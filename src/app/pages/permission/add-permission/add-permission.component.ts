@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input, OnInit, ɵɵqueryRefresh } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NbComponentStatus, NbDialogRef, NbGlobalPhysicalPosition, NbGlobalPosition, NbToastrConfig, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
@@ -14,6 +14,7 @@ import { PermissionComponent } from '../permission.component';
   styleUrls: ['./add-permission.component.scss']
 })
 export class AddPermissionComponent implements OnInit {
+  isSubmitted=false;
   roleData:any;
   formPermission:FormGroup;
   activitiesData:any;
@@ -42,6 +43,7 @@ export class AddPermissionComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route:Router) { }
   ngOnInit(): void {
+    this.isSubmitted=false;
    this.rs.getrole().subscribe(res=>{
      this.resp=res;
      this.roleData=this.resp.data.results;
@@ -52,67 +54,79 @@ export class AddPermissionComponent implements OnInit {
      console.log(this.activitiesData,"acti data");
    })
    this.formPermission=this.formBuilder.group({
-     'Role_Name':[],
-     'activities_name':[],
+     'Role_Name':['',[Validators.required]],
+     'activities_name':['',[Validators.required]],
      'permission_view':[],
      'permission_create':[],
      'permission_update':[],
      'permission_delete':[]
    })
   }
+  get f() { 
+    // console.log("Inside f ",this.formPermission.controls);
+    
+    return this.formPermission.controls; }
+
   source: LocalDataSource = new LocalDataSource();
 
   addPermission() {
-    if(this.formPermission.value.permission_view==true){
-      this.formPermission.value.permission_view=1;
-    }else{
-      this.formPermission.value.permission_view=0;
-    }
-    if(this.formPermission.value.permission_create==true){
-      this.formPermission.value.permission_create=1;
-    }else{
-      this.formPermission.value.permission_create=0;
-    }
-    if(this.formPermission.value.permission_update==true){
-      this.formPermission.value.permission_update=1;
-    }else{
-      this.formPermission.value.permission_update=0;
-    }
-    if(this.formPermission.value.permission_delete==true){
-      this.formPermission.value.permission_delete=1;
-    }else{
-      this.formPermission.value.permission_delete=0;
-    }
-    for(var i=0;i<this.formPermission.value.activities_name.length;i++){
-      this.formPermission.value.activities_name[i]=parseInt(this.formPermission.value.activities_name[i])
-    }
+    this.isSubmitted=true;
 
-    var data = {
-      "role_id" : parseInt(this.formPermission.value.Role_Name),
-      "activities_id": this.formPermission.value.activities_name,
-      "permission_view":this.formPermission.value.permission_view,
-      "permission_create":this.formPermission.value.permission_create,
-      "permission_update":this.formPermission.value.permission_update,
-      "permission_delete":this.formPermission.value.permission_delete
-    };
-    console.log(data,"data");
-    
-    this.permissionService.createPermission(data).subscribe(res=>{
-      this.resp=res;
-      if(this.resp.success==1){
-        this.showToast(this.success_status, this.title, this.add_success_content);
-        window.location.reload();
-        this.dismiss();
-        this.ngOnInit();
+    if(this.formPermission.invalid){
+      return;
+    }
+    else{
+      if(this.formPermission.value.permission_view==true){
+        this.formPermission.value.permission_view=1;
+      }else{
+        this.formPermission.value.permission_view=0;
       }
-      else{
-        this.showToast(this.failure_status, this.title, this.add_failure_content);
+      if(this.formPermission.value.permission_create==true){
+        this.formPermission.value.permission_create=1;
+      }else{
+        this.formPermission.value.permission_create=0;
       }
-    },
-    (err)=>{
-        this.showToast(this.failure_status, this.title, this.add_failure_content);
+      if(this.formPermission.value.permission_update==true){
+        this.formPermission.value.permission_update=1;
+      }else{
+        this.formPermission.value.permission_update=0;
       }
-    )
+      if(this.formPermission.value.permission_delete==true){
+        this.formPermission.value.permission_delete=1;
+      }else{
+        this.formPermission.value.permission_delete=0;
+      }
+      for(var i=0;i<this.formPermission.value.activities_name.length;i++){
+        this.formPermission.value.activities_name[i]=parseInt(this.formPermission.value.activities_name[i])
+      }
+  
+      var data = {
+        "role_id" : parseInt(this.formPermission.value.Role_Name),
+        "activities_id": this.formPermission.value.activities_name,
+        "permission_view":this.formPermission.value.permission_view,
+        "permission_create":this.formPermission.value.permission_create,
+        "permission_update":this.formPermission.value.permission_update,
+        "permission_delete":this.formPermission.value.permission_delete
+      };
+      console.log(data,"data");
+      
+      this.permissionService.createPermission(data).subscribe(res=>{
+        this.resp=res;
+        if(this.resp.success==1){
+          this.showToast(this.success_status, this.title, this.add_success_content);
+          window.location.reload();
+          this.dismiss();
+          this.ngOnInit();
+        }
+        else{
+          this.showToast(this.failure_status, this.title, this.add_failure_content);
+        }
+      },
+      (err)=>{
+          this.showToast(this.failure_status, this.title, this.add_failure_content);
+        }
+      )
+    }
 	}
   private showToast(type: NbComponentStatus, title: string, body: string) {
     const config = {

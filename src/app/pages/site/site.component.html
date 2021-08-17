@@ -1,0 +1,71 @@
+<nb-card>
+    <nb-card-header>
+      Site Table
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [source]="siteData" [settings]="settings" (create)="open1(dialog)" (edit)="open2(dialog,$event)" (delete)="deleteSite($event)" > -->
+      </ng2-smart-table>
+      <!-- <ng2-smart-table></ng2-smart-table> -->
+    </nb-card-body>
+</nb-card>
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card style="width: 350px !important;">
+      <nb-card-header>Site</nb-card-header>
+      <nb-card-body>
+          <!-- <form [ngSubmit]="save()"> -->
+          <form [formGroup]="formAddEdit">
+          <div class="form-group row">
+              <label class="label col-sm-3 col-form-label">Site Name</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" nbInput shape="rectangle" formControlName="site_name" class="col-md-12" placeholder="Enter name of Site" [ngClass]="{'is-invalid': isSubmitted && f.site_name.errors}">
+                <div *ngIf="isSubmitted && f.site_name.errors" class="text-danger">
+                  <div *ngIf="f.site_name.errors.required">This field is required</div>
+              </div>
+              </div>
+          </div>
+          <div class="form-group row">
+              <label class="label col-sm-3 col-form-label">Address</label>
+              <div class="col-sm-9">
+                <textarea rows="5" class="form-control" formControlName="site_address" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Address" [ngClass]="{'is-invalid': isSubmitted && f.site_address.errors}"></textarea>
+                <div *ngIf="isSubmitted && f.site_address.errors" class="text-danger">
+                  <div *ngIf="f.site_address.errors.required">This field is required</div>
+                </div>
+              </div>
+          </div>
+          <div class="form-group row">
+            <label class="label col-sm-3 col-form-label">City</label>
+            <div class="col-sm-9">
+                <nb-select formControlName="site_city_id" [ngClass]="{'is-invalid': isSubmitted && f.site_city_id.errors}" class="col-md-12">
+                    <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
+                    <nb-option *ngFor="let city of cityData" value={{city.city_id}} >{{city.city_name}}</nb-option>
+                </nb-select>
+                <div *ngIf="isSubmitted && f.site_city_id.errors" class="text-danger">
+                  <div *ngIf="f.site_city_id.errors.required">This field is required</div>
+                </div>
+            </div>
+        </div>
+          <div class="form-group row">
+            <label class="label col-sm-3 col-form-label">Site Status</label>
+            <div class="col-sm-9">
+                <nb-select [(ngModel)]="selected" formControlName="site_status" class="col-md-12">
+                    <nb-option value='Active'>Active</nb-option>
+                    <nb-option value='Deactive'>Deactive</nb-option>
+                    <!-- <nb-option *ngFor="let pcstatus of pcData" value={{pcstatus.product_category_status}}>{{pcstatus.product_category_status}}</nb-option> -->
+                </nb-select>
+            </div>
+        </div>
+          <div class="form-group row">
+              <div class="offset-sm-3 col-sm-9">
+              <button type="submit" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
+              </div>
+          </div>
+          </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton (click)="ref.close()">Close</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>

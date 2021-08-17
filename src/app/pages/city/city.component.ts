@@ -17,6 +17,7 @@ export class CityComponent {
   resp:any;
   resp1:any;
   resp2:any;
+  count=0;
   dataActive='Active';
   dataDeactive='Deactive';
   config: NbToastrConfig;
@@ -35,15 +36,9 @@ export class CityComponent {
   add_success_content='Added Successfully!';
   add_failure_content='Could not be added!';
   ngOnInit(){
-    this.stateservice.getstate().subscribe(res=>{
-      this.resp2=res;
-      this.stateData=this.resp2.data.results;
-      this.stateData.forEach(element => {
-        //error is because of value:element.state_name, chanfe it to state_id
-        this.settings.columns.state_name.editor.config.list.push({ value: element.state_name, title: element.state_name });
-      });
-      this.settings = Object.assign({}, this.settings);
-    })
+    if(this.count==0){
+      this.pushData();
+    }
     this.cityservice.getcity().subscribe(res=>{
       this.resp1=res;
       this.cityData=this.resp1.data.results;
@@ -59,6 +54,7 @@ export class CityComponent {
       });
       this.source.load(this.cityData);
     });
+    this.count=1;
   }
    settings = {
      mode: 'inline',
@@ -130,7 +126,17 @@ export class CityComponent {
   };
 
   source: LocalDataSource = new LocalDataSource();
-
+  pushData(){
+    this.stateservice.getstate().subscribe(res=>{
+      this.resp2=res;
+      this.stateData=this.resp2.data.results;
+      this.stateData.forEach(element => {
+        //error is because of value:element.state_name, chanfe it to state_id
+        this.settings.columns.state_name.editor.config.list.push({ value: element.state_id, title: element.state_name });
+      });
+      this.settings = Object.assign({}, this.settings);
+    })
+  }
   addCity(event) {
     console.log(event,"event");
     
@@ -154,6 +160,10 @@ export class CityComponent {
 
   editCity(event){
     console.log(event.newData,"newDataof");
+    // this.stateData.forEach(element => {
+    //     //error is because of value:element.state_name, chanfe it to state_id
+    //     this.settings.columns.state_name.editor.config.list.push({ value: element.state_name, title: element.state_name });
+    //   });  
     
     if(event.newData.city_status == this.dataActive){
       event.newData.city_status=1;
@@ -182,7 +192,8 @@ export class CityComponent {
   onDeleteConfirm(event) {
     console.log("ID",event.data);
     if(window.confirm('Are you sure you want to delete?')) {
-      this.cityservice.deletecity(event.data.city_status).subscribe(res=>{
+      this.cityservice.deletecity(event.data.city_id).subscribe(res=>{
+        this.resp=res;
         if(this.resp.success==1){
           this.showToast(this.success_status, this.title, this.delete_success_content);
           event.confirm.resolve(event.source.data);

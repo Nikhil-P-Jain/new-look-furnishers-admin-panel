@@ -1,0 +1,131 @@
+<nb-card>
+    <nb-card-header>
+      User Table
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [source]="userData" [settings]="settings" (create)="open1(dialog)" (edit)="open2(dialog,$event)" (delete)="deleteUser($event)" >      </ng2-smart-table>
+      <!-- <ng2-smart-table></ng2-smart-table> -->
+    </nb-card-body>
+</nb-card>
+
+<div class="row d-flex">
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card style="width: 1000px !important; overflow: auto !important;">
+      <nb-card-header>User</nb-card-header>
+      <nb-card-body>
+          <!-- <form [ngSubmit]="save()"> -->
+          <form [formGroup]="formAddEdit">
+          <div class="form-group row">
+            <label class="label col-sm-1 col-form-label">First Name</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" nbInput shape="rectangle" [ngClass]="{'is-invalid': isSubmitted && f.first_name.errors}" formControlName="first_name" class="col-md-12" placeholder="Enter First Name">
+                <div *ngIf="isSubmitted && f.first_name.errors" class="text-danger">
+                  <div *ngIf="f.first_name.errors.required">This field is required</div>
+                </div>
+            </div>
+            <label class="label col-sm-1 col-form-label">Middle Name</label>
+            <div class="col-sm-3">
+                <input type="text" class="form-control" nbInput shape="rectangle" formControlName="middle_name" class="col-md-12" placeholder="Enter Middle Name">
+            </div>
+            <label class="label col-sm-1 col-form-label">Last Name</label>
+            <div class="col-sm-3">
+              <input type="text" class="form-control" [ngClass]="{'is-invalid': isSubmitted && f.last_name.errors}" nbInput shape="rectangle" formControlName="last_name" class="col-md-12" placeholder="Enter Last Name">
+              <div *ngIf="isSubmitted && f.last_name.errors" class="text-danger">
+                <div *ngIf="f.last_name.errors.required">This field is required</div>
+              </div>
+            </div>
+          </div>
+        <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">Address1</label>
+            <div class="col-sm-4">
+                <textarea rows="4" class="form-control" [ngClass]="{'is-invalid': isSubmitted && f.address1.errors}" formControlName="address1" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Enter your Primary Address"></textarea>
+                <div *ngIf="isSubmitted && f.address1.errors" class="text-danger">
+                  <div *ngIf="f.address1.errors.required">This field is required</div>
+                </div>
+            </div>
+            <label class="label col-sm-2 col-form-label">Address2</label>
+            <div class="col-sm-4">
+                <textarea rows="4" class="form-control" formControlName="address2" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Enter your Secondary Address"></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">Phone</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" [ngClass]="{'is-invalid': isSubmitted && f.phone.errors}" nbInput shape="rectangle" formControlName="phone" class="col-md-12" placeholder="Enter Phone">
+              <div *ngIf="isSubmitted && f.phone.errors" class="text-danger">
+                <div *ngIf="f.phone.errors.required">This field is required</div>
+              </div>
+            </div>
+            <label class="label col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" [ngClass]="{'is-invalid': isSubmitted && f.email.errors}" nbInput shape="rectangle" formControlName="email" class="col-md-12" placeholder="Enter Email">
+              <div *ngIf="isSubmitted && f.email.errors" class="text-danger">
+                <div *ngIf="f.email.errors.required">This field is required</div>
+              </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" nbInput shape="rectangle" [ngClass]="{'is-invalid': isSubmitted && f.username.errors}" formControlName="username" class="col-md-12" placeholder="Enter Username">
+              <div *ngIf="isSubmitted && f.username.errors" class="text-danger">
+                <div *ngIf="f.username.errors.required">This field is required</div>
+              </div>
+            </div>
+            <label class="label col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" nbInput shape="rectangle" [ngClass]="{'is-invalid': isSubmitted && f.password.errors}" formControlName="password" class="col-md-12" placeholder="Enter Password">
+              <div *ngIf="isSubmitted && f.password.errors" class="text-danger">
+                <div *ngIf="f.password.errors.required">This field is required</div>
+              </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">Photo</label>
+            <div class="col-sm-2">
+              <!-- <input type="text" class="form-control" nbInput shape="rectangle" formControlName="photo" class="col-md-4" placeholder="Enter Photo"> -->
+              <input type="file" formControlName="photo" (change)="selectFile($event)">
+                <img [src]="imgURL" class="img-thumbnail img-responsive" style="height:50%;width:20%;">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="label col-sm-1 col-form-label">Status</label>
+            <div class="col-sm-3">
+                <nb-select formControlName="status" placeholder="Select Status" class="col-md-12">
+                    <nb-option value='Active'>Active</nb-option>
+                    <nb-option value='Deactive'>Deactive</nb-option>
+                    <!-- <nb-option *ngFor="let pcstatus of pcData" value={{pcstatus.product_category_status}}>{{pcstatus.product_category_status}}</nb-option> -->
+                </nb-select>
+            </div>
+            <label class="label col-sm-1 col-form-label">Role</label>
+            <div class="col-sm-3">
+                <nb-select formControlName="role_id" placeholder="Select Role" [ngClass]="{'is-invalid': isSubmitted && f.role_id.errors}" class="col-md-12">
+                    <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
+                    <nb-option *ngFor="let role of roleData" value={{role.Role_Id}} >{{role.Role_Name}}</nb-option>
+                </nb-select>
+                <div *ngIf="isSubmitted && f.role_id.errors" class="text-danger">
+                  <div *ngIf="f.role_id.errors.required">This field is required</div>
+                </div>
+                
+            </div>
+            <label class="label col-sm-1 col-form-label">Site</label>
+            <div class="col-sm-3">
+                <nb-select formControlName="site_id" placeholder="Select Site" [ngClass]="{'is-invalid': isSubmitted && f.site_id.errors}" class="col-md-12">
+                    <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
+                    <nb-option *ngFor="let site of siteData" value={{site.site_id}} >{{site.site_name}}</nb-option>
+                </nb-select>
+                <div *ngIf="isSubmitted && f.site_id.errors" class="text-danger">
+                  <div *ngIf="f.site_id.errors.required">This field is required</div>
+                </div>
+            </div>
+        </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button type="submit" style="margin-right: 20px;" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
+        <button nbButton (click)="ref.close()">Close</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+  </div>

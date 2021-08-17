@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { TemplateRef } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbComponentStatus, NbDialogRef, NbDialogService, NbGlobalPhysicalPosition, NbGlobalPosition, NbToastrConfig, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { activitiesservice } from '../service/activities.service';
 import { PermissionService } from '../service/permission.service';
 import { roleservice } from '../service/role.service';
 import { AddPermissionComponent } from './add-permission/add-permission.component';
-import { EditPermissionComponent } from './edit-permission/edit-permission.component';
+// import { EditPermissionComponent } from './edit-permission/edit-permission.component';
 
 @Component({
   selector: 'ngx-permission',
@@ -16,7 +16,7 @@ import { EditPermissionComponent } from './edit-permission/edit-permission.compo
   styleUrls: ['./permission.component.scss']
 })
 export class PermissionComponent implements OnInit {
-  
+  isSubmitted=false;
   formAddEdit:FormGroup;
   permissionData=[];
   resp:any;
@@ -60,6 +60,7 @@ export class PermissionComponent implements OnInit {
   // }
   
   ngOnInit(){
+    this.isSubmitted=false;
     this.rs.getrole().subscribe(res=>{
       this.resp=res;
       this.roleData=this.resp.data.results;
@@ -98,8 +99,8 @@ export class PermissionComponent implements OnInit {
         }
       });
       this.formAddEdit=this.formBuilder.group({
-        'Role_Name':[],
-        'activities_name':[],
+        'Role_Name':['',[Validators.required]],
+        'activities_name':['',[Validators.required]],
         'permission_view':[],
         'permission_create':[],
         'permission_update':[],
@@ -108,6 +109,10 @@ export class PermissionComponent implements OnInit {
       // console.log(res,"PERMISSION");
       this.source.load(this.permissionData);
     });
+  }
+
+  get f(){
+    return this.formAddEdit.controls;
   }
    settings = {
      mode: 'external',
@@ -239,33 +244,39 @@ export class PermissionComponent implements OnInit {
   }
 
   editPermission(ref:any){
-    for(var i=0;i<this.formAddEdit.value.activities_name.length;i++){
-      this.formAddEdit.value.activities_name[i]=parseInt(this.formAddEdit.value.activities_name[i])
+    this.isSubmitted=true;
+    if(this.formAddEdit.invalid){
+      return;
     }
-    
-    var data = {"role_id" : parseInt(this.formAddEdit.value.Role_Name),
-    "activities_id":this.formAddEdit.value.activities_name,
-    "permission_view":this.formAddEdit.value.permission_view,
-    "permission_create":this.formAddEdit.value.permission_create,
-    "permission_update":this.formAddEdit.value.permission_update,
-    "permission_delete":this.formAddEdit.value.permission_delete,
-    "permission_id":this.uniqueId};
-    console.log("Getting Data Body:-", data);
-    this.permissionService.updatePermission(data).subscribe(res=>{
-      this.resp=res;
-      if(this.resp.success==1){
-        this.showToast(this.success_status, this.title, this.edit_success_content);
-        this.ngOnInit();
-        ref.close();
+    else{
+      for(var i=0;i<this.formAddEdit.value.activities_name.length;i++){
+        this.formAddEdit.value.activities_name[i]=parseInt(this.formAddEdit.value.activities_name[i])
       }
-      else{
+      
+      var data = {"role_id" : parseInt(this.formAddEdit.value.Role_Name),
+      "activities_id":this.formAddEdit.value.activities_name,
+      "permission_view":this.formAddEdit.value.permission_view,
+      "permission_create":this.formAddEdit.value.permission_create,
+      "permission_update":this.formAddEdit.value.permission_update,
+      "permission_delete":this.formAddEdit.value.permission_delete,
+      "permission_id":this.uniqueId};
+      console.log("Getting Data Body:-", data);
+      this.permissionService.updatePermission(data).subscribe(res=>{
+        this.resp=res;
+        if(this.resp.success==1){
+          this.showToast(this.success_status, this.title, this.edit_success_content);
+          this.ngOnInit();
+          ref.close();
+        }
+        else{
+          this.showToast(this.failure_status, this.title, this.edit_failure_content);
+        }
+      },
+      (err)=>{
         this.showToast(this.failure_status, this.title, this.edit_failure_content);
       }
-    },
-    (err)=>{
-      this.showToast(this.failure_status, this.title, this.edit_failure_content);
+      )
     }
-    )
   }
 
 

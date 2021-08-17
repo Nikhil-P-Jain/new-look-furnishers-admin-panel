@@ -1,0 +1,134 @@
+<!-- <ngx-project-lead-updates></ngx-project-lead-updates> -->
+<nb-card>
+    <nb-card-header>
+        Project Lead Table
+    </nb-card-header>
+
+    <nb-card-body>
+        <ng2-smart-table [source]="plData" [settings]="settings" (create)="open1(dialog)" (edit)="open2(dialog,$event)" (delete)="deleteProjectLead($event)" (userRowSelect)="onCustomAction($event)">
+        </ng2-smart-table>
+        <!-- <ng2-smart-table></ng2-smart-table> -->
+    </nb-card-body>
+</nb-card>
+
+<div class="row d-flex">
+    <ng-template #dialog let-data let-ref="dialogRef">
+        <nb-card style="width: 800px !important;">
+            <nb-card-header>Project Lead</nb-card-header>
+            <nb-card-body>
+                <form [formGroup]="formAddEdit">
+                    <div class="form-group row">
+                        <label class="label col-sm-2 col-form-label">Project Name</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" nbInput shape="rectangle" formControlName="project_lead_name" class="col-md-12" placeholder="Enter Project Name" [ngClass]="{'is-invalid': isSubmitted && f.project_lead_name.errors}">
+                            <div *ngIf="isSubmitted && f.project_lead_name.errors" class="text-danger">
+                                <div *ngIf="f.project_lead_name.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <label class="label col-sm-2 col-form-label">Architect Name</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" nbInput shape="rectangle" formControlName="architect_name" class="col-md-12" placeholder="Enter Architect Name" [ngClass]="{'is-invalid': isSubmitted && f.architect_name.errors}">
+                            <div *ngIf="isSubmitted && f.architect_name.errors" class="text-danger">
+                                <div *ngIf="f.architect_name.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="label col-sm-2 col-form-label">Department Name</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" nbInput shape="rectangle" formControlName="department_name" class="col-md-12" placeholder="Enter Department Name" [ngClass]="{'is-invalid': isSubmitted && f.department_name.errors}">
+                            <div *ngIf="isSubmitted && f.department_name.errors" class="text-danger">
+                                <div *ngIf="f.department_name.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <label class="label col-sm-2 col-form-label">Project Value</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control" nbInput shape="rectangle" formControlName="project_value" class="col-md-12" placeholder="Enter Project Value" [ngClass]="{'is-invalid': isSubmitted && f.project_value.errors}">
+                            <div *ngIf="isSubmitted && f.project_value.errors" class="text-danger">
+                                <div *ngIf="f.project_value.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="label col-sm-2 col-form-label">Co-ordinator Name</label>
+                        <div class="col-sm-4">
+                            <nb-select formControlName="user_id" placeholder="Select Co-ordinator" [ngClass]="{'is-invalid': isSubmitted && f.user_id.errors}" class="col-md-12">
+                                <nb-option *ngFor="let user of userData" value={{user.user_id}} >{{user.user_name}}</nb-option>
+                            </nb-select>
+                            <div *ngIf="isSubmitted && f.user_id.errors" class="text-danger">
+                                <div *ngIf="f.user_id.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <label class="label col-sm-2 col-form-label">Products Specified</label>
+                        <div class="col-sm-4">
+                            <nb-select class="selectpicker" formControlName="product_name" multiple data-live-search="true" class="col-md-12" class="form-control" class="col-md-12" placeholder="Select Products">
+                                <!-- <nb-option disabled selected hidden>Select Activity</nb-option> -->
+                                <nb-option *ngFor="let product of productData" value={{product.product_id}} >{{product.product_name}}</nb-option>
+                            </nb-select>
+                            <!-- <div *ngIf="isSubmitted && f.product_id.errors" class="text-danger">
+                                <div *ngIf="f.product_id.errors.required">This field is required</div>
+                            </div> -->
+                        </div>
+                    </div>
+                    <!-- <nb-select class="selectpicker" formControlName="activities_name" multiple data-live-search="true" class="col-md-12" class="form-control" class="col-md-12" [ngClass]="{'is-invalid': isSubmitted && f.activities_name.errors}">
+                        <nb-option disabled>Select Activity</nb-option>
+                        <nb-option *ngFor="let activity of activitiesData" value={{activity.activities_id}}>{{activity.activities_name}}</nb-option>
+                    </nb-select>
+                     -->
+                    <div class="form-group row">
+                        <label class="label col-sm-2 col-form-label">Remarks</label>
+                        <div class="col-sm-4">
+                            <textarea rows="4" class="form-control" formControlName="project_lead_remarks" [ngClass]="{'is-invalid': isSubmitted && f.project_lead_remarks.errors}" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Enter Remarks"></textarea>
+                            <div *ngIf="isSubmitted && f.project_lead_remarks.errors" class="text-danger">
+                                <div *ngIf="f.project_lead_remarks.errors.required">This field is required</div>
+                            </div>
+                        </div>
+                        <label class="label col-sm-2 col-form-label">Lead Date</label>
+                        <div class="col-sm-4">
+                            <input type="date" class="form-control" formControlName="project_lead_date">
+                            <!-- <div class="calendars">
+                                <div class="calendar-container">
+                                <nb-calendar [(date)]="date" [boundingMonth]="true" showWeekNumber></nb-calendar>
+                                </div>
+                            </div>   -->
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="label col-sm-2 col-form-label">Project Current Status</label>
+                        <div class="col-sm-4">
+                            <nb-select class="form-control" placeholder="Select Project Current Status" formControlName="project_current_status" class="col-md-12">
+                                <nb-option value='Civil Work Completed'>Civil Work Completed</nb-option>
+                                <nb-option value='Civil Work Started'>Civil Work Started</nb-option>
+                                <nb-option value='Interior Work Started'>Interior Work Started</nb-option>
+                                <nb-option value='Project On Hold'>Project On Hold</nb-option>
+                                <nb-option value='Tender Floated'>Tender Floated</nb-option>
+                                <nb-option value='Under Tender Specification'>Under Tender Specification</nb-option>                            
+                            </nb-select>
+                        </div>
+                        <div class="form-group row">
+                            <label class="label col-sm-2 col-form-label">Order Status</label>
+                            <div class="col-sm-4">
+                                <nb-select class="form-control" placeholder="Select Order Status" formControlName="order_status" class="col-md-12">
+                                    <nb-option value='Under Discussion'>Under Discussion</nb-option>
+                                    <nb-option value='Quotation Submitted'>Quotation Submitted</nb-option>
+                                    <nb-option value='Project Lost'>Project Lost</nb-option>
+                                </nb-select>
+                            </div>
+                        </div>
+                        <label class="label col-sm-2 col-form-label">Status</label>
+                        <div class="col-sm-4">
+                            <nb-select class="form-control" placeholder="Select Status" formControlName="status" class="col-md-12">
+                                <nb-option value='Active'>Active</nb-option>
+                                <nb-option value='Deactive'>Deactive</nb-option>
+                            </nb-select>
+                        </div>
+                    </div>
+                </form>
+            </nb-card-body>
+            <nb-card-footer>
+                <button type="submit" style="margin-right: 20px;" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
+                <button nbButton (click)="ref.close()">Close</button>
+            </nb-card-footer>
+        </nb-card>
+    </ng-template>
+</div>

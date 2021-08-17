@@ -1,0 +1,49 @@
+<nb-card>
+    <nb-card-header>
+      Product Category Table
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [source]="pcData" [settings]="settings" (create)="open1(dialog)" (edit)="open2(dialog,$event)" (delete)="deletepc($event)" >
+      </ng2-smart-table>
+    </nb-card-body>
+</nb-card>
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card style="width: 350px !important;">
+      <nb-card-header>Product Category</nb-card-header>
+      <nb-card-body>
+          <!-- <form [ngSubmit]="save()"> -->
+          <form [formGroup]="formAddEdit">
+          <div class="form-group row">
+              <label class="label col-sm-3 col-form-label">Product Category Name</label>
+              <div class="col-sm-9">
+                <input type="text" class="form-control" nbInput shape="rectangle" formControlName="product_category_name" class="col-md-12" placeholder="Enter name of Product Category" [ngClass]="{'is-invalid': isSubmitted && f.product_category_name.errors}">
+                <div *ngIf="isSubmitted && f.product_category_name.errors" class="text-danger">
+                  <div *ngIf="f.product_category_name.errors.required">This field is required</div>
+              </div>
+              </div>
+          </div>
+          <div class="form-group row">
+            <label class="label col-sm-3 col-form-label">Product Status</label>
+            <div class="col-sm-9">
+                <nb-select formControlName="product_category_status" class="col-md-12">
+                    <nb-option value='Active'>Active</nb-option>
+                    <nb-option value='Deactive'>Deactive</nb-option>
+                    <!-- <nb-option *ngFor="let pcstatus of pcData" value={{pcstatus.product_category_status}}>{{pcstatus.product_category_status}}</nb-option> -->
+                </nb-select>
+            </div>
+        </div>
+          <div class="form-group row">
+              <div class="offset-sm-3 col-sm-9">
+              <button type="submit" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
+              </div>
+          </div>
+          </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button nbButton (click)="ref.close()">Close</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>

@@ -11,6 +11,16 @@ import { PermissionComponent } from './permission/permission.component';
 import { StateComponent } from './state/state.component';
 import { UnitComponent } from './unit/unit.component';
 import { CityComponent } from './city/city.component';
+import { ProductCategoryComponent } from './product-category/product-category.component';
+import { ProductBrandComponent } from './product-brand/product-brand.component';
+import { SiteComponent } from './site/site.component';
+import { UserComponent } from './user/user.component';
+import { ProductComponent } from './product/product.component';
+import { ProductSpecificationComponent } from './product-specification/product-specification.component';
+import { ProjectLeadComponent } from './project-lead/project-lead.component';
+import { ProjectQuotationComponent } from './project-quotation/project-quotation.component';
+import { ProjectLeadUpdatesComponent } from './project-lead/project-lead-updates/project-lead-updates.component';
+import { ProjectQuotationUpdatesComponent } from './project-quotation/project-quotation-updates/project-quotation-updates.component';
 
 const routes: Routes = [{
   path: '',
@@ -53,6 +63,61 @@ const routes: Routes = [{
       path:'unit',
       component:UnitComponent,
       data:{breadcrumb:'Unit'},
+    },
+    {
+      path:'product',
+      component:ProductComponent,
+      data:{breadcrumb:'Product'},
+    }, 
+    {
+      path:'product-category',
+      component:ProductCategoryComponent,
+      data:{breadcrumb:'Poduct Category'}
+    },
+    {
+      path:'product-brand',
+      component:ProductBrandComponent,
+      data:{breadcrumb:'Poduct Brand'}
+    },
+    {
+      path:'product-specification',
+      component:ProductSpecificationComponent,
+      data:{breadcrumb:'Product Specification'}
+    },
+    {
+      path:'site',
+      component:SiteComponent,
+      data:{breadcrumb:'Site'}
+    },
+    {
+      path:'user',
+      component:UserComponent,
+      data:{breadcrumb:'User'}
+    },
+    {
+      path:'project-lead',
+      component:ProjectLeadComponent,
+      data:{breadcrumb:'Project Lead'}
+    },
+    {
+      path:'project-lead-updates/:id',
+      component:ProjectLeadUpdatesComponent,
+      data:{breadcrumb:'Project Lead Updates'}
+    },
+    {
+      path:'project-lead-updates',
+      component:ProjectLeadUpdatesComponent,
+      data:{breadcrumb:'Project Lead Updates'}
+    },
+    {
+      path:'project-quotation',
+      component:ProjectQuotationComponent,
+      data:{breadcrumb:'Project Quotation'}
+    },
+    {
+      path:'project-quotation-updates/:id',
+      component:ProjectQuotationUpdatesComponent,
+      data:{breadcrumb:'Project Quotation Updates'}
     },
     {
       path: 'layout',
