@@ -74,7 +74,7 @@ export class ProjectLeadUpdatesComponent implements OnInit{
     
     this.project_lead_id=this.activatedroute.snapshot.params.id;
     console.log(this.project_lead_id,"pid");
-    this.plservice.getprojectleadbyid(this.project_lead_id).subscribe(res=>{
+    this.plservice.getpldetailsbyid(this.project_lead_id).subscribe(res=>{
       this.resp=res;
       this.pldata=this.resp.data.results[0];
       console.log(this.pldata,"pldata");

@@ -92,7 +92,7 @@
         <div class="form-group row">
             <label class="label col-sm-1 col-form-label">Status</label>
             <div class="col-sm-3">
-                <nb-select formControlName="status" placeholder="Select Status" class="col-md-12">
+                <nb-select formControlName="status" style="padding: 0;" placeholder="Select Status" class="col-md-12">
                     <nb-option value='Active'>Active</nb-option>
                     <nb-option value='Deactive'>Deactive</nb-option>
                     <!-- <nb-option *ngFor="let pcstatus of pcData" value={{pcstatus.product_category_status}}>{{pcstatus.product_category_status}}</nb-option> -->
@@ -100,7 +100,7 @@
             </div>
             <label class="label col-sm-1 col-form-label">Role</label>
             <div class="col-sm-3">
-                <nb-select formControlName="role_id" placeholder="Select Role" [ngClass]="{'is-invalid': isSubmitted && f.role_id.errors}" class="col-md-12">
+                <nb-select formControlName="role_id" style="padding: 0;" placeholder="Select Role" [ngClass]="{'is-invalid': isSubmitted && f.role_id.errors}" class="col-md-12">
                     <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
                     <nb-option *ngFor="let role of roleData" value={{role.Role_Id}} >{{role.Role_Name}}</nb-option>
                 </nb-select>
@@ -111,7 +111,7 @@
             </div>
             <label class="label col-sm-1 col-form-label">Site</label>
             <div class="col-sm-3">
-                <nb-select formControlName="site_id" placeholder="Select Site" [ngClass]="{'is-invalid': isSubmitted && f.site_id.errors}" class="col-md-12">
+                <nb-select formControlName="site_id" style="padding: 0;" placeholder="Select Site" [ngClass]="{'is-invalid': isSubmitted && f.site_id.errors}" class="col-md-12">
                     <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
                     <nb-option *ngFor="let site of siteData" value={{site.site_id}} >{{site.site_name}}</nb-option>
                 </nb-select>
@@ -124,7 +124,7 @@
       </nb-card-body>
       <nb-card-footer>
         <button type="submit" style="margin-right: 20px;" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
-        <button nbButton (click)="ref.close()">Close</button>
+        <button nbButton (click)="closeHandle(ref)">Close</button>
       </nb-card-footer>
     </nb-card>
   </ng-template>

@@ -22,7 +22,7 @@
         <div class="form-group row">
             <label class="label col-sm-3 col-form-label">Role</label>
             <div class="col-sm-9">
-                <nb-select formControlName="Role_Name" class="col-md-12">
+                <nb-select formControlName="Role_Name" placeholder="Select Role" style="padding: 0;" class="col-md-12">
                     <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
                     <nb-option *ngFor="let role of roleData" value={{role.Role_Id}} >{{role.Role_Name}}</nb-option>
                 </nb-select>
@@ -31,7 +31,7 @@
         <div class="form-group row">
             <label class="label col-sm-3 col-form-label">Activity</label>
             <div class="col-sm-9">
-                <nb-select class="selectpicker" formControlName="activities_name" multiple data-live-search="true" class="col-md-12">
+                <nb-select class="selectpicker" placeholder="Select Activity" style="padding: 0;" formControlName="activities_name" multiple data-live-search="true" class="col-md-12">
                     <nb-option disabled>Select Activity</nb-option>
                     <nb-option *ngFor="let activity of activitiesData" value={{activity.activities_id}}>{{activity.activities_name}}</nb-option>
                 </nb-select>

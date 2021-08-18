@@ -18,6 +18,7 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link:'/pages/permission',
   },
   {
+    icon:'pin-outline',
     title:"Location",
     children:[
     {
@@ -32,6 +33,12 @@ export const MENU_ITEMS: NbMenuItem[] = [
     },]
   },
   {
+    icon:'shopping-cart-outline',
+    title:'Supplier',
+    link:'/pages/supplier'
+  },
+  {
+    icon:'briefcase-outline',
     title:"Products",
     children:[
     {
@@ -71,7 +78,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link:'/pages/user',
   },
   {
-    title:'Project',
+    icon:'folder-outline',
+    title:'Projects',
     children:[
       {
         icon:'inbox-outline',
@@ -82,6 +90,16 @@ export const MENU_ITEMS: NbMenuItem[] = [
         icon:'clipboard-outline',
         title:'Project Quotation',
         link:'/pages/project-quotation'
+      },
+      {
+        icon:'close-square-outline',
+        title:'Project Lost',
+        link:'/pages/project-lost'
+      },
+      {
+        icon:'checkmark-square-2-outline',
+        title:'Project Order',
+        link:'/pages/project-order'
       }
     ]
   },

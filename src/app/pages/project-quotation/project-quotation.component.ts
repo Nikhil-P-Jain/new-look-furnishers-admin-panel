@@ -32,20 +32,7 @@ export class ProjectQuotationComponent implements OnInit {
     public router:Router,
     private toastrService: NbToastrService,
     private formBuilder: FormBuilder,) {
-    this.range = {
-      start: this.dateService.addDay(this.monthStart, 3),
-      end: this.dateService.addDay(this.monthEnd, -3),
-    };
   }
-
-  get monthStart(): Date {
-    return this.dateService.getMonthStart(new Date());
-  }
-
-  get monthEnd(): Date {
-    return this.dateService.getMonthEnd(new Date());
-  }
-  selectedItem="S"
   isSubmitted=false;
   formAddEdit:FormGroup;
   pqData:any;
@@ -88,7 +75,7 @@ export class ProjectQuotationComponent implements OnInit {
       this.userData=this.resp1.data.results;
       console.log(this.userData,"User data");
     });
-    this.plservice.getprojectlead().subscribe(res=>{
+    this.plservice.getprojectnameforquotation().subscribe(res=>{
       this.resp1=res;
       this.plData=this.resp1.data.results;
       console.log(this.plData,"PL data");
@@ -98,7 +85,7 @@ export class ProjectQuotationComponent implements OnInit {
       this.pqData=this.resp1.data.results;
       console.log("pqData",this.pqData);
       this.pqData.forEach(element => {
-        console.log(element.status);  
+        // console.log(element.status);  
         if(element.status == 0){
           element.status=this.dataDeactive
         }else if(element.status==1){
@@ -112,11 +99,11 @@ export class ProjectQuotationComponent implements OnInit {
         'user_id':['',[Validators.required]],
         'quotation_number':['',[Validators.required]],
         'quotation_amount':['',[Validators.required]],
-        'product_id':['',[Validators.required]],
+        'product_name':[],
         'remarks':['',[Validators.required]],
-        'order_status':['',[Validators.required]],
+        // 'order_status':['',[Validators.required]],
         'date':['',[Validators.required]],
-        'status':[]
+        'status':['']
       })
       console.log(this.formAddEdit,"formaddedit");
       this.source.load(this.pqData);
@@ -178,10 +165,10 @@ export class ProjectQuotationComponent implements OnInit {
         title:'Remarks',
         type:'string',
       },
-      order_status:{
-        title:'Order Status',
-        type:'string',
-      },
+      // order_status:{
+      //   title:'Order Status',
+      //   type:'string',
+      // },
       date:{
         title:'Date',
         type:'string',
@@ -218,9 +205,9 @@ export class ProjectQuotationComponent implements OnInit {
         'user_id':JSON.stringify(this.pqData1.user_id),
         'quotation_number':this.pqData1.quotation_number,
         'quotation_amount':this.pqData1.quotation_amount,
-        'product_id':JSON.stringify(this.pqData1.product_id),
+        'product_name':this.pqData1.product_id,
         'remarks':this.pqData1.remarks,
-        'order_status':this.pqData1.order_status,
+        // 'order_status':this.pqData1.order_status,
         'date':this.pqData1.date,
         'status':this.pqData1.status==0?"Deactive":"Active"
       })
@@ -230,7 +217,7 @@ export class ProjectQuotationComponent implements OnInit {
   }
   
   open1(dialog:TemplateRef<any>){
-    this.ngOnInit();
+    this.formAddEdit.reset();
     this.ds.open(dialog);
   }
 
@@ -271,6 +258,9 @@ export class ProjectQuotationComponent implements OnInit {
       else if(this.formAddEdit.value.status==this.dataDeactive){
         this.formAddEdit.value.status=0;
       }
+      for(var i=0;i<this.formAddEdit.value.product_name.length;i++){
+        this.formAddEdit.value.product_name[i]=parseInt(this.formAddEdit.value.product_name[i])
+      }
       if(!this.uniqueId){
         var body={
           "project_lead_id":this.formAddEdit.value.project_lead_id,
@@ -279,9 +269,9 @@ export class ProjectQuotationComponent implements OnInit {
           "user_id":this.formAddEdit.value.user_id,
           "quotation_number":this.formAddEdit.value.quotation_number,
           "quotation_amount":this.formAddEdit.value.quotation_amount,
-          "product_id":this.formAddEdit.value.product_id,
+          "product_id":this.formAddEdit.value.product_name,
           "remarks":this.formAddEdit.value.remarks,
-          "order_status":this.formAddEdit.value.order_status,
+          // "order_status":this.formAddEdit.value.order_status,
           "date":this.formAddEdit.value.date,
           "status":this.formAddEdit.value.status,
         }
@@ -303,9 +293,9 @@ export class ProjectQuotationComponent implements OnInit {
           "user_id":this.formAddEdit.value.user_id,
           "quotation_number":this.formAddEdit.value.quotation_number,
           "quotation_amount":this.formAddEdit.value.quotation_amount,
-          "product_id":this.formAddEdit.value.product_id,
+          "product_id":this.formAddEdit.value.product_name,
           "remarks":this.formAddEdit.value.remarks,
-          "order_status":this.formAddEdit.value.order_status,
+          // "order_status":this.formAddEdit.value.order_status,
           "date":this.formAddEdit.value.date,
           "status":this.formAddEdit.value.status,
           "project_quotation_id":this.uniqueId
@@ -344,5 +334,10 @@ export class ProjectQuotationComponent implements OnInit {
     // this.router.navigateByUrl('pages/project-lead-updates', { queryParams: event });
     // this.event1=event.data;
     // console.log("event1", this.event1) ;
+  }
+  closeHandle(ref:any){
+    ref.close();
+    this.uniqueId='';
+    this.formAddEdit.reset();
   }
 }

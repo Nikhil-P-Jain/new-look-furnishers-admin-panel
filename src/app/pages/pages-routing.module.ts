@@ -1,5 +1,5 @@
 import { RouterModule, Routes } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 
 import { PagesComponent } from './pages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -21,6 +21,10 @@ import { ProjectLeadComponent } from './project-lead/project-lead.component';
 import { ProjectQuotationComponent } from './project-quotation/project-quotation.component';
 import { ProjectLeadUpdatesComponent } from './project-lead/project-lead-updates/project-lead-updates.component';
 import { ProjectQuotationUpdatesComponent } from './project-quotation/project-quotation-updates/project-quotation-updates.component';
+import { ProjectLostComponent } from './project-lost/project-lost.component';
+import { ProjectLostUpdatesComponent } from './project-lost/project-lost-updates/project-lost-updates.component';
+import { SupplierComponent } from './supplier/supplier.component';
+import { ProjectOrderComponent } from './project-order/project-order.component';
 
 const routes: Routes = [{
   path: '',
@@ -118,6 +122,26 @@ const routes: Routes = [{
       path:'project-quotation-updates/:id',
       component:ProjectQuotationUpdatesComponent,
       data:{breadcrumb:'Project Quotation Updates'}
+    },
+    {
+      path:'project-lost',
+      component:ProjectLostComponent,
+      data:{breadcrumb:'Project Lost'}
+    },
+    {
+      path:'project-lost-updates',
+      component:ProjectLostUpdatesComponent,
+      data:{breadcrumb:'Project Lost Updates'}
+    },
+    {
+      path:'supplier',
+      component:SupplierComponent,
+      data:{breadcrumb:'Supplier'}
+    },
+    {
+      path:'project-order',
+      component:ProjectOrderComponent,
+      data:{breadcrumb:'Project Order'}
     },
     {
       path: 'layout',

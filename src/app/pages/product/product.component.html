@@ -28,7 +28,7 @@
                 <div class="form-group row">
                     <label class="label col-sm-3 col-form-label">Product Category</label>
                     <div class="col-sm-9">
-                        <nb-select formControlName="category_id" [ngClass]="{'is-invalid': isSubmitted && f.category_id.errors}" class="col-md-12">
+                        <nb-select formControlName="category_id" style="padding: 0;" placeholder="Select Category" [ngClass]="{'is-invalid': isSubmitted && f.category_id.errors}" class="col-md-12">
                             <nb-option *ngFor="let category of categoryData" value={{category.product_category_id}} >{{category.product_category_name}}</nb-option>
                         </nb-select>
                         <div *ngIf="isSubmitted && f.category_id.errors" class="text-danger">
@@ -39,7 +39,7 @@
                 <div class="form-group row">
                     <label class="label col-sm-3 col-form-label">Product Status</label>
                     <div class="col-sm-9">
-                        <nb-select formControlName="product_status" class="col-md-12">
+                        <nb-select formControlName="product_status" style="padding: 0;" placeholder="Select Status" class="col-md-12">
                             <nb-option value='Active'>Active</nb-option>
                             <nb-option value='Deactive'>Deactive</nb-option>
                         </nb-select>

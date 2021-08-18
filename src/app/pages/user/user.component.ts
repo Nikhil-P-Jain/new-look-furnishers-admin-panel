@@ -90,7 +90,7 @@ export class UserComponent implements OnInit {
         'email':['',[Validators.required]],
         'username':['',[Validators.required]],
         'password':['',[Validators.required]],
-        'photo':['',[Validators.required]],
+        'photo':[''],
         'role_id':['',[Validators.required]],
         'site_id':['',[Validators.required]],
         'status':[]
@@ -216,7 +216,6 @@ export class UserComponent implements OnInit {
         'email':this.userData1.email,
         'username':this.userData1.username,
         'password':this.userData1.password,
-        // 'photo':this.pic,
         'role_id':JSON.stringify(this.userData1.role_id),
         'site_id':JSON.stringify(this.userData1.site_id),
         'status':this.userData1.status==0?"Deactive":"Active"
@@ -229,7 +228,7 @@ export class UserComponent implements OnInit {
   }
   
   open1(dialog:TemplateRef<any>){
-    this.ngOnInit();
+    this.formAddEdit.reset();
     this.ds.open(dialog);
   }
   
@@ -352,7 +351,7 @@ export class UserComponent implements OnInit {
             ref.close();
             this.ngOnInit();
             this.uniqueId='';
-            this.imgURL="";
+            this.imgURL='';
           },(err)=>{
              this.showToast(this.failure_status, this.title, this.edit_failure_content);
             
@@ -377,5 +376,10 @@ export class UserComponent implements OnInit {
       `${titleContent}`,
       config);
   }
-
+  closeHandle(ref:any){
+    ref.close();
+    this.uniqueId='';
+    this.imgURL='';
+    this.formAddEdit.reset();
+  }
 }

@@ -8,20 +8,21 @@ import { ProductBrandService } from '../service/product-brand.service';
 import { ProductService } from '../service/product.service';
 import { ProjectLeadService } from '../service/project-lead.service';
 import { Router } from '@angular/router';
+import { ProjectLostService } from '../service/project-lost.service';
 
 @Component({
-  selector: 'ngx-project-lead',
-  templateUrl: './project-lead.component.html',
-  styleUrls: ['./project-lead.component.scss']
+  selector: 'ngx-project-lost',
+  templateUrl: './project-lost.component.html',
+  styleUrls: ['./project-lost.component.scss']
 })
-export class ProjectLeadComponent implements OnInit {
+export class ProjectLostComponent implements OnInit {
   
   constructor(
     protected dateService: NbDateService<Date>,
     private ds:NbDialogService,
     public router:Router,
     public productservice:ProductService,
-    public plservice:ProjectLeadService,
+    public plservice:ProjectLostService,
     public userservice:UserService,
     public pbservice:ProductBrandService,
     public http:HttpClient,
@@ -71,7 +72,7 @@ export class ProjectLeadComponent implements OnInit {
       this.userData=this.resp1.data.results;
       console.log(this.userData,"User data");
     });
-    this.plservice.getprojectlead().subscribe(res=>{
+    this.plservice.getprojectlost().subscribe(res=>{
       this.resp1=res;
       this.plData=this.resp1.data.results;
       console.log("plData",this.plData);
@@ -108,12 +109,15 @@ export class ProjectLeadComponent implements OnInit {
   
   settings = {
     mode: 'external',
-    add: {
-      addButtonContent: '<i class="nb-plus"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate:true,
+    actions:{
+      add:false
     },
+    // add: {
+    //   addButtonContent: '<i class="nb-plus"></i>',
+    //   createButtonContent: '<i class="nb-checkmark"></i>',
+    //   cancelButtonContent: '<i class="nb-close"></i>',
+    //   confirmCreate:true,
+    // },
     edit: {
       confirmSave: true,
       editButtonContent: '<i class="nb-edit"></i>',
@@ -186,7 +190,7 @@ export class ProjectLeadComponent implements OnInit {
     console.log("open2 function called");
     console.log(event, "event inside dailog");
     this.uniqueId=event.data.project_lead_id;
-    this.plservice.getprojectleadbyid(this.uniqueId).subscribe(res=>{
+    this.plservice.getprojectlostbyid(this.uniqueId).subscribe(res=>{
       this.resp2=res;
       this.plData1=this.resp2.data.results[0];
       console.log("Getting res",this.plData1);
@@ -216,7 +220,7 @@ export class ProjectLeadComponent implements OnInit {
   deleteProjectLead(event) {
     console.log("ID",event.data);
     if(window.confirm('Are you sure you want to delete?')) {
-      this.plservice.deleteprojectlead(event.data.project_lead_id).subscribe(res=>{
+      this.plservice.deleteprojectlost(event.data.project_lead_id).subscribe(res=>{
         this.resp=res;
         if(this.resp.success==1){
           this.showToast(this.success_status, this.title, this.delete_success_content);
@@ -269,7 +273,7 @@ export class ProjectLeadComponent implements OnInit {
           "status":this.formAddEdit.value.status,
         }
         console.log(body,"body");  
-        this.plservice.createprojectlead(body).subscribe(res=>{
+        this.plservice.createprojectlost(body).subscribe(res=>{
           this.showToast(this.success_status, this.title, this.add_success_content);
           ref.close();
           this.ngOnInit();
@@ -293,7 +297,7 @@ export class ProjectLeadComponent implements OnInit {
           "status":this.formAddEdit.value.status,
           "project_lead_id":this.uniqueId
         }
-        this.plservice.updateprojectlead(bo).subscribe(res=>{
+        this.plservice.updateprojectlost(bo).subscribe(res=>{
           this.resp3 = res;
           this.showToast(this.success_status, this.title, this.edit_success_content);
           ref.close();

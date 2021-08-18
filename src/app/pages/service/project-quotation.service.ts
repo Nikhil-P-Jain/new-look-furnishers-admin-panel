@@ -19,6 +19,11 @@ export class ProjectQuotationService {
       .map(res => res);
   }
 
+  getpqdetailsbyid(id:any):Observable<any[]>{
+    return this.http.get<any[]>(api+`/getpqdetailsbyid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+}
+
   createprojectquotation(body:any):Observable<any[]>{
       return this.http.post<any[]>(api+`/createproject_quotation`,body,{headers:new HttpHeaders({'Content-Type':'application/json'})})
       .map(res => res);
@@ -33,5 +38,6 @@ export class ProjectQuotationService {
       return this.http.delete<any[]>(api+`/deleteproject_quotation/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
       .map(res => res);
   }
+  
 
 }

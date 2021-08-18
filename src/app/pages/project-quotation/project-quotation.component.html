@@ -19,7 +19,7 @@
                     <div class="form-group row">
                         <label class="label col-sm-2 col-form-label">Project Name</label>
                         <div class="col-sm-4">
-                            <nb-select formControlName="project_lead_id" placeholder="Select Project" [ngClass]="{'is-invalid': isSubmitted && f.project_lead_id.errors}" class="col-md-12">
+                            <nb-select formControlName="project_lead_id" style="padding: 0;" placeholder="Select Project" [ngClass]="{'is-invalid': isSubmitted && f.project_lead_id.errors}" class="col-md-12">
                                 <nb-option *ngFor="let project of plData" value={{project.project_lead_id}} >{{project.project_lead_name}}</nb-option>
                             </nb-select>
                             <div *ngIf="isSubmitted && f.project_lead_id.errors" class="text-danger">
@@ -44,7 +44,7 @@
                         </div>
                         <label class="label col-sm-2 col-form-label">Co-ordinator</label>
                         <div class="col-sm-4">
-                            <nb-select formControlName="user_id" placeholder="Select Co-ordinator" [ngClass]="{'is-invalid': isSubmitted && f.user_id.errors}" class="col-md-12">
+                            <nb-select formControlName="user_id" style="padding: 0;" placeholder="Select Co-ordinator" [ngClass]="{'is-invalid': isSubmitted && f.user_id.errors}" class="col-md-12">
                                 <nb-option *ngFor="let user of userData" value={{user.user_id}} >{{user.user_name}}</nb-option>
                             </nb-select>
                             <div *ngIf="isSubmitted && f.user_id.errors" class="text-danger">
@@ -71,7 +71,7 @@
                     <div class="form-group row">
                         <label class="label col-sm-2 col-form-label">Status</label>
                         <div class="col-sm-4">
-                            <nb-select class="form-control" placeholder="Select Status" formControlName="status" class="col-md-12">
+                            <nb-select class="form-control" style="padding: 0;" placeholder="Select Status" formControlName="status" class="col-md-12">
                                 <nb-option value='Active'>Active</nb-option>
                                 <nb-option value='Deactive'>Deactive</nb-option>
                             </nb-select>
@@ -89,9 +89,13 @@
                     <div class="form-group row">
                         <label class="label col-sm-2 col-form-label">Specified Products</label>
                         <div class="col-sm-4">
-                            <nb-select formControlName="product_id" placeholder="Select Specified Products" [ngClass]="{'is-invalid': isSubmitted && f.product_id.errors}" class="col-md-12">
+                            <nb-select class="selectpicker" style="padding: 0;" formControlName="product_name" multiple data-live-search="true" class="col-md-12" class="form-control" class="col-md-12" placeholder="Select Products">
+                                <!-- <nb-option disabled selected hidden>Select Activity</nb-option> -->
                                 <nb-option *ngFor="let product of productData" value={{product.product_id}} >{{product.product_name}}</nb-option>
                             </nb-select>
+                            <!-- <div *ngIf="isSubmitted && f.product_id.errors" class="text-danger">
+                                <div *ngIf="f.product_id.errors.required">This field is required</div>
+                            </div> -->
                         </div>
                         <label class="label col-sm-2 col-form-label">Remarks</label>
                         <div class="col-sm-4">
@@ -100,21 +104,21 @@
                                 <div *ngIf="f.remarks.errors.required">This field is required</div>
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <!-- <div class="form-group row">
                             <label class="label col-sm-2 col-form-label">Order Status</label>
-                            <div class="col-sm-4">
+                            <div class="col-sm-10">
                                 <nb-select class="form-control" placeholder="Select Order Status" formControlName="order_status" class="col-md-12">
                                     <nb-option value='Under Discussion'>Under Discussion</nb-option>
                                     <nb-option value='Project Lost'>Project Lost</nb-option>
                                 </nb-select>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </form>
             </nb-card-body>
             <nb-card-footer>
                 <button type="submit" style="margin-right: 20px;" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
-                <button nbButton (click)="ref.close()">Close</button>
+                <button nbButton (click)="closeHandle(ref)">Close</button>
             </nb-card-footer>
         </nb-card>
     </ng-template>

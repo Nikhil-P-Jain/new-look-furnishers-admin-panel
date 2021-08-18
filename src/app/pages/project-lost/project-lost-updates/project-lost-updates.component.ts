@@ -1,35 +1,37 @@
 import { ActivatedRoute, Router} from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { ProjectQuotationService } from '../../service/project-quotation.service';
+import { ProjectLeadService } from '../../service/project-lead.service';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbComponentStatus, NbDateService, NbDialogService, NbGlobalPhysicalPosition, NbGlobalPosition, NbToastrConfig, NbToastrService } from '@nebular/theme';
 import { ProductBrandService } from '../../service/product-brand.service';
 import { ProductService } from '../../service/product.service';
 import { UserService } from '../../service/user.service';
-import { ProjectQuotationUpdatesService } from '../../service/project-quotation-updates.service';
+import { ProjectLeadUpdatesService } from '../../service/project-lead-updates.service';
 import { LocalDataSource } from 'ng2-smart-table';
 import { TemplateRef } from '@angular/core';
+import { ProjectLostUpdatesService } from '../../service/project-lost-updates.service';
+import { ProjectLostService } from '../../service/project-lost.service';
 
 @Component({
-  selector: 'ngx-project-quotation-updates',
-  templateUrl: './project-quotation-updates.component.html',
-  styleUrls: ['./project-quotation-updates.component.scss']
+  selector: 'ngx-project-lost-updates',
+  templateUrl: './project-lost-updates.component.html',
+  styleUrls: ['./project-lost-updates.component.scss']
 })
-export class ProjectQuotationUpdatesComponent implements OnInit {
+export class ProjectLostUpdatesComponent implements OnInit{
   dataevent:any;
-  project_quotation_id:any;
+  project_lead_id:any;
+  pldata:any;
   resp:any;
-  pqdata:any;
   resp1:any;
   resp2:any;
   udata:any;
   pdata:any;
   isSubmitted=false;
   formAddEdit:FormGroup;
-  pqData:any;
-  pqData1:any;
-  pquData:any;
+  plData:any;
+  plData1:any;
+  pluData:any;
   productData:any;
   userData:any;
   public event1:any;
@@ -41,7 +43,7 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
   preventDuplicates = false;
   success_status: NbComponentStatus = 'success';
   failure_status: NbComponentStatus = 'danger';
-  title='Project quotation Updates';
+  title='Project Lead Updates';
   edit_success_content='Edited Successfully!';
   edit_failure_content='Could not be edited!';
   delete_success_content='Deleted Successfully!';
@@ -53,13 +55,14 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
   uniqueId:any;
   constructor(
     private activatedroute:ActivatedRoute, 
-    private pqservice:ProjectQuotationService,
-    private pquservice:ProjectQuotationUpdatesService,
+    private plservice:ProjectLostService,
+    private pluservice:ProjectLostUpdatesService,
     protected dateService: NbDateService<Date>,
     private ds:NbDialogService,
     public router:Router,
     public productservice:ProductService,
     public userservice:UserService,
+    public pbservice:ProductBrandService,
     public http:HttpClient,
     private toastrService: NbToastrService,
     private formBuilder: FormBuilder,
@@ -71,12 +74,12 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
 
     console.log(this.activatedroute,"ar");
     
-    this.project_quotation_id=this.activatedroute.snapshot.params.id;
-    console.log(this.project_quotation_id,"pqd");
-    this.pqservice.getpqdetailsbyid(this.project_quotation_id).subscribe(res=>{
+    this.project_lead_id=this.activatedroute.snapshot.params.id;
+    console.log(this.project_lead_id,"pid");
+    this.plservice.getpldetailsbyid(this.project_lead_id).subscribe(res=>{
       this.resp=res;
-      this.pqData=this.resp.data.results[0];
-      console.log(this.pqData,"pqdata");
+      this.pldata=this.resp.data.results[0];
+      console.log(this.pldata,"pldata");
     })
     
     this.productservice.getproduct().subscribe(res=>{
@@ -89,14 +92,14 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
       this.userData=this.resp1.data.results;
       console.log(this.userData,"User data");
     });
-    this.pquservice.getprojectquotationupdates(this.project_quotation_id).subscribe(res=>{
+    this.pluservice.getprojectlostupdates(this.project_lead_id).subscribe(res=>{
       this.resp1=res;
-      this.pquData=this.resp1.data.results;
-      console.log("pluData",this.pquData);
+      this.pluData=this.resp1.data.results;
+      console.log("pluData",this.pluData);
       // this.formAddEdit=this.formBuilder.group({
-      //   'project_quotation_id':this.pluData.project_quotation_id,
-      //   'project_quotation_updates_remarks':['',[Validators.required]],
-      //   'project_quotation_updates_date':['',[Validators.required]],
+      //   'project_lead_id':this.pluData.project_lead_id,
+      //   'project_lead_updates_remarks':['',[Validators.required]],
+      //   'project_lead_updates_date':['',[Validators.required]],
       // })
       // console.log(this.formAddEdit,"formaddedit");
       // this.source.load(this.plData);
@@ -112,19 +115,19 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
     mode: 'external',
     actions:false,
     columns: {
-      project_quotation_updates_remarks:{
+      project_lead_updates_remarks:{
         title:'Remarks',
         type:'string',
       },
-      project_quotation_updates_date:{
-        title:'Project quotation Updates Date',
+      project_lead_updates_date:{
+        title:'Project Lead Updates Date',
         type:'string',
       },
-      project_quotation_updates_created_date: {
+      project_lead_updates_created_date: {
         title: 'Created Date',
         type: 'string',
       },
-      // project_quotation_updates_updated_date: {
+      // project_lead_updates_updated_date: {
       //   title: 'Updated Date',
       //   type: 'string',
       // },
@@ -135,9 +138,9 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
   open1(dialog:TemplateRef<any>){
     // this.ngOnInit();
     this.formAddEdit=this.formBuilder.group({
-      'project_quotation_id':this.project_quotation_id,
-      'project_quotation_updates_remarks':['',[Validators.required]],
-      'project_quotation_updates_date':['',[Validators.required]],
+      'project_lead_id':this.project_lead_id,
+      'project_lead_updates_remarks':['',[Validators.required]],
+      'project_lead_updates_date':['',[Validators.required]],
     })
     console.log(this.formAddEdit,"formaddedit");
     this.ds.open(dialog);
@@ -153,12 +156,12 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
     else{
       console.log("inside else");
         var body={
-          'project_quotation_id':this.formAddEdit.value.project_quotation_id,
-          'project_quotation_updates_remarks':this.formAddEdit.value.project_quotation_updates_remarks,
-          'project_quotation_updates_date':this.formAddEdit.value.project_quotation_updates_date,
+          'project_lead_id':this.formAddEdit.value.project_lead_id,
+          'project_lead_updates_remarks':this.formAddEdit.value.project_lead_updates_remarks,
+          'project_lead_updates_date':this.formAddEdit.value.project_lead_updates_date,
         }
         console.log(body,"body");  
-        this.pquservice.createprojectquotationupdates(body).subscribe(res=>{
+        this.pluservice.createprojectlostupdates(body).subscribe(res=>{
           this.showToast(this.success_status, this.title, this.add_success_content);
           ref.close();
           this.ngOnInit();

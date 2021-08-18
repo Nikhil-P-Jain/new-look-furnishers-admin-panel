@@ -38,7 +38,7 @@
           <div class="form-group row">
             <label class="label col-sm-3 col-form-label">City</label>
             <div class="col-sm-9">
-                <nb-select formControlName="site_city_id" [ngClass]="{'is-invalid': isSubmitted && f.site_city_id.errors}" class="col-md-12">
+                <nb-select formControlName="site_city_id" style="padding: 0;" [ngClass]="{'is-invalid': isSubmitted && f.site_city_id.errors}" class="col-md-12">
                     <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
                     <nb-option *ngFor="let city of cityData" value={{city.city_id}} >{{city.city_name}}</nb-option>
                 </nb-select>
@@ -50,7 +50,7 @@
           <div class="form-group row">
             <label class="label col-sm-3 col-form-label">Site Status</label>
             <div class="col-sm-9">
-                <nb-select [(ngModel)]="selected" formControlName="site_status" class="col-md-12">
+                <nb-select placeholder="Select Site Status" style="padding: 0;" style="padding: 0;" formControlName="site_status" class="col-md-12">
                     <nb-option value='Active'>Active</nb-option>
                     <nb-option value='Deactive'>Deactive</nb-option>
                     <!-- <nb-option *ngFor="let pcstatus of pcData" value={{pcstatus.product_category_status}}>{{pcstatus.product_category_status}}</nb-option> -->

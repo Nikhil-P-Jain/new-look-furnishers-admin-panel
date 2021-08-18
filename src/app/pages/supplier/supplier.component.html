@@ -1,0 +1,88 @@
+<nb-card>
+    <nb-card-header>
+      Supplier Table
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [source]="supplierData" [settings]="settings" (create)="open1(dialog)" (edit)="open2(dialog,$event)" (delete)="deleteSupplier($event)" > -->
+      </ng2-smart-table>
+      <!-- <ng2-smart-table></ng2-smart-table> -->
+    </nb-card-body>
+</nb-card>
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card style="width: 700px !important;">
+      <nb-card-header>Supplier</nb-card-header>
+      <nb-card-body>
+          <!-- <form [ngSubmit]="save()"> -->
+          <form [formGroup]="formAddEdit">
+          <div class="form-group row">
+              <label class="label col-sm-2 col-form-label">Supplier Name</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" nbInput shape="rectangle" formControlName="supplier_name" class="col-md-12" placeholder="Enter name of Supplier" [ngClass]="{'is-invalid': isSubmitted && f.supplier_name.errors}">
+                <div *ngIf="isSubmitted && f.supplier_name.errors" class="text-danger">
+                  <div *ngIf="f.supplier_name.errors.required">This field is required</div>
+              </div>
+              </div>
+              <label class="label col-sm-2 col-form-label">Supplier Company</label>
+              <div class="col-sm-4">
+                <input type="text" class="form-control" nbInput shape="rectangle" formControlName="supplier_company" class="col-md-12" placeholder="Enter Supplier Company" [ngClass]="{'is-invalid': isSubmitted && f.supplier_company.errors}">
+                <div *ngIf="isSubmitted && f.supplier_company.errors" class="text-danger">
+                  <div *ngIf="f.supplier_company.errors.required">This field is required</div>
+              </div>
+              </div>
+          </div>
+          <div class="form-group row">
+              <label class="label col-sm-2 col-form-label">Supplier Address</label>
+              <div class="col-sm-4">
+                <textarea rows="4" class="form-control" formControlName="supplier_address" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Address" [ngClass]="{'is-invalid': isSubmitted && f.supplier_address.errors}"></textarea>
+                <div *ngIf="isSubmitted && f.supplier_address.errors" class="text-danger">
+                  <div *ngIf="f.supplier_address.errors.required">This field is required</div>
+                </div>
+              </div>
+              <label class="label col-sm-2 col-form-label">City</label>
+                <div class="col-sm-4">
+                    <nb-select formControlName="city_id" style="padding: 0;" [ngClass]="{'is-invalid': isSubmitted && f.city_id.errors}" class="col-md-12">
+                        <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
+                        <nb-option *ngFor="let city of cityData" value={{city.city_id}} >{{city.city_name}}</nb-option>
+                    </nb-select>
+                    <div *ngIf="isSubmitted && f.city_id.errors" class="text-danger">
+                         <div *ngIf="f.city_id.errors.required">This field is required</div>
+                    </div>  
+                </div>
+          </div>
+          <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">Contact Number</label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" nbInput shape="rectangle" formControlName="supplier_contact_no" class="col-md-12" placeholder="Enter Contact Number of Supplier" [ngClass]="{'is-invalid': isSubmitted && f.supplier_contact_no.errors}">
+              <div *ngIf="isSubmitted && f.supplier_contact_no.errors" class="text-danger">
+                <div *ngIf="f.supplier_contact_no.errors.required">This field is required</div>
+            </div>
+            </div>
+            <label class="label col-sm-2 col-form-label">Email Id</label>
+            <div class="col-sm-4">
+              <input type="email" class="form-control" nbInput shape="rectangle" formControlName="supplier_email_id" class="col-md-12" placeholder="Enter Email Id" [ngClass]="{'is-invalid': isSubmitted && f.supplier_email_id.errors}">
+              <div *ngIf="isSubmitted && f.supplier_email_id.errors" class="text-danger">
+                <div *ngIf="f.supplier_email_id.errors.required">This field is required</div>
+            </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">Supplier Status</label>
+            <div class="col-sm-4">
+                <nb-select placeholder="Select Supplier Status" style="padding: 0;" formControlName="supplier_status" class="col-md-12">
+                    <nb-option value='Active'>Active</nb-option>
+                    <nb-option value='Deactive'>Deactive</nb-option>
+                    <!-- <nb-option *ngFor="let pcstatus of pcData" value={{pcstatus.product_category_status}}>{{pcstatus.product_category_status}}</nb-option> -->
+                </nb-select>
+            </div>
+        </div>
+    </form>
+    </nb-card-body>
+    <nb-card-footer>
+        <button type="submit" style="margin-right: 20px;" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
+        <button nbButton (click)="closeHandle(ref)">Close</button>
+    </nb-card-footer>
+    </nb-card>
+</ng-template>

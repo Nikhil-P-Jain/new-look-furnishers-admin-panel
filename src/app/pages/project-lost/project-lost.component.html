@@ -1,7 +1,7 @@
 <!-- <ngx-project-lead-updates></ngx-project-lead-updates> -->
 <nb-card>
     <nb-card-header>
-        Project Lead Table
+        Project Lost Table
     </nb-card-header>
 
     <nb-card-body>
@@ -14,7 +14,7 @@
 <div class="row d-flex">
     <ng-template #dialog let-data let-ref="dialogRef">
         <nb-card style="width: 800px !important;">
-            <nb-card-header>Project Lead</nb-card-header>
+            <nb-card-header>Project Lost</nb-card-header>
             <nb-card-body>
                 <form [formGroup]="formAddEdit">
                     <div class="form-group row">
@@ -52,7 +52,7 @@
                     <div class="form-group row">
                         <label class="label col-sm-2 col-form-label">Co-ordinator Name</label>
                         <div class="col-sm-4">
-                            <nb-select style="padding: 0;" formControlName="user_id" placeholder="Select Co-ordinator" [ngClass]="{'is-invalid': isSubmitted && f.user_id.errors}" class="col-md-12">
+                            <nb-select formControlName="user_id" style="padding: 0;" placeholder="Select Co-ordinator" [ngClass]="{'is-invalid': isSubmitted && f.user_id.errors}" class="col-md-12">
                                 <nb-option *ngFor="let user of userData" value={{user.user_id}} >{{user.user_name}}</nb-option>
                             </nb-select>
                             <div *ngIf="isSubmitted && f.user_id.errors" class="text-danger">
@@ -61,7 +61,7 @@
                         </div>
                         <label class="label col-sm-2 col-form-label">Specified Products</label>
                         <div class="col-sm-4">
-                            <nb-select class="selectpicker" style="padding: 0;" formControlName="product_name" multiple data-live-search="true" class="col-md-12" class="form-control" class="col-md-12" placeholder="Select Products">
+                            <nb-select class="selectpicker" formControlName="product_name" style="padding: 0;" multiple data-live-search="true" class="col-md-12" class="form-control" class="col-md-12" placeholder="Select Products">
                                 <!-- <nb-option disabled selected hidden>Select Activity</nb-option> -->
                                 <nb-option *ngFor="let product of productData" value={{product.product_id}} >{{product.product_name}}</nb-option>
                             </nb-select>
@@ -95,16 +95,16 @@
                                 <nb-option value='Under Tender Specification'>Under Tender Specification</nb-option>                            
                             </nb-select>
                         </div>
-                        <label class="label col-sm-2 col-form-label">Order Status</label>
-                        <div class="col-sm-4">
-                            <nb-select class="form-control" style="padding: 0;" placeholder="Select Order Status" formControlName="order_status" class="col-md-12">
-                                <nb-option value='Under Discussion'>Under Discussion</nb-option>
-                                <nb-option value='Quotation Submitted'>Quotation Submitted</nb-option>
-                                <nb-option value='Project Lost'>Project Lost</nb-option>
-                            </nb-select>
+                        <div class="form-group row">
+                            <label class="label col-sm-2 col-form-label">Order Status</label>
+                            <div class="col-sm-4">
+                                <nb-select class="form-control" style="padding: 0;" placeholder="Select Order Status" formControlName="order_status" class="col-md-12">
+                                    <nb-option value='Under Discussion'>Under Discussion</nb-option>
+                                    <nb-option value='Quotation Submitted'>Quotation Submitted</nb-option>
+                                    <nb-option value='Project Lost'>Project Lost</nb-option>
+                                </nb-select>
+                            </div>
                         </div>
-                    </div>
-                    <div class="form-group row">
                         <label class="label col-sm-2 col-form-label">Status</label>
                         <div class="col-sm-4">
                             <nb-select class="form-control" style="padding: 0;" placeholder="Select Status" formControlName="status" class="col-md-12">

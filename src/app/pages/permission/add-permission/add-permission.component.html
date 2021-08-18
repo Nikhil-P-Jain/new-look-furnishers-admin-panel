@@ -7,8 +7,8 @@
         <div class="form-group row">
             <label class="label col-sm-3 col-form-label">Role</label>
             <div class="col-sm-9">
-                <nb-select selected="0" formControlName="Role_Name" class="col-md-12" class="form-control" class="col-md-12" [ngClass]="{'is-invalid': isSubmitted && f.Role_Name.errors}">
-                    <nb-option value="0" disabled>Select Role</nb-option>
+                <nb-select style="padding: 0;" placeholder="Select Role" formControlName="Role_Name" class="col-md-12" class="form-control" class="col-md-12" [ngClass]="{'is-invalid': isSubmitted && f.Role_Name.errors}">
+                    <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
                     <nb-option *ngFor="let role of roleData" value={{role.Role_Id}}>{{role.Role_Name}}</nb-option>
                 </nb-select>
                 <div *ngIf="isSubmitted && f.activities_name.errors" class="text-danger">
@@ -19,8 +19,8 @@
         <div class="form-group row">
             <label class="label col-sm-3 col-form-label">Activity</label>
             <div class="col-sm-9">
-                <nb-select class="selectpicker" formControlName="activities_name" multiple data-live-search="true" class="col-md-12" class="form-control" class="col-md-12" [ngClass]="{'is-invalid': isSubmitted && f.activities_name.errors}">
-                    <nb-option disabled>Select Activity</nb-option>
+                <nb-select class="selectpicker" style="padding: 0;" placeholder="Select Activity" formControlName="activities_name" multiple data-live-search="true" class="col-md-12" class="form-control" class="col-md-12" [ngClass]="{'is-invalid': isSubmitted && f.activities_name.errors}">
+                    <!-- <nb-option disabled>Select Activity</nb-option> -->
                     <nb-option *ngFor="let activity of activitiesData" value={{activity.activities_id}}>{{activity.activities_name}}</nb-option>
                 </nb-select>
                 <div *ngIf="isSubmitted && f.activities_name.errors" class="text-danger">

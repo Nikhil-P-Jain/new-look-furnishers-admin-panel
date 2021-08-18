@@ -13,11 +13,20 @@ export class ProjectLeadService {
     return this.http.get<any[]>(api+`/getproject_lead`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
     .map(res => res);
   }
-
+  
+  getprojectnameforquotation():Observable<any[]>{
+    return this.http.get<any[]>(api+`/getprojectnameforquotation`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+  }
   getprojectleadbyid(id:any):Observable<any[]>{
       return this.http.get<any[]>(api+`/getproject_leadbyid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
       .map(res => res);
   }
+
+  getpldetailsbyid(id:any):Observable<any[]>{
+    return this.http.get<any[]>(api+`/getpldetailsbyid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+}
 
   createprojectlead(body:any):Observable<any[]>{
       return this.http.post<any[]>(api+`/createproject_lead`,body,{headers:new HttpHeaders({'Content-Type':'application/json'})})
@@ -33,5 +42,6 @@ export class ProjectLeadService {
       return this.http.delete<any[]>(api+`/deleteproject_lead/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
       .map(res => res);
   }
+  
 
 }
