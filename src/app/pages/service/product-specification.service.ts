@@ -34,4 +34,9 @@ export class ProductSpecificationService {
       .map(res => res);
   }
 
+  getproductspecificationbyproductid(id:any):Observable<any[]>{
+    return this.http.get<any[]>(api+`/getproductspecificationbyproductid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+  }
+
 }

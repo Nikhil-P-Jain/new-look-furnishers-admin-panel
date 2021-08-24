@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NbCalendarRange, NbComponentStatus, NbDateService, NbDialogService, NbGlobalPhysicalPosition, NbGlobalPosition, NbToastrConfig, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { UserService } from '../service/user.service';
@@ -38,12 +38,16 @@ export class ProjectQuotationComponent implements OnInit {
   pqData:any;
   pqData1:any;
   plData:any;
+  products:FormArray;
   productData:any;
   userData:any;
+  unitData:any;
   resp:any;
   resp1:any;
   resp3:any;
   resp2:any;
+  resp6:any;
+  psData:any;
   event1:any;
   config: NbToastrConfig;
   destroyByClick = true;
@@ -70,6 +74,10 @@ export class ProjectQuotationComponent implements OnInit {
       this.productData=this.resp1.data.results;
       console.log(this.productData,"Product data");
     });
+    this.pqservice.getunit().subscribe(res=>{
+      this.resp2=res;
+      this.unitData=this.resp2.data.results;
+    })
     this.userservice.getuser_name().subscribe(res=>{
       this.resp1=res;
       this.userData=this.resp1.data.results;
@@ -103,7 +111,8 @@ export class ProjectQuotationComponent implements OnInit {
         'remarks':['',[Validators.required]],
         // 'order_status':['',[Validators.required]],
         'date':['',[Validators.required]],
-        'status':['']
+        'status':[''],
+        'products':this.formBuilder.array([this.createProducts()]),
       })
       console.log(this.formAddEdit,"formaddedit");
       this.source.load(this.pqData);
@@ -112,6 +121,25 @@ export class ProjectQuotationComponent implements OnInit {
 
   get f(){
     return this.formAddEdit.controls;
+  }
+  createProducts():FormGroup{
+    return this.formBuilder.group({
+      product_id:'',
+      specification_id:'',
+      quantity:'',
+      unit:''
+    })
+  }
+  get products1():FormArray{
+    return this.formAddEdit.get('products') as FormArray;
+  }
+  addProduct(){
+    this.products=this.formAddEdit.get('products') as FormArray;
+    this.products.push(this.createProducts());
+    }
+  removeProducts()
+  {
+    (this.formAddEdit.get('products') as FormArray).removeAt(length-1);
   }
   
   settings = {
@@ -185,6 +213,15 @@ export class ProjectQuotationComponent implements OnInit {
         title: 'Updated Date',
         type: 'string',
       },
+      New: //or something
+      {
+      title:'Details',
+      type:'html',
+      valuePrepareFunction:(cell,row)=>{
+        return `<a href=http://localhost:4200/pages/project-quotation-updates/${row.project_quotation_id}>View</a>`
+      },
+      filter:false       
+      },
     },
   };
 
@@ -212,6 +249,11 @@ export class ProjectQuotationComponent implements OnInit {
         'status':this.pqData1.status==0?"Deactive":"Active"
       })
       console.log(this.formAddEdit,"formaddedit");
+    })
+    this.pqservice.getallspecification().subscribe(res=>{
+      this.resp6=res;
+      this.psData=this.resp6.data.results;
+      console.log("Getting Spesification Data", this.psData)
     })
     this.ds.open(dialog);
   }
@@ -325,16 +367,16 @@ export class ProjectQuotationComponent implements OnInit {
     const titleContent = title ? `${title}` : '';
     this.toastrService.show(body,`${titleContent}`,config);
   }
-  onCustomAction(event) {
-    // alert(`Custom event '${event.action}' fired on row №: ${event.data.id}`);
-    console.log("Clicked");
+  // onCustomAction(event) {
+  //   // alert(`Custom event '${event.action}' fired on row №: ${event.data.id}`);
+  //   console.log("Clicked");
     
-    this.event1=event;
-     this.router.navigate(['pages/project-quotation-updates/',this.event1.data.project_quotation_id]);
-    // this.router.navigateByUrl('pages/project-lead-updates', { queryParams: event });
-    // this.event1=event.data;
-    // console.log("event1", this.event1) ;
-  }
+  //   this.event1=event;
+  //    this.router.navigate(['pages/project-quotation-updates/',this.event1.data.project_quotation_id]);
+  //   // this.router.navigateByUrl('pages/project-lead-updates', { queryParams: event });
+  //   // this.event1=event.data;
+  //   // console.log("event1", this.event1) ;
+  // }
   closeHandle(ref:any){
     ref.close();
     this.uniqueId='';

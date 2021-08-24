@@ -33,4 +33,25 @@ export class ProjectOrderService {
       return this.http.delete<any[]>(api+`/deleteproject_order/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
       .map(res => res);
   }
+
+  getproduct():Observable<any[]>{
+    return this.http.get<any[]>(`http://localhost:3000/api/product/getproduct`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+  }
+
+  getunit():Observable<any[]>{
+    return this.http.get<any[]>(`http://localhost:3000/api/unit/getunit`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+  }
+
+  getproductspecificationbyproductid(id:any):Observable<any[]>{
+    return this.http.get<any[]>(`http://localhost:3000/api/product_specification/getproductspecificationbyproductid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+  }
+
+  getallspecification():Observable<any[]>{
+    return this.http.get<any[]>(`http://localhost:3000/api/product_specification/getproductspecification`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+  }
+
 }

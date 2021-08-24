@@ -25,6 +25,7 @@ import { ProjectLostComponent } from './project-lost/project-lost.component';
 import { ProjectLostUpdatesComponent } from './project-lost/project-lost-updates/project-lost-updates.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { ProjectOrderComponent } from './project-order/project-order.component';
+import { ProjectOrderDetailsComponent } from './project-order/project-order-details/project-order-details.component';
 
 const routes: Routes = [{
   path: '',
@@ -142,6 +143,11 @@ const routes: Routes = [{
       path:'project-order',
       component:ProjectOrderComponent,
       data:{breadcrumb:'Project Order'}
+    },
+    {
+      path:'project-order-details/:id',
+      component:ProjectOrderDetailsComponent,
+      data:{breadcrumg:'Project Order Details'}
     },
     {
       path: 'layout',

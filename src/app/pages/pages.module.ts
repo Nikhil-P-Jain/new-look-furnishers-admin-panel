@@ -41,6 +41,7 @@ import { ProjectLostUpdatesComponent } from './project-lost/project-lost-updates
 import { ProjectLostComponent } from './project-lost/project-lost.component';
 import { SupplierComponent } from './supplier/supplier.component';
 import { ProjectOrderComponent } from './project-order/project-order.component';
+import { ProjectOrderDetailsComponent } from './project-order/project-order-details/project-order-details.component';
 
 @NgModule({
   
@@ -76,7 +77,7 @@ import { ProjectOrderComponent } from './project-order/project-order.component';
     //...
    ],
   declarations: [
-    PagesComponent,AddPermissionComponent,RoleComponent,ActivitiesComponent, PermissionComponent, StateComponent, CityComponent, UnitComponent, ProductCategoryComponent, ProductBrandComponent, SiteComponent, UserComponent, ProductComponent, ProductSpecificationComponent, ProjectLeadComponent, ProjectQuotationComponent, ProjectLeadUpdatesComponent, ProjectQuotationUpdatesComponent,ProjectLostUpdatesComponent,ProjectLostComponent, SupplierComponent, ProjectOrderComponent,
+    PagesComponent,AddPermissionComponent,RoleComponent,ActivitiesComponent, PermissionComponent, StateComponent, CityComponent, UnitComponent, ProductCategoryComponent, ProductBrandComponent, SiteComponent, UserComponent, ProductComponent, ProductSpecificationComponent, ProjectLeadComponent, ProjectQuotationComponent, ProjectLeadUpdatesComponent, ProjectQuotationUpdatesComponent,ProjectLostUpdatesComponent,ProjectLostComponent, SupplierComponent, ProjectOrderComponent, ProjectOrderDetailsComponent,
   ],
 })
 export class PagesModule {

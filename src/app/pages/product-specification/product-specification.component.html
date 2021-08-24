@@ -12,7 +12,7 @@
 
 
 <ng-template #dialog let-data let-ref="dialogRef">
-    <nb-card style="width: 350px !important;">
+    <nb-card style="width: 700px !important;">
         <nb-card-header>Product Specification</nb-card-header>
         <nb-card-body>
             <form [formGroup]="formAddEdit">
@@ -56,14 +56,15 @@
                         </nb-select>
                     </div>
                 </div>
-                <div class="form-group row">
+                <!-- <div class="form-group row">
                     <div class="offset-sm-3 col-sm-9">
                         <button type="submit" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
                     </div>
-                </div>
+                </div> -->
             </form>
         </nb-card-body>
         <nb-card-footer>
+            <button type="submit" style="margin-right: 20px;" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
             <button nbButton (click)="ref.close()">Close</button>
         </nb-card-footer>
     </nb-card>

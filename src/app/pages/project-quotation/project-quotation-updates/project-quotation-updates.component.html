@@ -36,7 +36,7 @@
 
 <nb-card>
     <nb-card-header class="d-flex justify-content-between">
-        <span>Project Lead Updates Table</span>
+        <span>Project Lead Updates</span>
         <button nbButton status="primary" (click)="open1(dialog)">Add Updates</button>
     </nb-card-header>
     <nb-card-body>
@@ -72,17 +72,6 @@
                 <input type="date" class="form-control" formControlName="project_quotation_updates_date">
             </div>
           </div>
-          <!-- <div class="form-group row">
-            <label class="label col-sm-3 col-form-label">Order Status</label>
-            <div class="col-sm-9">
-                <nb-select formControlName="product_category_status" class="col-md-12">
-                    <nb-option value='Project Lost'>Project Lost</nb-option>
-                    <nb-option value='Quotation Submitted'>Quotation Submitted</nb-option>
-                    <nb-option value='Under Discussion'>Under Discussion</nb-option>
-                    <!-- <nb-option *ngFor="let pcstatus of pcData" value={{pcstatus.product_category_status}}>{{pcstatus.product_category_status}}</nb-option>
-                </nb-select>
-            </div>
-        </div> -->
       </form>
       </nb-card-body>
       <nb-card-footer>
