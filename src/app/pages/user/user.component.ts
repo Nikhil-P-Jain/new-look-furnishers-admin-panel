@@ -6,7 +6,8 @@ import { LocalDataSource } from 'ng2-smart-table';
 import { roleservice } from '../service/role.service';
 import { SiteService } from '../service/site.service';
 import { UserService } from '../service/user.service';
-const URL = 'http://localhost:3000/api/upload/file';
+import { environment } from '../../../environments/environment';
+const URL = environment.BASE_URL+'upload/file';
 @Component({
   selector: 'ngx-user',
   templateUrl: './user.component.html',
@@ -43,7 +44,7 @@ export class UserComponent implements OnInit {
   add_failure_content='Could not be added!';
   dataActive='Active';
   dataDeactive='Deactive';
-  uniqueId:any;
+  uniqueId:any='';
   imgURL:any;
   images:any;
   pic:any;
@@ -274,7 +275,9 @@ export class UserComponent implements OnInit {
       // console.log("formdata append",formData.append('file', this.images));
       this.http.post<any>(URL, formData).subscribe(res=>{
         console.log("file path",res.file.path);
-        this.pic = "http://localhost:3000/"+res.file.path;
+        this.pic = "http://apinewlook.mehtaindia.co.in/"+res.file.path;
+        // this.pic = "http://localhost:3000/"+res.file.path;
+
         // this.disabled();
         console.log("Getting Image :-", this.pic);
       });
@@ -334,7 +337,7 @@ export class UserComponent implements OnInit {
             'phone':this.formAddEdit.value.phone,
             'email':this.formAddEdit.value.email,
             'username':this.formAddEdit.value.username,
-            'password':this.formAddEdit.value.password,
+            // 'password':this.formAddEdit.value.password,
             'photo':this.pic,
             'role_id':this.formAddEdit.value.role_id,
             'site_id':this.formAddEdit.value.site_id,

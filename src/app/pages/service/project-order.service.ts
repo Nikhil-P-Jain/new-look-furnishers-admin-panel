@@ -1,7 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-const api = 'http://localhost:3000/api/project_order';
+import { environment } from '../../../environments/environment';
+const api = environment.BASE_URL+'project_order';
+
 
 @Injectable({
   providedIn: 'root'
@@ -35,23 +37,26 @@ export class ProjectOrderService {
   }
 
   getproduct():Observable<any[]>{
-    return this.http.get<any[]>(`http://localhost:3000/api/product/getproduct`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    return this.http.get<any[]>(environment.BASE_URL+`product/getproduct`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
     .map(res => res);
   }
 
   getunit():Observable<any[]>{
-    return this.http.get<any[]>(`http://localhost:3000/api/unit/getunit`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    return this.http.get<any[]>(environment.BASE_URL+`unit/getunit`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
     .map(res => res);
   }
 
   getproductspecificationbyproductid(id:any):Observable<any[]>{
-    return this.http.get<any[]>(`http://localhost:3000/api/product_specification/getproductspecificationbyproductid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    return this.http.get<any[]>(environment.BASE_URL+`product_specification/getproductspecificationbyproductid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
     .map(res => res);
   }
 
   getallspecification():Observable<any[]>{
-    return this.http.get<any[]>(`http://localhost:3000/api/product_specification/getproductspecification`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    return this.http.get<any[]>(environment.BASE_URL+`product_specification/getproductspecification`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
     .map(res => res);
   }
-
+  getproject_lead_name():Observable<any[]>{
+    return this.http.get<any[]>(api+`/getproject_lead_name`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+  }
 }

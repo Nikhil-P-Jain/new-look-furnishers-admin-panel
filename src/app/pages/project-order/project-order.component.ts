@@ -19,6 +19,7 @@ export class ProjectOrderComponent implements OnInit {
   poData:any;
   poData1:any;
   siteData:any;
+  plData:any;
   pqData:any;
   prodData:any;
   unitData:any;
@@ -29,6 +30,7 @@ export class ProjectOrderComponent implements OnInit {
   resp4:any;
   resp5:any;
   resp6:any;
+  resp7:any;
   resp2:any;
   config: NbToastrConfig;
   destroyByClick = true;
@@ -65,7 +67,11 @@ export class ProjectOrderComponent implements OnInit {
       this.prodData=this.resp1.data.results;
       console.log("Getting ProdData", this.prodData);
     })
-
+    this.poservice.getproject_lead_name().subscribe(res=>{
+      this.resp7=res;
+      this.plData=this.resp7.data.results;
+      console.log(this.plData,"Project Lead Name");
+    })
     this.poservice.getunit().subscribe(res=>{
       this.resp2=res;
       this.unitData=this.resp2.data.results;
@@ -93,7 +99,9 @@ export class ProjectOrderComponent implements OnInit {
         }
       });
       this.formAddEdit=this.formBuilder.group({
-        'project_quotation_id':['',[Validators.required]],
+        // 'project_name':[''],
+        // 'project_quotation_id':['',[Validators.required]],
+        'project_quotation_id':[''],
         'project_order_date':['',[Validators.required]],
         'project_order_description':['',[Validators.required]],
         'site_id':['',[Validators.required]],
@@ -147,9 +155,13 @@ export class ProjectOrderComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
-      quotation_number: {
-        title: 'Quotation Number',
+      project_lead_name: {
+        title: 'Project Name',
         type: 'string',
+      },
+      quotation_number:{
+        title:'Quotation Number',
+        type:'string',
       },
       project_order_date: {
         title: 'Order Date',
@@ -184,7 +196,9 @@ export class ProjectOrderComponent implements OnInit {
       title:'Details',
       type:'html',
       valuePrepareFunction:(cell,row)=>{
-        return `<a href=http://localhost:4200/pages/project-order-details/${row.project_order_id}>View</a>`
+        // return `<a href=http://localhost:4200/pages/project-order-details/${row.project_order_id}>View</a>`
+        return `<a href=http://veritrack.co.in/newlook/#/pages/project-order-details/${row.project_order_id}>View</a>`
+
       },
       filter:false       
       },

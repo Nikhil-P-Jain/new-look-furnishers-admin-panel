@@ -181,6 +181,17 @@ export class ProjectLostComponent implements OnInit {
         title: 'Updated Date',
         type: 'string',
       },
+      New: //or something
+      {
+      title:'Details',
+      type:'html',
+      valuePrepareFunction:(cell,row)=>{
+        // return `<a href=http://localhost:4200/pages/project-order-details/${row.project_order_id}>View</a>`
+        return `<a href=http://veritrack.co.in/newlook/#/pages/project-lead-updates/${row.project_lead_id}>View</a>`
+
+      },
+      filter:false       
+      },
     },
   };
 
@@ -325,7 +336,7 @@ export class ProjectLostComponent implements OnInit {
   onCustomAction(event) {
     // alert(`Custom event '${event.action}' fired on row №: ${event.data.id}`);
     this.event1=event;
-     this.router.navigate(['pages/project-lead-updates/',this.event1.data.project_lead_id]);
+    this.router.navigate(['pages/project-lead-updates/',this.event1.data.project_lead_id]);
     // this.router.navigateByUrl('pages/project-lead-updates', { queryParams: event });
     // this.event1=event.data;
     // console.log("event1", this.event1) ;

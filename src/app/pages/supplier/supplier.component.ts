@@ -31,7 +31,7 @@ export class SupplierComponent implements OnInit {
   failure_status: NbComponentStatus = 'danger';
   dataYes='Yes';
   dataNo='No';
-  title='Supplier';
+  title='Vendor';
   edit_success_content='Edited Successfully!';
   edit_failure_content='Could not be edited!';
   delete_success_content='Deleted Successfully!';
@@ -74,6 +74,7 @@ export class SupplierComponent implements OnInit {
         'city_id':['',[Validators.required]],
         'supplier_contact_no':['',[Validators.required]],
         'supplier_email_id':[],
+        'supplier_gst':['',[Validators.required]],
         'supplier_status':[]
       })
       // console.log(res,"PERMISSION");
@@ -104,15 +105,15 @@ export class SupplierComponent implements OnInit {
     },
     columns: {
       supplier_name: {
-        title: 'Supplier Name',
+        title: 'Vendor Name',
         type: 'string',
       },
       supplier_company: {
-        title: 'Supplier Company',
+        title: 'Vendor Company',
         type: 'string',
       },
       supplier_address: {
-        title: 'Supplier Address',
+        title: 'Vendor Address',
         type: 'string',
       },
       city_name:{
@@ -127,8 +128,12 @@ export class SupplierComponent implements OnInit {
         title:'Email Id',
         type:'string',
       },
+      supplier_gst:{
+        title:'GST No',
+        type:'string',
+      },
       supplier_status: {
-        title: 'Supplier Status',
+        title: 'Vendor Status',
         type: 'string',
       },
       supplier_created_date: {
@@ -159,6 +164,7 @@ export class SupplierComponent implements OnInit {
         'city_id':JSON.stringify(this.supplierData1.city_id),
         'supplier_contact_no':this.supplierData1.supplier_contact_no,
         'supplier_email_id':this.supplierData1.supplier_email_id,
+        'supplier_gst':this.supplierData1.supplier_gst,
         'supplier_status':this.supplierData1.supplier_status==0?"Deactive":"Active"
       })
       console.log(this.formAddEdit,"formaddedit");
@@ -221,6 +227,7 @@ export class SupplierComponent implements OnInit {
             "city_id":this.formAddEdit.value.city_id,
             "supplier_contact_no":this.formAddEdit.value.supplier_contact_no,
             "supplier_email_id":this.formAddEdit.value.supplier_email_id,
+            "supplier_gst":this.formAddEdit.value.supplier_gst,
             "supplier_status":this.formAddEdit.value.supplier_status,
             }
             console.log(body,"body");
@@ -242,6 +249,7 @@ export class SupplierComponent implements OnInit {
             "city_id":this.formAddEdit.value.city_id,
             "supplier_contact_no":this.formAddEdit.value.supplier_contact_no,
             "supplier_email_id":this.formAddEdit.value.supplier_email_id,
+            "supplier_gst":this.formAddEdit.value.supplier_gst,
             "supplier_status":this.formAddEdit.value.supplier_status,
             "supplier_id":this.uniqueId 
           }

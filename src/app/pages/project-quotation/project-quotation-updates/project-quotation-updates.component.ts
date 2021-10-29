@@ -32,6 +32,9 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
   pquData:any;
   productData:any;
   userData:any;
+  pqresp:any;
+  pqidData:any;
+  prodinfo:any;
   public event1:any;
   config: NbToastrConfig;
   destroyByClick = true;
@@ -101,6 +104,7 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
       // console.log(this.formAddEdit,"formaddedit");
       // this.source.load(this.plData);
     });
+    this.getpqData();
     
   }
 
@@ -130,6 +134,34 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
       // },
     },
   };
+
+  settings1 = {
+    mode: 'external',
+    actions:{
+      add:false,
+      edit:false,
+      delete:false
+    },
+   columns: {
+     product_name: {
+       title: 'Product Name',
+       type: 'string',
+     },
+     product_specification_name: {
+       title: 'Product Specification Name',
+       type: 'string',
+     },
+     pq_specified_products_quantity: {
+       title: 'Quantity',
+       type: 'string',
+     },
+     unit_name:{
+       title:'Unit',
+       type:'string',
+     },
+   },
+ };
+
 
   source: LocalDataSource = new LocalDataSource();
   open1(dialog:TemplateRef<any>){
@@ -180,6 +212,14 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
     };
     const titleContent = title ? `${title}` : '';
     this.toastrService.show(body,`${titleContent}`,config);
+  }
+  getpqData(){
+    this.pqservice.getprojectquotationbyid(this.project_quotation_id).subscribe(res=>{
+      this.pqresp=res;
+      this.pqidData=this.pqresp.data.results[0];
+      this.prodinfo=this.pqidData.productinfo;
+      console.log("Getting res",this.prodinfo);
+    })
   }
  
 }

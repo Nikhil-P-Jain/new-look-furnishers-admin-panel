@@ -21,7 +21,15 @@ import {
   NbWindowModule,
 } from '@nebular/theme';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthGuard } from './auth-guard.service';
+import { NbAuthModule, NbPasswordAuthStrategy, NbAuthJWTToken } from '@nebular/auth';
 // import { RoleComponent } from './pages/role/role.component';
+const formSetting: any = {
+  redirectDelay: 0,
+  showMessages: {
+    success: true,
+  },
+};
 
 @NgModule({
   declarations: [AppComponent,],
@@ -43,6 +51,45 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     }),
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
+    NbAuthModule.forRoot({
+      strategies: [
+        NbPasswordAuthStrategy.setup({
+          name: 'email',
+          // baseEndpoint: 'http://apinewlook.mehtaindia.co.in/api',
+          baseEndpoint: 'http://localhost:3000/api',
+          token: {
+            class: NbAuthJWTToken,
+            key: 'data.jsontoken',
+          },
+          login: {
+            endpoint: '/user/login',
+            method: 'post',
+            redirect: {
+              success: '/pages/role',
+              failure: null, // stay on the same page
+            },
+          },
+          logout:{
+            endpoint:'',
+            method:'delete',
+          }
+
+        }),
+      ],
+      forms: {
+        login: formSetting,
+        register: formSetting,
+        requestPassword: formSetting,
+        resetPassword: formSetting,
+        logout: {
+          redirectDelay: 0,
+        },
+      },
+    }),
+  ],
+  providers: [
+    // ...
+    AuthGuard
   ],
   bootstrap: [AppComponent],
 })

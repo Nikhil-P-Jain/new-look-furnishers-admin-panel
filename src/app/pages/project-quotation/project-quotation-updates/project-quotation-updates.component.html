@@ -19,10 +19,6 @@
                 <td>{{pqData.user_name}}</td>
             </tr>
             <tr>
-                <th class="text-nowrap" scope="row">Products Specified</th>
-                <td>{{pqData.product_name}}</td>
-            </tr>
-            <tr>
                 <th class="text-nowrap" scope="row">Quotation Number</th>
                 <td>{{pqData.quotation_number}}</td>
             </tr>
@@ -81,3 +77,15 @@
     </nb-card>
   </ng-template>
 </div>
+
+<nb-card>
+    <nb-card-header>
+      Specified Products for Quotation id: {{project_quotation_id}}
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [source]="prodinfo" [settings]="settings1"> -->
+      </ng2-smart-table>
+      <!-- <ng2-smart-table></ng2-smart-table> -->
+    </nb-card-body>
+</nb-card>

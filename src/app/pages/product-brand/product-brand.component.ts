@@ -31,7 +31,7 @@ export class ProductBrandComponent implements OnInit {
   failure_status: NbComponentStatus = 'danger';
   dataYes='Yes';
   dataNo='No';
-  title='Product brand';
+  title='Product';
   edit_success_content='Edited Successfully!';
   edit_failure_content='Could not be edited!';
   delete_success_content='Deleted Successfully!';
@@ -108,11 +108,11 @@ export class ProductBrandComponent implements OnInit {
     },
     columns: {
       product_brand_name: {
-        title: 'Brand Name',
+        title: 'Product',
         type: 'string',
       },
       product_brand_status: {
-        title: 'Brand Status',
+        title: 'Product Status',
         type: 'string',
       },
       product_brand_created_date: {

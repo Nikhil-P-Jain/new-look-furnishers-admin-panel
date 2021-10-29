@@ -5,6 +5,8 @@ import { UserData } from '../../../@core/data/users';
 import { LayoutService } from '../../../@core/utils';
 import { map, takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
+import { NbAuthJWTToken, NbAuthService } from '@nebular/auth';
+
 
 @Component({
   selector: 'ngx-header',
@@ -12,7 +14,7 @@ import { Subject } from 'rxjs';
   templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-
+  user1 = {};
   private destroy$: Subject<void> = new Subject<void>();
   userPictureOnly: boolean = false;
   user: any;
@@ -38,14 +40,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme = 'default';
 
-  userMenu = [ { title: 'Profile' }, { title: 'Log out' } ];
+  userMenu = [  { title: 'Log out',link: '/auth/logout' } ];
 
   constructor(private sidebarService: NbSidebarService,
               private menuService: NbMenuService,
+              private authService: NbAuthService,
               private themeService: NbThemeService,
               private userService: UserData,
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService) {
+              this.authService.onTokenChange().subscribe((jsontoken: NbAuthJWTToken) => {
+                console.log(jsontoken,"token");
+                if (jsontoken.isValid()) {                  
+                  this.user1 = jsontoken.getPayload();
+                  console.log(this.user1,"user11");
+                }
+      });
   }
 
   ngOnInit() {

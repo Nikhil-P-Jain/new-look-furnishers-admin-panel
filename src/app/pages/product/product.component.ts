@@ -3,6 +3,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus, NbDialogService, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
+import { ProductBrandService } from '../service/product-brand.service';
 import { ProductCategoriesService } from '../service/product-categories.service';
 import { ProductService } from '../service/product.service';
 
@@ -17,10 +18,12 @@ export class ProductComponent implements OnInit {
   productData:any;
   productData1:any;
   categoryData:any;
+  pbData:any;
   resp:any;
   resp1:any;
   resp3:any;
   resp2:any;
+  resp4:any;
   config: NbToastrConfig;
   destroyByClick = true;
   duration = 2000;
@@ -29,7 +32,7 @@ export class ProductComponent implements OnInit {
   preventDuplicates = false;
   success_status: NbComponentStatus = 'success';
   failure_status: NbComponentStatus = 'danger';
-  title='Product';
+  title='Subproduct';
   edit_success_content='Edited Successfully!';
   edit_failure_content='Could not be edited!';
   delete_success_content='Deleted Successfully!';
@@ -43,6 +46,7 @@ export class ProductComponent implements OnInit {
     private ds:NbDialogService,
     public productservice:ProductService,
     public pcservice:ProductCategoriesService,
+    public productbrandservice:ProductBrandService,
     public http:HttpClient,
     private toastrService: NbToastrService,
     private formBuilder: FormBuilder,
@@ -53,6 +57,12 @@ export class ProductComponent implements OnInit {
       this.resp1=res;
       this.categoryData=this.resp1.data.results;
       console.log(this.categoryData,"Category data");
+    });
+    this.productbrandservice.getproduct_brand().subscribe(res=>{
+      this.resp4=res;
+      this.pbData=this.resp4.data.results;
+      console.log(this.pbData,"pbdata");
+      
     });
     this.productservice.getproduct().subscribe(res=>{
       this.resp1=res;
@@ -67,6 +77,7 @@ export class ProductComponent implements OnInit {
         }
       });
       this.formAddEdit=this.formBuilder.group({
+        'product_brand_id':['',[Validators.required]],
         'product_name':['',[Validators.required]],
         'category_id':['',[Validators.required]],
         'product_status':[]
@@ -98,8 +109,12 @@ export class ProductComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      product_brand_name: {
+        title: 'Product',
+        type: 'string',
+      },
       product_name: {
-        title: 'Product Name',
+        title: 'Subproduct',
         type: 'string',
       },
       product_category_name:{
@@ -107,7 +122,7 @@ export class ProductComponent implements OnInit {
         type:'string',
       },
       product_status: {
-        title: 'Product Status',
+        title: 'Subproduct Status',
         type: 'string',
       },
       product_created_date: {
@@ -132,6 +147,7 @@ export class ProductComponent implements OnInit {
       this.productData1=this.resp2.data.results[0];
       console.log("Getting res",this.productData1);
       this.formAddEdit.reset({
+        'product_brand_id':JSON.stringify(this.productData1.product_brand_id),
         'product_name':this.productData1.product_name,
         'category_id':JSON.stringify(this.productData1.category_id),
         'product_status':this.productData1.product_status==0?"Deactive":"Active"
@@ -186,6 +202,7 @@ export class ProductComponent implements OnInit {
       if(!this.uniqueId){
         var body={
           "product_name":this.formAddEdit.value.product_name,
+          "product_brand_id":this.formAddEdit.value.product_brand_id,
           "category_id":this.formAddEdit.value.category_id,
           "product_status":this.formAddEdit.value.product_status,
         }
@@ -202,6 +219,7 @@ export class ProductComponent implements OnInit {
       else{
         var bo={
           "product_name":this.formAddEdit.value.product_name,
+          "product_brand_id":this.formAddEdit.value.product_brand_id,
           "category_id":this.formAddEdit.value.category_id,
           "product_status":this.formAddEdit.value.product_status,
           "product_id":this.uniqueId 

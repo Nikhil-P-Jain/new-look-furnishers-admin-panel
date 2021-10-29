@@ -7,6 +7,17 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link:'/pages/role',
     home:true
   },
+  // {
+  //   title: 'E-commerce',
+  //   icon: 'shopping-cart-outline',
+  //   link: '/pages/dashboard',
+  //   home: true,
+  // },
+  // {
+  //   title: 'IoT Dashboard',
+  //   icon: 'home-outline',
+  //   link: '/pages/iot-dashboard',
+  // },
   {
     icon: 'activity-outline',
     title:'Activities',
@@ -34,27 +45,27 @@ export const MENU_ITEMS: NbMenuItem[] = [
   },
   {
     icon:'shopping-cart-outline',
-    title:'Supplier',
-    link:'/pages/supplier'
+    title:'Vendor',
+    link:'/pages/vendor'
   },
   {
     icon:'briefcase-outline',
     title:"Products",
     children:[
+      {
+        icon: 'archive-outline',
+        title:'Product Category',
+        link:'/pages/product-category',
+      },
+      {
+      icon: 'behance-outline',
+      title:'Product',
+      link:'/pages/product-brand',
+    },
     {
       icon:'briefcase-outline',
-      title:'Product',
+      title:'Sub Product',
       link:'/pages/product'
-    },
-    {
-      icon: 'archive-outline',
-      title:'Product Category',
-      link:'/pages/product-category',
-    },
-    {
-      icon: 'behance-outline',
-      title:'Product Brand',
-      link:'/pages/product-brand',
     },
     {
       icon:'file-text-outline',
@@ -103,17 +114,17 @@ export const MENU_ITEMS: NbMenuItem[] = [
       }
     ]
   },
-  // {
-  //   title: 'E-commerce',
-  //   icon: 'shopping-cart-outline',
-  //   link: '/pages/dashboard',
-  //   home: true,
-  // },
-  // {
-  //   title: 'IoT Dashboard',
-  //   icon: 'home-outline',
-  //   link: '/pages/iot-dashboard',
-  // },
+  {
+    icon: 'pricetags-outline',
+    title:'Purchase Order',
+    link:'/pages/purchase-order',
+  },
+  {
+    icon:'corner-up-right-outline',
+    title:'Annexures',
+    link:'/pages/annexure',
+  },
+
   // {
   //   title: 'FEATURES',
   //   group: true,

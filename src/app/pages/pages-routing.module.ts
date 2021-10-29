@@ -26,6 +26,9 @@ import { ProjectLostUpdatesComponent } from './project-lost/project-lost-updates
 import { SupplierComponent } from './supplier/supplier.component';
 import { ProjectOrderComponent } from './project-order/project-order.component';
 import { ProjectOrderDetailsComponent } from './project-order/project-order-details/project-order-details.component';
+import { PurchaseOrderComponent } from './purchase-order/purchase-order.component';
+import { PurchaseOrderSpecifiedProductComponent } from './purchase-order/purchase-order-specified-product/purchase-order-specified-product.component';
+import { AnnexureComponent } from './purchase-order/annexure/annexure.component';
 
 const routes: Routes = [{
   path: '',
@@ -135,9 +138,9 @@ const routes: Routes = [{
       data:{breadcrumb:'Project Lost Updates'}
     },
     {
-      path:'supplier',
+      path:'vendor',
       component:SupplierComponent,
-      data:{breadcrumb:'Supplier'}
+      data:{breadcrumb:'Vendor'}
     },
     {
       path:'project-order',
@@ -147,7 +150,22 @@ const routes: Routes = [{
     {
       path:'project-order-details/:id',
       component:ProjectOrderDetailsComponent,
-      data:{breadcrumg:'Project Order Details'}
+      data:{breadcrumb:'Project Order Details'}
+    },
+    {
+      path:'purchase-order',
+      component:PurchaseOrderComponent,
+      data:{breadcrumb:'Purchase Order Details'}
+    },
+    {
+      path:'purchase-order-details/:id',
+      component:PurchaseOrderSpecifiedProductComponent,
+      data:{breadcrumb:'Purchase Order Details'}
+    },
+    {
+      path:'annexure',
+      component:AnnexureComponent,
+      data:{breadcrumb:'Annexure Details'}
     },
     {
       path: 'layout',
@@ -201,7 +219,7 @@ const routes: Routes = [{
     },
     {
       path: '',
-      redirectTo: 'dashboard',
+      redirectTo: '',
       pathMatch: 'full',
     },
     {

@@ -4,7 +4,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus, NbDialogService, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { ProductBrandService } from '../service/product-brand.service';
-import { ProductCategoriesService } from '../service/product-categories.service';
 import { ProductSpecificationService } from '../service/product-specification.service';
 import { ProductService } from '../service/product.service';
 
@@ -24,6 +23,8 @@ export class ProductSpecificationComponent implements OnInit {
   resp1:any;
   resp3:any;
   resp2:any;
+  resp4:any;
+  prodId:any;
   config: NbToastrConfig;
   destroyByClick = true;
   duration = 2000;
@@ -53,11 +54,12 @@ export class ProductSpecificationComponent implements OnInit {
   ){ }
   ngOnInit(){
     this.isSubmitted=false;
-    this.productservice.getproduct().subscribe(res=>{
-      this.resp1=res;
-      this.productData=this.resp1.data.results;
-      console.log(this.productData,"Product data");
-    });
+    // this.productservice.getproduct().subscribe(res=>{
+    //   this.resp1=res;
+    //   this.productData=this.resp1.data.results;
+    //   console.log(this.productData,"Product data");
+    // });
+     
     this.pbservice.getproduct_brand().subscribe(res=>{
       this.resp1=res;
       this.productbrandData=this.resp1.data.results;
@@ -86,6 +88,25 @@ export class ProductSpecificationComponent implements OnInit {
     });
   }
 
+  loadsubproduct(event:any)
+  {
+    console.log("Load Product",event);
+    this.productservice.getsubproductbyproductid(event).subscribe(res=>{
+       this.resp4=res;
+       if(this.resp4.success==0)
+       {
+         this.productData=[];
+       }
+       else{
+       this.productData=this.resp4.data.results;
+       this.formAddEdit.value.product_id=this.productData[0].product_id;
+       }
+       console.log(this.productData,"Product data");
+      
+      });
+      // event.clear();
+  }
+
   get f(){
     return this.formAddEdit.controls;
   }
@@ -109,15 +130,15 @@ export class ProductSpecificationComponent implements OnInit {
     },
     columns: {
       product_specification_name: {
-        title: 'Product Specification Name',
+        title: 'Product Specification',
         type: 'string',
       },
       product_name:{
-        title:'Product Name',
+        title:'Subproduct',
         type:'string',
       },
       product_brand_name:{
-        title:'Product Brand',
+        title:'Product',
         type:'string',
       },
       product_specification_status: {
@@ -138,12 +159,14 @@ export class ProductSpecificationComponent implements OnInit {
   source: LocalDataSource = new LocalDataSource();
 
   open2(dialog: TemplateRef<any>,event:any) {
+
     console.log("open2 function called");
     console.log(event, "event inside dailog");
     this.uniqueId=event.data.product_specification_id;
     this.psservice.getproductspecificationbyid(this.uniqueId).subscribe(res=>{
       this.resp2=res;
       this.psData1=this.resp2.data.results[0];
+      this.loadsubproduct(this.psData1.product_brand_id);
       console.log("Getting res",this.psData1);
       this.formAddEdit.reset({
         'product_specification_name':this.psData1.product_specification_name,
@@ -229,11 +252,24 @@ export class ProductSpecificationComponent implements OnInit {
           ref.close();
           this.ngOnInit();
           this.uniqueId='';
+          this.productData=[];
         },(err)=>{
           this.showToast(this.failure_status, this.title, this.edit_failure_content);
+          ref.close();
+          this.ngOnInit();
+          this.uniqueId='';
+          this.productData=[];
         });
       }       
     }
+  }
+
+  clr(event:any){
+    console.log(event,"clrEvent");
+    
+    // event.clear();
+    // this.productData=[];
+    this.loadsubproduct(event);
   }
 
   private showToast(type: NbComponentStatus, title: string, body: string) {
@@ -251,5 +287,11 @@ export class ProductSpecificationComponent implements OnInit {
       body,
       `${titleContent}`,
       config);
+  }
+  closeHandle(ref:any){
+    ref.close();
+    this.uniqueId='';
+    this.productData=[];
+    this.formAddEdit.reset();
   }
 }

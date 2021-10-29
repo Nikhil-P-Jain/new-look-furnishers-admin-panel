@@ -46,6 +46,8 @@ export class ProjectQuotationComponent implements OnInit {
   resp1:any;
   resp3:any;
   resp2:any;
+  resp4:any;
+  resp5:any;
   resp6:any;
   psData:any;
   event1:any;
@@ -79,18 +81,18 @@ export class ProjectQuotationComponent implements OnInit {
       this.unitData=this.resp2.data.results;
     })
     this.userservice.getuser_name().subscribe(res=>{
-      this.resp1=res;
-      this.userData=this.resp1.data.results;
+      this.resp3=res;
+      this.userData=this.resp3.data.results;
       console.log(this.userData,"User data");
     });
     this.plservice.getprojectnameforquotation().subscribe(res=>{
-      this.resp1=res;
-      this.plData=this.resp1.data.results;
+      this.resp4=res;
+      this.plData=this.resp4.data.results;
       console.log(this.plData,"PL data");
     })
     this.pqservice.getprojectquotation().subscribe(res=>{
-      this.resp1=res;
-      this.pqData=this.resp1.data.results;
+      this.resp5=res;
+      this.pqData=this.resp5.data.results;
       console.log("pqData",this.pqData);
       this.pqData.forEach(element => {
         // console.log(element.status);  
@@ -107,7 +109,7 @@ export class ProjectQuotationComponent implements OnInit {
         'user_id':['',[Validators.required]],
         'quotation_number':['',[Validators.required]],
         'quotation_amount':['',[Validators.required]],
-        'product_name':[],
+        // 'product_name':[],
         'remarks':['',[Validators.required]],
         // 'order_status':['',[Validators.required]],
         'date':['',[Validators.required]],
@@ -185,10 +187,10 @@ export class ProjectQuotationComponent implements OnInit {
         title:'Quotation Amount',
         type:'string',
       },
-      product_name:{
-        title:'Product Name',
-        type:'string',
-      },
+      // product_name:{
+      //   title:'Product Name',
+      //   type:'string',
+      // },
       remarks:{
         title:'Remarks',
         type:'string',
@@ -218,7 +220,8 @@ export class ProjectQuotationComponent implements OnInit {
       title:'Details',
       type:'html',
       valuePrepareFunction:(cell,row)=>{
-        return `<a href=http://localhost:4200/pages/project-quotation-updates/${row.project_quotation_id}>View</a>`
+        // return `<a href=http://localhost:4200/pages/project-quotation-updates/${row.project_quotation_id}>View</a>`
+        return `<a href=http://veritrack.co.in/newlook/#/pages/project-quotation-updates/${row.project_quotation_id}>View</a>`
       },
       filter:false       
       },
@@ -234,6 +237,7 @@ export class ProjectQuotationComponent implements OnInit {
     this.pqservice.getprojectquotationbyid(this.uniqueId).subscribe(res=>{
       this.resp2=res;
       this.pqData1=this.resp2.data.results[0];
+      var prodInfo=this.pqData1.productinfo;
       console.log("Getting res",this.pqData1);
       this.formAddEdit.reset({
         'project_lead_id':JSON.stringify(this.pqData1.project_lead_id),
@@ -242,20 +246,38 @@ export class ProjectQuotationComponent implements OnInit {
         'user_id':JSON.stringify(this.pqData1.user_id),
         'quotation_number':this.pqData1.quotation_number,
         'quotation_amount':this.pqData1.quotation_amount,
-        'product_name':this.pqData1.product_id,
+        // 'product_name':this.pqData1.product_id,
         'remarks':this.pqData1.remarks,
         // 'order_status':this.pqData1.order_status,
         'date':this.pqData1.date,
         'status':this.pqData1.status==0?"Deactive":"Active"
       })
+      for(var i=1;i<prodInfo.length;i++){
+        this.products1.push(this.createProducts());
+      }
+
+      for(var j=0;j<=this.products1.length;j++){
+              this.products1.controls[j].get('product_id').patchValue(JSON.stringify(prodInfo[j].product_id));
+              this.products1.controls[j].get('specification_id').patchValue(JSON.stringify(prodInfo[j].product_specification_id));
+              this.products1.controls[j].get('quantity').patchValue(prodInfo[j].pq_specified_products_quantity);
+              this.products1.controls[j].get('unit').patchValue(JSON.stringify(prodInfo[j].unit_id));
+      }
       console.log(this.formAddEdit,"formaddedit");
     })
     this.pqservice.getallspecification().subscribe(res=>{
       this.resp6=res;
       this.psData=this.resp6.data.results;
-      console.log("Getting Spesification Data", this.psData)
+      console.log("Getting Specification Data", this.psData)
     })
     this.ds.open(dialog);
+  }
+  changeprod(e:any){
+    console.log("Getting selected id", e);
+      this.pqservice.getproductspecificationbyproductid(e).subscribe(res=>{
+      this.resp6=res;
+      this.psData=this.resp6.data.results;
+      console.log("Getting Spesification Data", this.psData)
+    })
   }
   
   open1(dialog:TemplateRef<any>){
@@ -294,15 +316,23 @@ export class ProjectQuotationComponent implements OnInit {
     }
     else{
       console.log("inside else");
+      var prodinfo=[];
+        this.formAddEdit.get('products').value.forEach(x => {
+          prodinfo.push({
+            product_specification_id:parseInt(x.specification_id),
+            pq_specified_products_quantity:parseInt(x.quantity),
+            unit_id:parseInt(x.unit)
+          })
+        });
       if(this.formAddEdit.value.status==this.dataActive){
         this.formAddEdit.value.status=1;
       }
       else if(this.formAddEdit.value.status==this.dataDeactive){
         this.formAddEdit.value.status=0;
       }
-      for(var i=0;i<this.formAddEdit.value.product_name.length;i++){
-        this.formAddEdit.value.product_name[i]=parseInt(this.formAddEdit.value.product_name[i])
-      }
+      // for(var i=0;i<this.formAddEdit.value.product_name.length;i++){
+      //   this.formAddEdit.value.product_name[i]=parseInt(this.formAddEdit.value.product_name[i])
+      // }
       if(!this.uniqueId){
         var body={
           "project_lead_id":this.formAddEdit.value.project_lead_id,
@@ -311,11 +341,12 @@ export class ProjectQuotationComponent implements OnInit {
           "user_id":this.formAddEdit.value.user_id,
           "quotation_number":this.formAddEdit.value.quotation_number,
           "quotation_amount":this.formAddEdit.value.quotation_amount,
-          "product_id":this.formAddEdit.value.product_name,
+          // "product_id":this.formAddEdit.value.product_name,
           "remarks":this.formAddEdit.value.remarks,
           // "order_status":this.formAddEdit.value.order_status,
           "date":this.formAddEdit.value.date,
           "status":this.formAddEdit.value.status,
+          "productinfo":prodinfo
         }
         console.log(body,"body");  
         this.pqservice.createprojectquotation(body).subscribe(res=>{
@@ -335,11 +366,12 @@ export class ProjectQuotationComponent implements OnInit {
           "user_id":this.formAddEdit.value.user_id,
           "quotation_number":this.formAddEdit.value.quotation_number,
           "quotation_amount":this.formAddEdit.value.quotation_amount,
-          "product_id":this.formAddEdit.value.product_name,
+          // "product_id":this.formAddEdit.value.product_name,
           "remarks":this.formAddEdit.value.remarks,
           // "order_status":this.formAddEdit.value.order_status,
           "date":this.formAddEdit.value.date,
           "status":this.formAddEdit.value.status,
+          "productinfo":prodinfo,
           "project_quotation_id":this.uniqueId
         }
         this.pqservice.updateprojectquotation(bo).subscribe(res=>{

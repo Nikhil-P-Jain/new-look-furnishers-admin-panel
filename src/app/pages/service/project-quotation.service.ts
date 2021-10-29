@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 
-const api = 'http://localhost:3000/api/project_quotation';
+const api = environment.BASE_URL+'project_quotation';
 @Injectable({
   providedIn: 'root'
 })
@@ -40,17 +41,17 @@ export class ProjectQuotationService {
   }
 
   getunit():Observable<any[]>{
-    return this.http.get<any[]>(`http://localhost:3000/api/unit/getunit`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    return this.http.get<any[]>(environment.BASE_URL+`unit/getunit`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
     .map(res => res);
   }
 
   getproductspecificationbyproductid(id:any):Observable<any[]>{
-    return this.http.get<any[]>(`http://localhost:3000/api/product_specification/getproductspecificationbyproductid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    return this.http.get<any[]>(environment.BASE_URL+`product_specification/getproductspecificationbyproductid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
     .map(res => res);
   }
 
   getallspecification():Observable<any[]>{
-    return this.http.get<any[]>(`http://localhost:3000/api/product_specification/getproductspecification`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    return this.http.get<any[]>(environment.BASE_URL+`product_specification/getproductspecification`,{headers:new HttpHeaders({'Content-Type':'application/json'})})
     .map(res => res);
   }
 

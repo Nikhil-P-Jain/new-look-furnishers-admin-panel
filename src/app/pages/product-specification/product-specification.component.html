@@ -19,7 +19,7 @@
                 <div class="form-group row">
                     <label class="label col-sm-3 col-form-label">Product Specification Name</label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" nbInput shape="rectangle" formControlName="product_specification_name" class="col-md-12" placeholder="Enter the Product Specification" [ngClass]="{'is-invalid': isSubmitted && f.product_specification_name.errors}">
+                        <textarea rows="4" class="form-control" formControlName="product_specification_name" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Enter Product Specification" [ngClass]="{'is-invalid': isSubmitted && f.product_specification_name.errors}"></textarea>
                         <div *ngIf="isSubmitted && f.product_specification_name.errors" class="text-danger">
                             <div *ngIf="f.product_specification_name.errors.required">This field is required</div>
                         </div>
@@ -28,7 +28,18 @@
                 <div class="form-group row">
                     <label class="label col-sm-3 col-form-label">Product Name</label>
                     <div class="col-sm-9">
-                        <nb-select formControlName="product_id" style="padding: 0;" placeholder="Select Product" [ngClass]="{'is-invalid': isSubmitted && f.product_id.errors}" class="col-md-12">
+                        <nb-select formControlName="product_brand_id" (selectedChange)="loadsubproduct($event)" placeholder="Select Product" style="padding: 0;" [ngClass]="{'is-invalid': isSubmitted && f.product_brand_id.errors}" class="col-md-12">
+                            <nb-option *ngFor="let productbrand of productbrandData" value={{productbrand.product_brand_id}}>{{productbrand.product_brand_name}}</nb-option>
+                        </nb-select>
+                        <div *ngIf="isSubmitted && f.product_brand_id.errors" class="text-danger">
+                            <div *ngIf="f.product_brand_id.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="label col-sm-3 col-form-label">Subproduct</label>
+                    <div class="col-sm-9">
+                        <nb-select formControlName="product_id" style="padding: 0;" placeholder="Select Subproduct" [ngClass]="{'is-invalid': isSubmitted && f.product_id.errors}" class="col-md-12" >
                             <nb-option *ngFor="let product of productData" value={{product.product_id}} >{{product.product_name}}</nb-option>
                         </nb-select>
                         <div *ngIf="isSubmitted && f.product_id.errors" class="text-danger">
@@ -36,17 +47,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group row">
-                    <label class="label col-sm-3 col-form-label">Product Brand Name</label>
-                    <div class="col-sm-9">
-                        <nb-select formControlName="product_brand_id" placeholder="Select Brand" style="padding: 0;" [ngClass]="{'is-invalid': isSubmitted && f.product_brand_id.errors}" class="col-md-12">
-                            <nb-option *ngFor="let productbrand of productbrandData" value={{productbrand.product_brand_id}} >{{productbrand.product_brand_name}}</nb-option>
-                        </nb-select>
-                        <div *ngIf="isSubmitted && f.product_brand_id.errors" class="text-danger">
-                            <div *ngIf="f.product_brand_id.errors.required">This field is required</div>
-                        </div>
-                    </div>
-                </div>
+              
                 <div class="form-group row">
                     <label class="label col-sm-3 col-form-label">Product Specification Status</label>
                     <div class="col-sm-9">
@@ -65,7 +66,7 @@
         </nb-card-body>
         <nb-card-footer>
             <button type="submit" style="margin-right: 20px;" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
-            <button nbButton (click)="ref.close()">Close</button>
+            <button nbButton (click)="closeHandle(ref)">Close</button>
         </nb-card-footer>
     </nb-card>
 </ng-template>

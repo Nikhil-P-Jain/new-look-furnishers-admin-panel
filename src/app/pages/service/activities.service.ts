@@ -2,9 +2,10 @@ import { Injectable, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
-// import { environment } from '../../environments/environment';
+import { environment } from '../../../environments/environment';
 
-const api = 'http://localhost:3000/api/activities';
+const api = environment.BASE_URL+'activities';
+
 
 @Injectable({
     providedIn:'root'

@@ -5,4 +5,5 @@
  */
 export const environment = {
   production: true,
+  BASE_URL:'http://apinewlook.mehtaindia.co.in/api/',
 };

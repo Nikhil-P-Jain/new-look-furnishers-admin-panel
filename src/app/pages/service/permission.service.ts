@@ -1,7 +1,10 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-const api = 'http://localhost:3000/api/permission';
+import { environment } from '../../../environments/environment';
+
+const api = environment.BASE_URL+'permission';
+
 @Injectable({
   providedIn: 'root'
 })
