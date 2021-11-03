@@ -50,10 +50,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
               private layoutService: LayoutService,
               private breakpointService: NbMediaBreakpointsService) {
               this.authService.onTokenChange().subscribe((jsontoken: NbAuthJWTToken) => {
-                console.log(jsontoken,"token");
+                // console.log(jsontoken,"token");
                 if (jsontoken.isValid()) {                  
                   this.user1 = jsontoken.getPayload();
-                  console.log(this.user1,"user11");
+                  // console.log(this.user1,"user11");
                 }
       });
   }

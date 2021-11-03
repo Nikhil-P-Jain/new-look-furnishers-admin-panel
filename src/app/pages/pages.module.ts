@@ -45,6 +45,7 @@ import { ProjectOrderDetailsComponent } from './project-order/project-order-deta
 import { PurchaseOrderComponent } from './purchase-order/purchase-order.component';
 import { PurchaseOrderSpecifiedProductComponent } from './purchase-order/purchase-order-specified-product/purchase-order-specified-product.component';
 import { AnnexureComponent } from './purchase-order/annexure/annexure.component';
+import { AnnexureDetailsComponent } from './purchase-order/annexure/annexure-details/annexure-details.component';
 
 @NgModule({
   
@@ -80,7 +81,7 @@ import { AnnexureComponent } from './purchase-order/annexure/annexure.component'
     //...
    ],
   declarations: [
-    PagesComponent,AddPermissionComponent,RoleComponent,ActivitiesComponent, PermissionComponent, StateComponent, CityComponent, UnitComponent, ProductCategoryComponent, ProductBrandComponent, SiteComponent, UserComponent, ProductComponent, ProductSpecificationComponent, ProjectLeadComponent, ProjectQuotationComponent, ProjectLeadUpdatesComponent, ProjectQuotationUpdatesComponent,ProjectLostUpdatesComponent,ProjectLostComponent, SupplierComponent, ProjectOrderComponent, ProjectOrderDetailsComponent, PurchaseOrderComponent, PurchaseOrderSpecifiedProductComponent, AnnexureComponent,
+    PagesComponent,AddPermissionComponent,RoleComponent,ActivitiesComponent, PermissionComponent, StateComponent, CityComponent, UnitComponent, ProductCategoryComponent, ProductBrandComponent, SiteComponent, UserComponent, ProductComponent, ProductSpecificationComponent, ProjectLeadComponent, ProjectQuotationComponent, ProjectLeadUpdatesComponent, ProjectQuotationUpdatesComponent,ProjectLostUpdatesComponent,ProjectLostComponent, SupplierComponent, ProjectOrderComponent, ProjectOrderDetailsComponent, PurchaseOrderComponent, PurchaseOrderSpecifiedProductComponent, AnnexureComponent, AnnexureDetailsComponent,
   ],
 })
 export class PagesModule {

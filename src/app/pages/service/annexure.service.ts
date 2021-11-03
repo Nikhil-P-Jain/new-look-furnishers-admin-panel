@@ -42,4 +42,6 @@ export class AnnexureService {
       return this.http.delete<any[]>(api+`/deleteannexure/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
       .map(res => res);
   }
+
+  
 }

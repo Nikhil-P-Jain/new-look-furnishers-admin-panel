@@ -119,11 +119,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title:'Purchase Order',
     link:'/pages/purchase-order',
   },
-  {
-    icon:'corner-up-right-outline',
-    title:'Annexures',
-    link:'/pages/annexure',
-  },
+  // {
+  //   icon:'corner-up-right-outline',
+  //   title:'Annexures',
+  //   link:'/pages/annexure',
+  // },
 
   // {
   //   title: 'FEATURES',

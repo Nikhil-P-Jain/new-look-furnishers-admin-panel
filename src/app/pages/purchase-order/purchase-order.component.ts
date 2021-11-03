@@ -158,6 +158,15 @@ export class PurchaseOrderComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
+      New1: //or something
+      {
+        title:'Annexures',
+        type:'html',
+        valuePrepareFunction:(cell,row)=>{
+          return `<a href=http://localhost:4200/#/pages/annexure/${row.purchase_order_id}>Annexure</a>`
+          // return `<a href=http://veritrack.co.in/newlook/#/pages/annexure/${row.purchase_order_id}>Annexure</a>`
+        },
+      },
       project_lead_name: {
         title: 'Project',
         type: 'string',
@@ -203,8 +212,8 @@ export class PurchaseOrderComponent implements OnInit {
       title:'Details',
       type:'html',
       valuePrepareFunction:(cell,row)=>{
-        return `<a href=http://localhost:4200/#/pages/purchase-order-details/${row.purchase_order_id}>View</a> <br> <a href=http://localhost:4200/#/pages/annexure/>Annexure</a>`
-        // return `<a href=http://veritrack.co.in/newlook/#/pages/purchase-order-details/${row.purchase_order_id}>View</a> <br> <a href=http://veritrack.co.in/newlook/#/pages/annexure/${row.purchase_order_id}>Annexure</a>`
+        return `<a href=http://localhost:4200/#/pages/purchase-order-details/${row.purchase_order_id}> Product Details</a>`
+        // return `<a href=http://veritrack.co.in/newlook/#/pages/purchase-order-details/${row.purchase_order_id}>Product Details</a>`
 
       },
       filter:false       

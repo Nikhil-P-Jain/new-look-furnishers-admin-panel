@@ -29,6 +29,7 @@ import { ProjectOrderDetailsComponent } from './project-order/project-order-deta
 import { PurchaseOrderComponent } from './purchase-order/purchase-order.component';
 import { PurchaseOrderSpecifiedProductComponent } from './purchase-order/purchase-order-specified-product/purchase-order-specified-product.component';
 import { AnnexureComponent } from './purchase-order/annexure/annexure.component';
+import { AnnexureDetailsComponent } from './purchase-order/annexure/annexure-details/annexure-details.component';
 
 const routes: Routes = [{
   path: '',
@@ -163,9 +164,14 @@ const routes: Routes = [{
       data:{breadcrumb:'Purchase Order Details'}
     },
     {
-      path:'annexure',
+      path:'annexure/:id',
       component:AnnexureComponent,
-      data:{breadcrumb:'Annexure Details'}
+      data:{breadcrumb:'Annexure'}
+    },
+    {
+      path:'annexure-details/:id',
+      component:AnnexureDetailsComponent,
+      data:{breeadcrumb:'Annexure Details'}
     },
     {
       path: 'layout',

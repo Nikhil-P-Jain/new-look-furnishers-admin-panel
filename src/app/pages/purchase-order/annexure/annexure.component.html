@@ -1,1 +1,80 @@
-<p>annexure works!</p>
+<nb-card>
+  <nb-card-header>
+    Annexure Table
+  </nb-card-header>
+    <nb-card-body>
+      <ng2-smart-table [source]="anData" [settings]="settings" (create)="open1(dialog)" (edit)="open2(dialog,$event)" (delete)="deleteProjectLead($event)">
+      </ng2-smart-table>
+      <!-- <ng2-smart-table></ng2-smart-table> -->
+    </nb-card-body>
+</nb-card>
+
+
+<div class="row d-flex"> 
+  <ng-template #dialog let-data let-ref="dialogRef">
+      <nb-card>
+          <nb-card-header>Annexure</nb-card-header>
+          <nb-card-body style="max-height: 360px;">
+            <form [formGroup]="formAddEdit">
+              <div formArrayName="products" *ngFor="let product of formAddEdit.get('products')['controls']; let i=index;">
+                  <div [formGroupName]="i" class="form-group row">
+                        <label class="label col-sm-1 col-form-label" style="padding: 15px 0px;">Products</label>
+                        <div class="col-sm-2">
+                          <nb-select formControlName="product_id" style="padding: 0;"  placeholder="Select Product" class="col-md-6">
+                            <nb-option *ngFor="let product of prodInfo" value={{product.product_id}}>{{product.product_name}}</nb-option>
+                          </nb-select>
+                        </div>
+                        <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Length</label>
+                        <div class="col-sm-2">
+                          <input type="number" nbInput shape="rectangle" formControlName="length" placeholder="Enter Length" class="col-md-6" (input)="findLength()">
+                        </div> 
+                        <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Quantity</label>
+                        <div class="col-sm-2">
+                          <input type="number" nbInput shape="rectangle" formControlName="quantity" placeholder="Enter Quantity" class="col-md-6" (input)="findLength()">
+                        </div> 
+                        <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Length</label>
+                        <div class="col-sm-2">
+                          <input  nbInput shape="rectangle" formControlName="total_length" placeholder="Enter Total Length" class="col-md-6" [(ngModel)]="totalLength[i]" readonly>
+                        </div> 
+                        <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Module</label>
+                        <div class="col-sm-2">
+                          <input type="number" nbInput shape="rectangle" formControlName="module" placeholder="Enter Module" class="col-md-6" (input)="findArea()">
+                        </div> 
+                        <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Area</label>
+                        <div class="col-sm-2">
+                          <input type="number" nbInput shape="rectangle" formControlName="area" placeholder="Enter Area" class="col-md-6" readonly [(ngModel)]="areadata[i]">
+                        </div> 
+
+                        <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
+                        <div class="col-sm-2">
+                          <input  nbInput shape="rectangle" formControlName="total_area" placeholder="Enter Total Area" class="col-md-6" readonly>
+                        </div>  -->
+                        
+                        <!-- <div class="col-sm-0.5">
+                            <button type="button" style="margin-left: 60px;" class="btn btn-primary" nbButton status="primary" (click)="removeProducts()">X</button>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div style="padding:0;" class="col-sm-12 mt-4 row">
+                      <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
+                        <div class="col-sm-2">
+                          <input  nbInput shape="rectangle" placeholder="Enter Total Area" class="col-md-6" readonly>
+                        </div> 
+                      <button type="button" style="margin-right: 10px;" class="btn btn-primary" nbButton status="primary" (click)="addProduct()">Add</button>
+                      <button type="button" class="btn btn-primary" nbButton status="primary" (click)="removeProducts()">Remove</button>
+                    </div>
+              </form>
+
+          <div class="container">
+            <div class="row">
+              
+            </div>             
+        </div>
+          </nb-card-body>
+          <nb-card-footer>
+              <button type="submit" style="margin-right: 20px;" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
+              <button nbButton (click)="closeHandle(ref)">Close</button>
+          </nb-card-footer>
+      </nb-card>
+  </ng-template>
+</div>
