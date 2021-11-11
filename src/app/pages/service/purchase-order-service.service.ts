@@ -22,6 +22,11 @@ export class PurchaseOrderServiceService {
       .map(res => res);
   }
 
+  getpurchase_orderbyproductid(id:any):Observable<any[]>{
+    return this.http.get<any[]>(api+`/getpurchase_orderbyproductid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+}
+
   createpurchaseorder(body:any):Observable<any[]>{
       return this.http.post<any[]>(api+`/createpurchase_order`,body,{headers:new HttpHeaders({'Content-Type':'application/json'})})
       .map(res => res);

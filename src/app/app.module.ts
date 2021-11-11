@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
+import { NgxPrintModule } from 'ngx-print';
 import { AppRoutingModule } from './app-routing.module';
 import {
   NbChatModule,
@@ -35,6 +36,7 @@ const formSetting: any = {
   declarations: [AppComponent,],
   imports: [
     BrowserModule,
+    NgxPrintModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,

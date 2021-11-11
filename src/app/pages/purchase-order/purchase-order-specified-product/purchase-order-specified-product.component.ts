@@ -57,8 +57,7 @@ export class PurchaseOrderSpecifiedProductComponent implements OnInit {
       this.resp=res;
       this.poData=this.resp.data.results[0];
       this.prodInfo=this.poData.productinfo;
-      console.log("Getting res",this.prodInfo);
+      console.log("Getting res",this.poData);
     })
   }
-
 }

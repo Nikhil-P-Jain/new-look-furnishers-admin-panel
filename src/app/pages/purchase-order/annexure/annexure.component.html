@@ -9,7 +9,6 @@
     </nb-card-body>
 </nb-card>
 
-
 <div class="row d-flex"> 
   <ng-template #dialog let-data let-ref="dialogRef">
       <nb-card>
@@ -20,7 +19,7 @@
                   <div [formGroupName]="i" class="form-group row">
                         <label class="label col-sm-1 col-form-label" style="padding: 15px 0px;">Products</label>
                         <div class="col-sm-2">
-                          <nb-select formControlName="product_id" style="padding: 0;"  placeholder="Select Product" class="col-md-6">
+                          <nb-select formControlName="product_id" style="padding: 0;"  placeholder="Select Product" class="col-md-6" (selectedChange)="changeprod($event)">
                             <nb-option *ngFor="let product of prodInfo" value={{product.product_id}}>{{product.product_name}}</nb-option>
                           </nb-select>
                         </div>
@@ -43,8 +42,11 @@
                         <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Area</label>
                         <div class="col-sm-2">
                           <input type="number" nbInput shape="rectangle" formControlName="area" placeholder="Enter Area" class="col-md-6" readonly [(ngModel)]="areadata[i]">
+                          <div *ngIf="flag==true" class="text-danger">
+                            <!-- <div>Please Input lower amount for area as it exceeds the total quantity mentioned in Purchase Order</div> -->
+                            <div *ngIf="selectProdId == totaldata[i].prodid">Area Exceeds the total Area</div>
+                          </div>
                         </div> 
-
                         <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
                         <div class="col-sm-2">
                           <input  nbInput shape="rectangle" formControlName="total_area" placeholder="Enter Total Area" class="col-md-6" readonly>
@@ -56,14 +58,19 @@
                       </div>
                     </div>
                     <div style="padding:0;" class="col-sm-12 mt-4 row">
-                      <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
+                      <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
                         <div class="col-sm-2">
                           <input  nbInput shape="rectangle" placeholder="Enter Total Area" class="col-md-6" readonly>
-                        </div> 
+                        </div>  -->
+                        
                       <button type="button" style="margin-right: 10px;" class="btn btn-primary" nbButton status="primary" (click)="addProduct()">Add</button>
                       <button type="button" class="btn btn-primary" nbButton status="primary" (click)="removeProducts()">Remove</button>
                     </div>
               </form>
+              <!-- <label style="padding: 15px 0px;" class="label col-sm-1">PO Quantity</label>
+              <div class="col-sm-2">
+                <input type="number" nbInput shape="rectangle" readonly [(ngModel)]="prodInfoqty">
+              </div>  -->
 
           <div class="container">
             <div class="row">

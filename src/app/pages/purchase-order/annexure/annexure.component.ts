@@ -23,6 +23,8 @@ export class AnnexureComponent implements OnInit {
   isSubmitted=false;
   productData:any;
   resp2:any;
+  resp7:any;
+  psData:any;
   anData:any;
   resp4:any;
   uniqueId1:any;
@@ -31,6 +33,7 @@ export class AnnexureComponent implements OnInit {
   resp6:any;
   poData:any;
   prodInfo:any;
+  prodInfoqty:any;
   adData1:any;
   uniqueId:any;
   products:FormArray;
@@ -54,7 +57,11 @@ export class AnnexureComponent implements OnInit {
   dataDeactive='Deactive';
   totalLength:any=[];
   areadata:any=[];
-
+  area:any=0;
+  flag:boolean=false;
+  prodInfoarea:any=0;
+  selectProdId:any;
+  totaldata:any=[];
   constructor(
     private activatedroute:ActivatedRoute, 
     private annexureservice:AnnexureService,
@@ -70,7 +77,7 @@ export class AnnexureComponent implements OnInit {
 
   ngOnInit(): void {
     this.poid=this.activatedroute.snapshot.params.id;
-    console.log(this.poid,"project ORder id");
+    console.log(this.poid,"purchase ORder id");
     // this.getpoData();
     this.annexureservice.getannexureby_poid(this.poid).subscribe(res=>{
       this.resp=res;
@@ -85,7 +92,8 @@ export class AnnexureComponent implements OnInit {
       this.resp=res;
       this.poData=this.resp.data.results[0];
       this.prodInfo=this.poData.productinfo;
-      console.log("Getting res",this.prodInfo);
+      // this.prodInfoqty=this.poData.productinfo.purchase_order_specified_product_quantity;
+      console.log("Getting prodInfoqty",this.prodInfo);
     })
     this.formAddEdit=this.formBuilder.group({
       'products':this.formBuilder.array([this.createProducts()]),
@@ -243,6 +251,16 @@ export class AnnexureComponent implements OnInit {
       event.confirm.reject();
     }
   }
+  changeprod(e:any){
+    console.log("Getting selected id", e);
+      this.selectProdId=e;
+      this.poservice.getpurchase_orderbyproductid(e).subscribe(res=>{
+      this.resp7=res;
+      this.prodInfoarea=this.resp7.area;
+      this.prodInfoqty=this.resp7.qty - this.prodInfoarea;
+      console.log("Getting product qty Data", this.prodInfoarea)
+    })
+  }
   private showToast(type: NbComponentStatus, title: string, body: string) {
     const config = {
       status: type,
@@ -271,70 +289,96 @@ export class AnnexureComponent implements OnInit {
 
   findArea(){
     this.areadata=[];
+    this.totaldata=[];
     this.formAddEdit.get('products').value.forEach((element,i) => {
       if(element.module != null && this.totalLength.length != 0){
-        this.areadata.push((parseFloat(element.module) * parseFloat(this.totalLength[i]))/100)
-        // get('total_length').patchValue()
+        var sum = ((parseFloat(element.module) * parseFloat(this.totalLength[i]))/100);
+        this.areadata.push(sum);
+        this.totaldata.push({
+          "prodid":element.product_id,
+          "sum":sum
+        });
       }else{
-        this.areadata.push('')
+        this.areadata.push('');
+        this.totaldata.push({
+          "prodid":element.product_id,
+          "sum":sum
+        });
       }
-      
+    });
+    this.area=0;
+    this.totaldata.forEach(element => {
+      console.log("Geting selected Prod", this.selectProdId , element.prodid , element.sum);
+      if(this.selectProdId == element.prodid){
+        this.area=this.area+ element.sum
+        console.log("total area", this.area);
+        if(this.area>this.prodInfoqty){
+          this.flag=true;
+          }else{
+            this.flag=false;
+          }
+      }
     });
 }
 
 async onSubmit(ref:any){
   console.log("Clicked on submit");
   this.isSubmitted = true;
-  if (this.formAddEdit.invalid) {
-    console.log("form add edit invalid",this.formAddEdit.invalid);
-    return;
-  }
-  else{
-    console.log("inside else");
-    var prodinfo=[];
-      this.formAddEdit.get('products').value.forEach(x => {
-        prodinfo.push({
-          product_id:parseInt(x.product_id),
-          length:parseFloat(x.length),
-          quantity:parseFloat(x.quantity),
-          total_length:parseFloat(x.total_length),
-          module:parseFloat(x.module),
-          area:parseFloat(x.area)
-        })
-      });
-    // for(var i=0;i<this.formAddEdit.value.product_name.length;i++){
-    //   this.formAddEdit.value.product_name[i]=parseInt(this.formAddEdit.value.product_name[i])
-    // }
-    if(!this.uniqueId1){
-      var body={
-        "purchase_order_id":this.poid,
-        "productinfo":prodinfo
-      }
-      console.log(body,"body");  
-      this.adservice.createAnnexure_details(body).subscribe(res=>{
-        this.showToast(this.success_status, this.title, this.add_success_content);
-        ref.close();
-        this.ngOnInit();
-      },err=>{
-        this.showToast(this.failure_status, this.title, this.add_failure_content);
-        this.ngOnInit();
-      });
+  if(this.flag==false){
+    if (this.formAddEdit.invalid) {
+      console.log("form add edit invalid",this.formAddEdit.invalid);
+      return;
     }
     else{
-      var bo={
-        "productinfo":prodinfo,
-        "annexure_id":this.uniqueId1
+      console.log("inside else");
+      var prodinfo=[];
+        this.formAddEdit.get('products').value.forEach(x => {
+          prodinfo.push({
+            product_id:parseInt(x.product_id),
+            length:parseFloat(x.length),
+            quantity:parseFloat(x.quantity),
+            total_length:parseFloat(x.total_length),
+            module:parseFloat(x.module),
+            area:parseFloat(x.area)
+          })
+        });
+      // for(var i=0;i<this.formAddEdit.value.product_name.length;i++){
+      //   this.formAddEdit.value.product_name[i]=parseInt(this.formAddEdit.value.product_name[i])
+      // }
+      if(!this.uniqueId1){
+        var body={
+          "purchase_order_id":this.poid,
+          "productinfo":prodinfo
+        }
+        console.log(body,"body");  
+        this.adservice.createAnnexure_details(body).subscribe(res=>{
+          this.showToast(this.success_status, this.title, this.add_success_content);
+          ref.close();
+          this.ngOnInit();
+        },err=>{
+          this.showToast(this.failure_status, this.title, this.add_failure_content);
+          this.ngOnInit();
+        });
       }
-      this.adservice.updateAnnexure_details(bo).subscribe(res=>{
-        this.resp3 = res;
-        this.showToast(this.success_status, this.title, this.edit_success_content);
-        ref.close();
-        this.ngOnInit();
-        this.uniqueId='';
-      },(err)=>{
-        this.showToast(this.failure_status, this.title, this.edit_failure_content);
-      });
-    }       
+      else{
+        var bo={
+          "productinfo":prodinfo,
+          "annexure_id":this.uniqueId1
+        }
+        this.adservice.updateAnnexure_details(bo).subscribe(res=>{
+          this.resp3 = res;
+          this.showToast(this.success_status, this.title, this.edit_success_content);
+          ref.close();
+          this.ngOnInit();
+          this.uniqueId='';
+        },(err)=>{
+          this.showToast(this.failure_status, this.title, this.edit_failure_content);
+        });
+      }       
+    }
+  }
+  else{
+     this.showToast('danger', 'Area Exceeds the total Area', 'Please Input lower amount for area as it exceeds the total quantity mentioned in Purchase Order');
   }
 }
 

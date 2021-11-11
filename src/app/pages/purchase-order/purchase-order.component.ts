@@ -74,6 +74,8 @@ export class PurchaseOrderComponent implements OnInit {
     this.proservice.getprojectorder().subscribe(res=>{
       this.resp9=res;
       this.proData=this.resp9.data.results;
+      console.log("proData",this.proData);
+      
     })
     this.poservice.getunit().subscribe(res=>{
       this.resp2=res;
@@ -89,6 +91,16 @@ export class PurchaseOrderComponent implements OnInit {
       this.supData=this.resp3.data.results;
       console.log(this.supData,"Sup data");
     });
+    this.formAddEdit=this.formBuilder.group({
+      'project_order_id':['',[Validators.required]],
+      'po_number':['',[Validators.required]],
+      'purchase_order_date':['',[Validators.required]],
+      'purchase_order_description':['',[Validators.required]],
+      'site_id':['',[Validators.required]],
+      'supplier_id':['',[Validators.required]],
+      'purchase_order_status':[],
+      'products':this.formBuilder.array([this.createProducts()]),
+    })
     this.poservice.getpurchaseorder().subscribe(res=>{
       this.resp5=res;
       this.poData=this.resp5.data.results;
@@ -101,16 +113,6 @@ export class PurchaseOrderComponent implements OnInit {
           element.purchase_order_status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'project_order_id':['',[Validators.required]],
-        'po_number':['',[Validators.required]],
-        'purchase_order_date':['',[Validators.required]],
-        'purchase_order_description':['',[Validators.required]],
-        'site_id':['',[Validators.required]],
-        'supplier_id':['',[Validators.required]],
-        'purchase_order_status':[],
-        'products':this.formBuilder.array([this.createProducts()]),
-      })
       console.log(this.formAddEdit,"formAddEdor");
       
       this.source.load(this.poData);
@@ -275,7 +277,7 @@ export class PurchaseOrderComponent implements OnInit {
   }
   
   open1(dialog:TemplateRef<any>){
-    this.formAddEdit.reset();
+    // this.formAddEdit.reset();
     this.ds.open(dialog);
   }
   

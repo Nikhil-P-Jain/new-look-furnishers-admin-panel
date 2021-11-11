@@ -23,7 +23,7 @@
             <div class="col-sm-4">
                 <nb-select formControlName="project_order_id" placeholder="Select Project" style="padding: 0;" [ngClass]="{'is-invalid': isSubmitted && f.project_order_id.errors}" class="col-md-12">
                     <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
-                    <nb-option *ngFor="let order of poData" value={{order.project_order_id}} >{{order.project_lead_name}}</nb-option>
+                    <nb-option *ngFor="let order of proData" value={{order.project_order_id}} >{{order.project_lead_name}}</nb-option>
                 </nb-select>
                 <div *ngIf="isSubmitted && f.project_order_id.errors" class="text-danger">
                      <div *ngIf="f.project_order_id.errors.required">This field is required</div>
@@ -125,3 +125,4 @@
     </nb-card-footer>
     </nb-card>
 </ng-template>
+

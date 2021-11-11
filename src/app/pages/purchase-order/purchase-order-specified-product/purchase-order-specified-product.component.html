@@ -11,3 +11,41 @@
       <!-- <ng2-smart-table></ng2-smart-table> -->
     </nb-card-body>
 </nb-card>
+<button class="btn btn-success" ngxPrint printTitle="PurchaseOrder" printSectionId="content">Print</button>
+<div #content id="content">
+<table style="width: 100%;" *ngIf="poData">
+  <tbody>
+    <tr>
+      <td style="text-align: center;" colspan="4">Purchase Order</td>
+    </tr>
+    
+    <tr>
+      <td style="border-right: 0px;" colspan="2">{{poData.po_number}}</td>
+      <td style="text-align: right; border-left: 0px;" colspan="2">{{poData.purchase_order_date}}</td>
+    </tr>
+    <tr>
+      <td colspan="4">To,<br>{{poData.supplier_name}}<br><br>Dear Sir,<br>We are pleased to place an order on you for
+        <span *ngFor="let dd of prodInfo"><strong>{{dd.product_name}} &nbsp; &nbsp;</strong></span></td>
+    </tr>
+    <tr>
+      <td>Sr. No.</td>
+      <td>Particulars</td>
+      <td>Unit</td>
+      <td>Quantity</td>
+    </tr>
+    <tr *ngFor="let daat of poData.productinfo;let i=index">
+      <td>{{i+1}}</td>
+      <td>{{daat.product_name}}<br>{{daat.product_specification_name}}</td>
+      <td>{{daat.unit_name}}</td>
+      <td>{{daat.purchase_order_specified_product_quantity}}</td>
+    </tr>
+    <tr>
+      <td colspan="2">Billing Address/ Corresponance Address<br>New Look Furnishers<br>Plot No.6, New corporation Colony,<br>North Ambhajhari Road, Nagpur-440010.<br>GST No. 27AAIFN5742L1ZT</td>
+      <td colspan="2">Dispatch Address<br>{{poData.site_name}}<br>{{poData.site_address}}</td>
+    </tr>
+    <tr>
+      <td style="text-align: left;" colspan="4">For New Look Furnishers</td>
+    </tr>
+  </tbody>
+</table>
+</div>
