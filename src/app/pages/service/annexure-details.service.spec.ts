@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { AnnexureDetailsService } from './annexure-details.service';
+import { Annexure_detailsDetailsService } from './annexure-details.service';
 
 describe('AnnexureDetailsService', () => {
-  let service: AnnexureDetailsService;
+  let service: Annexure_detailsDetailsService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(AnnexureDetailsService);
+    service = TestBed.inject(Annexure_detailsDetailsService);
   });
 
   it('should be created', () => {

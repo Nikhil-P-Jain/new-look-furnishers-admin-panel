@@ -371,6 +371,16 @@ export class ProjectOrderComponent implements OnInit {
   closeHandle(ref:any){
     ref.close();
     this.uniqueId='';
+    this.formAddEdit=this.formBuilder.group({
+      // 'project_name':[''],
+      // 'project_quotation_id':['',[Validators.required]],
+      'project_quotation_id':[''],
+      'project_order_date':['',[Validators.required]],
+      'project_order_description':['',[Validators.required]],
+      'site_id':['',[Validators.required]],
+      'project_order_status':[],
+      'products':this.formBuilder.array([this.createProducts()]),
+    })
     this.formAddEdit.reset();
   }
   

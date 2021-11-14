@@ -4,6 +4,10 @@
     "outDir": "../out-tsc/app",
     "baseUrl": "./"
   },
+  // "angularCompilerOptions": {
+  //   "strictTemplates": true,
+  //   "preserveWhitespaces": true,
+  //},
   "files": [
     "main.ts",
     "polyfills.ts"

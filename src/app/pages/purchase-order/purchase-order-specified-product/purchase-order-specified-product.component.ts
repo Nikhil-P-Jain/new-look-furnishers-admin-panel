@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PurchaseOrderServiceService } from '../../service/purchase-order-service.service';
+import jspdf from 'jspdf';
+import html2canvas from 'html2canvas';
+import { NbDialogService } from '@nebular/theme';
 
 @Component({
   selector: 'ngx-purchase-order-specified-product',
@@ -14,10 +17,14 @@ export class PurchaseOrderSpecifiedProductComponent implements OnInit {
   prodInfo:any;
   constructor(
     private activatedroute:ActivatedRoute, 
+    private ds:NbDialogService,
     private poservice:PurchaseOrderServiceService
 
   ) { }
-
+  open(dialog: TemplateRef<any>) {
+    this.ds.open(dialog, {
+    });
+  }
   ngOnInit(): void {
     this.poid=this.activatedroute.snapshot.params.id;
     console.log(this.poid,"project ORder id");
@@ -60,4 +67,23 @@ export class PurchaseOrderSpecifiedProductComponent implements OnInit {
       console.log("Getting res",this.poData);
     })
   }
+
+  public convetToPDF(){
+    var data = document.getElementById('content');
+    html2canvas(data).then(canvas => {
+    // Few necessary setting options
+    var imgWidth = 208;
+    var pageHeight = 295;
+    var imgHeight = canvas.height * imgWidth / canvas.width;
+    var heightLeft = imgHeight;
+    
+    const contentDataURL = canvas.toDataURL('image/png')
+    let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+    var position = 0;
+    pdf.addImage(contentDataURL, 'PNG', 1, position, imgWidth, imgHeight)
+    pdf.save('Purchase-Order.pdf'); // Generated PDF
+  });
+}
+
+
 }

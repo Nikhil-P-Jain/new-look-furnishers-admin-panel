@@ -395,6 +395,16 @@ export class PurchaseOrderComponent implements OnInit {
   closeHandle(ref:any){
     ref.close();
     this.uniqueId='';
+    this.formAddEdit=this.formBuilder.group({
+      'project_order_id':['',[Validators.required]],
+      'po_number':['',[Validators.required]],
+      'purchase_order_date':['',[Validators.required]],
+      'purchase_order_description':['',[Validators.required]],
+      'site_id':['',[Validators.required]],
+      'supplier_id':['',[Validators.required]],
+      'purchase_order_status':[],
+      'products':this.formBuilder.array([this.createProducts()]),
+    })
     this.formAddEdit.reset();
   }
   

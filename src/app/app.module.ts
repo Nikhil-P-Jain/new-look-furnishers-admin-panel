@@ -91,7 +91,8 @@ const formSetting: any = {
   ],
   providers: [
     // ...
-    AuthGuard
+    AuthGuard,
+    NgxPrintModule
   ],
   bootstrap: [AppComponent],
 })

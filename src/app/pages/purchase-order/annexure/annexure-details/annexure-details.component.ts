@@ -1,8 +1,12 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus, NbToastrService, NbDialogService } from '@nebular/theme';
+import { AnyTxtRecord } from 'dns';
+import html2canvas from 'html2canvas';
+import jspdf from 'jspdf';
 import { LocalDataSource } from 'ng2-smart-table';
+import { AccessoriesService } from '../../../service/accessories.service';
 import { Annexure_detailsDetailsService } from '../../../service/annexure-details.service';
 import { ProductService } from '../../../service/product.service';
 
@@ -14,13 +18,22 @@ import { ProductService } from '../../../service/product.service';
 export class AnnexureDetailsComponent implements OnInit {
   isSubmitted=false;
   formAddEdit:FormGroup;
+  accessories:FormArray;
   plData:any;
   plData1:any;
   productData:any;
   userData:any;
   resp:any;
+  date1:any;
   resp1:any;
   resp3:any;
+  resp4:any;
+  resp5:any;
+  acData:any;
+  acData1:any;
+  resp9:any;
+  pdfData:any;
+  acData2:any;
   resp2:any;
   // public msg1="OOOO";
   public event1:any;
@@ -32,7 +45,7 @@ export class AnnexureDetailsComponent implements OnInit {
   preventDuplicates = false;
   success_status: NbComponentStatus = 'success';
   failure_status: NbComponentStatus = 'danger';
-  title='Annexure Details';
+  title='Accessories Details';
   edit_success_content='Edited Successfully!';
   edit_failure_content='Could not be edited!';
   delete_success_content='Deleted Successfully!';
@@ -42,11 +55,11 @@ export class AnnexureDetailsComponent implements OnInit {
   dataActive='Active';
   dataDeactive='Deactive';
   uniqueId:any;
+  totalLength:any=[];
+  areadata:any=[];
+   source: LocalDataSource = new LocalDataSource();
+  source1: LocalDataSource = new LocalDataSource();
   
-
-  get f(){
-    return this.formAddEdit.controls;
-  }
   
   poid:any;
   poData:any;
@@ -56,6 +69,7 @@ export class AnnexureDetailsComponent implements OnInit {
     private adservice:Annexure_detailsDetailsService,
     private toastrService: NbToastrService,
     private formBuilder: FormBuilder,
+    private acservice:AccessoriesService,
     private productservice:ProductService,
     private ds:NbDialogService,
   ) { }
@@ -63,7 +77,7 @@ export class AnnexureDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.isSubmitted=false;
     this.poid=this.activatedroute.snapshot.params.id;
-    console.log(this.poid,"purchase ORder id");
+    console.log(this.poid,"annexure id");
     // this.getpoData();
     this.adservice.getannexure_detailsby_annexure_id(this.poid).subscribe(res=>{
       this.resp=res;
@@ -71,13 +85,59 @@ export class AnnexureDetailsComponent implements OnInit {
       console.log(this.poData,"PoData");
       
     })  
-    this.productservice.getproduct().subscribe(res=>{
-      this.resp1=res;
-      this.productData=this.resp1.data.results;
+    this.acservice.getaccessories(this.poid).subscribe(res=>{
+      this.resp3=res;
+      this.acData=this.resp3.data.results;
+      console.log(this.acData,"acData");
+    })
+    this.formAddEdit=this.formBuilder.group({
+      // 'accessories_name':['',[Validators.required]],
+      // 'accessories_quantity':['',[Validators.required]],
+      // 'accessories_length':['',[Validators.required]],
+      // 'accessories_total_length':['',[Validators.required]],
+      // 'accessories_module':['',[Validators.required]],
+      // 'accessories_area':['',[Validators.required]],
+      'accessories':this.formBuilder.array([this.createAccessories()]),
+    })
+    this.adservice.get_annexure_details_json(this.poid).subscribe(res=>{
+      this.resp9=res;
+      this.pdfData=this.resp9.data.results[0];
+      var splitted = this.pdfData.created_date.split(" ",2); 
+      this.date1=splitted[0];
+      console.log(this.date1,"date");
       
-      console.log(this.productData,"Product data");
-    });
+      var pdfinfo=this.pdfData.prodinfo;
+      console.log(pdfinfo,"pdfData");
+      
+    })
+
     this.source.load(this.poData);
+    this.source1.load(this.acData);
+
+  }
+  createAccessories():FormGroup{
+    return this.formBuilder.group({
+      accessories_name:'',
+      accessories_quantity:'',
+      accessories_length:'',
+      accessories_total_length:'',
+      accessories_module:'',
+      accessories_area:'',
+    })
+  }
+  get accessories1():FormArray{
+    return this.formAddEdit.get('accessories') as FormArray;
+  }
+  addAccessory(){
+    this.accessories=this.formAddEdit.get('accessories') as FormArray;
+    this.accessories.push(this.createAccessories());
+    }
+  removeAccessory()
+  {
+    (this.formAddEdit.get('accessories') as FormArray).removeAt(length-1);
+  }
+  get f(){
+    return this.formAddEdit.controls;
   }
 
   settings = {
@@ -130,131 +190,204 @@ export class AnnexureDetailsComponent implements OnInit {
     //  },
    },
  };
- source: LocalDataSource = new LocalDataSource();
+ settings1 = {
+  mode: 'external',
+  actions:{edit:false,},
+    add: {
+      addButtonContent: '<i class="nb-edit"></i>',
+      createButtonContent: '<i class="nb-checkmark"></i>',
+      cancelButtonContent: '<i class="nb-close"></i>',
+      confirmCreate:true,
+    },
+    delete: {
+      deleteButtonContent: '<i class="nb-trash"></i>',
+      confirmDelete: true,
+    },
+  columns: {
+  accessories_name: {
+     title: 'Accessories',
+     type: 'string',
+   },
+   accessories_quantity:{
+     title:'Quantity',
+     type:'string'
+   },
+   accessories_length:{
+     title:'Length',
+     type:'string'
+   },
+   accessories_total_length:{
+    title:'Total Length',
+    type:'string'
+  },
+  accessories_module:{
+    title:'Module',
+    type:'string'
+  },
+  accessories_area:{
+    title:'Area',
+    type:'string'
+  },
+  created_date:{
+    title:'Created Date',
+    type:'string'
+  },
+  updated_date: {
+    title: 'Updated Date',
+    type: 'string',
+  },
+ },
+};
 
+ open1(dialog:TemplateRef<any>){
+  // this.formAddEdit.reset();
+  this.ds.open(dialog);
+}
+
+
+  
   open2(dialog: TemplateRef<any>,event:any) {
-    console.log("open2 function called");
-    console.log(event, "event inside dailog");
-    this.uniqueId=event.data.project_lead_id;
-    this.adservice.getAnnexure_detailsbyid(this.uniqueId).subscribe(res=>{
-      this.resp2=res;
-      this.plData1=this.resp2.data.results[0];
-      console.log("Getting res",this.plData1);
-      this.formAddEdit.reset({
-        'project_lead_name':this.plData1.project_lead_name,
-        'architect_name':this.plData1.architect_name,
-        'department_name':this.plData1.department_name,
-        'project_value':this.plData1.project_value,
-        'user_id':JSON.stringify(this.plData1.user_id),
-        'product_name':this.plData1.product_id,
-        'project_lead_remarks':this.plData1.project_lead_remarks,
-        'project_current_status':this.plData1.project_current_status,
-        'order_status':this.plData1.order_status,
-        'project_lead_date':this.plData1.project_lead_date,
-        'status':this.plData1.status==0?"Deactive":"Active"
-      })
+    // console.log("open2 function called");
+    // console.log(event, "event inside dailog");
+    this.uniqueId=event.annexure_id;
+    // console.log(this.uniqueId1,"uid1");
+    
+    this.acservice.getaccessoriesbyid(this.uniqueId).subscribe(res=>{
+      this.resp5=res;
+      this.acData2=this.resp5.data.results;
+      var acinfo=this.acData2;
+      console.log("Getting res11",acinfo);
+      for(var i=1;i<acinfo.length;i++){
+        this.accessories1.push(this.createAccessories());
+      }
+      this.totalLength=[];
+      this.areadata=[];
+      for(var j=0;j<this.accessories1.length;j++){
+              this.accessories1.controls[j].get('accessories_name').patchValue(acinfo[j].accessories_name);
+              this.accessories1.controls[j].get('accessories_length').patchValue(acinfo[j].accessories_length);
+              this.accessories1.controls[j].get('accessories_quantity').patchValue(acinfo[j].accessories_quantity);
+              // this.accessories1.controls[j].get('accessories_total_length').patchValue(acinfo[j].accessories_total_length);
+              this.accessories1.controls[j].get('accessories_module').patchValue(acinfo[j].accessories_module);
+              this.totalLength.push(acinfo[j].accessories_total_length);
+              this.areadata.push(acinfo[j].accessories_area);
+              // this.accessories1.controls[j].get('accessories_area').patchValue(acinfo[j].accessories_area);
+              // this.accessories1.controls[j].get('total_area').patchValue(acinfo[j].total_area);
+      }
       console.log(this.formAddEdit,"formaddedit");
     })
     this.ds.open(dialog);
   }
-  
-  open1(dialog:TemplateRef<any>){
-    this.formAddEdit.reset();
-    this.ds.open(dialog);
+
+  open(dialog: TemplateRef<any>) {
+    this.ds.open(dialog, {
+    });
   }
 
-  deleteProjectLead(event) {
-    console.log("ID",event.data);
-    if(window.confirm('Are you sure you want to delete?')) {
-      this.adservice.deleteAnnexure_details(event.data.annexure_details_id).subscribe(res=>{
-        this.resp=res;
-        if(this.resp.success==1){
-          this.showToast(this.success_status, this.title, this.delete_success_content);
-          this.ngOnInit();
-        }
-        else{
-          this.showToast(this.failure_status, this.title, this.delete_failure_content);
-        }
-      },
-      (err)=>{
-        this.showToast(this.failure_status, this.title, this.edit_failure_content);
-      })
+  findLength(){
+    this.totalLength=[];
+    this.formAddEdit.get('accessories').value.forEach((element,i) => {
+      if(element.accessories_length != null && element.accessories_quantity != null){
+        this.totalLength.push((parseFloat(element.accessories_length) * parseFloat(element.accessories_quantity))/1000)
+        // get('total_length').patchValue()
+      }else{
+        this.totalLength.push('')
+      }
+  
+    });
+}
+
+findArea(){
+  this.areadata=[];
+  this.formAddEdit.get('accessories').value.forEach((element,i) => {
+    if(element.accessories_module != null && this.totalLength.accessories_length != 0){
+      var sum = ((parseFloat(element.accessories_module) * parseFloat(this.totalLength[i]))/1000);
+      this.areadata.push(sum);
+    }
+  });
+}
+
+
+async onSubmit(ref:any){
+  console.log("Clicked on submit");
+  this.isSubmitted = true;
+    if (this.formAddEdit.invalid) {
+      console.log("form add edit invalid",this.formAddEdit.invalid);
+      return;
     }
     else{
-      event.confirm.reject();
+      console.log("inside else");
+      var acinfo=[];
+        this.formAddEdit.get('accessories').value.forEach(x => {
+          acinfo.push({
+            accessories_name:x.accessories_name,
+            accessories_length:parseFloat(x.accessories_length),
+            accessories_quantity:parseFloat(x.accessories_quantity),
+            accessories_total_length:parseFloat(x.accessories_total_length),
+            accessories_module:parseFloat(x.accessories_module),
+            accessories_area:parseFloat(x.accessories_area)
+          })
+        });
+      // for(var i=0;i<this.formAddEdit.value.product_name.length;i++){
+      //   this.formAddEdit.value.product_name[i]=parseInt(this.formAddEdit.value.product_name[i])
+      // }
+      if(!this.uniqueId){
+        var body={
+          "annexure_id":this.poid,
+          "acinfo":acinfo
+        }
+        console.log(body,"body");  
+        this.acservice.createaccessories(body).subscribe(res=>{
+          this.showToast(this.success_status, this.title, this.add_success_content);
+          ref.close();
+          this.ngOnInit();
+        },err=>{
+          this.showToast(this.failure_status, this.title, this.add_failure_content);
+          this.ngOnInit();
+        });
+      }
+      else{
+        var bo={
+          "acinfo":acinfo,
+          "annexure_id":this.uniqueId
+        }
+        console.log(bo,"bo");
+        
+       
+        this.acservice.updateaccessories(bo).subscribe(res=>{
+          this.resp3 = res;
+          this.showToast(this.success_status, this.title, this.edit_success_content);
+          ref.close();
+          this.ngOnInit();
+          this.uniqueId='';
+        },(err)=>{
+          this.showToast(this.failure_status, this.title, this.edit_failure_content);
+        });
+      }       
     }
+}
+deleteAccessories(event) {
+  console.log("ID",event.data);
+  if(window.confirm('Are you sure you want to delete?')) {
+    this.acservice.delete_accessories(event.data.accessories_id).subscribe(res=>{
+      this.resp=res;
+      if(this.resp.success==1){
+        this.showToast(this.success_status, this.title, this.delete_success_content);
+        this.ngOnInit();
+      }
+      else{
+        this.showToast(this.failure_status, this.title, this.delete_failure_content);
+        this.ngOnInit();
+      }
+    },
+    (err)=>{
+      this.showToast(this.failure_status, this.title, this.delete_failure_content);
+      this.ngOnInit();
+    })
   }
-
-  // async onSubmit(ref:any){
-  //   console.log("Clicked on submit");
-  //   this.isSubmitted = true;
-  //   if (this.formAddEdit.invalid) {
-  //     console.log("form add edit invalid",this.formAddEdit.invalid);
-  //     return;
-  //   }
-  //   else{
-  //     console.log("inside else");
-  //     if(this.formAddEdit.value.status==this.dataActive){
-  //       this.formAddEdit.value.status=1;
-  //     }
-  //     else if(this.formAddEdit.value.status==this.dataDeactive){
-  //       this.formAddEdit.value.status=0;
-  //     }
-  //     for(var i=0;i<this.formAddEdit.value.product_name.length;i++){
-  //       this.formAddEdit.value.product_name[i]=parseInt(this.formAddEdit.value.product_name[i])
-  //     }
-
-  //     if(!this.uniqueId){
-  //         var body={
-  //         "project_lead_name":this.formAddEdit.value.project_lead_name,
-  //         "architect_name":this.formAddEdit.value.architect_name,
-  //         "department_name":this.formAddEdit.value.department_name,
-  //         "project_value":this.formAddEdit.value.project_value,
-  //         "user_id":this.formAddEdit.value.user_id,
-  //         "product_id":this.formAddEdit.value.product_name,
-  //         "project_lead_remarks":this.formAddEdit.value.project_lead_remarks,
-  //         "project_current_status":this.formAddEdit.value.project_current_status,
-  //         "order_status":this.formAddEdit.value.order_status,
-  //         "project_lead_date":this.formAddEdit.value.project_lead_date,
-  //         "status":this.formAddEdit.value.status,
-  //       }
-  //       console.log(body,"body");  
-  //       this.plservice.createprojectlead(body).subscribe(res=>{
-  //         this.showToast(this.success_status, this.title, this.add_success_content);
-  //         ref.close();
-  //         this.ngOnInit();
-  //       },err=>{
-  //         this.showToast(this.failure_status, this.title, this.add_failure_content);
-  //         this.ngOnInit();
-  //       });
-  //     }
-  //     else{
-  //       var bo={
-  //         "project_lead_name":this.formAddEdit.value.project_lead_name,
-  //         "architect_name":this.formAddEdit.value.architect_name,
-  //         "department_name":this.formAddEdit.value.department_name,
-  //         "project_value":this.formAddEdit.value.project_value,
-  //         "user_id":this.formAddEdit.value.user_id,
-  //         "product_id":this.formAddEdit.value.product_name,
-  //         "project_lead_remarks":this.formAddEdit.value.project_lead_remarks,
-  //         "project_current_status":this.formAddEdit.value.project_current_status,
-  //         "order_status":this.formAddEdit.value.order_status,
-  //         "project_lead_date":this.formAddEdit.value.project_lead_date,
-  //         "status":this.formAddEdit.value.status,
-  //         "project_lead_id":this.uniqueId
-  //       }
-  //       this.plservice.updateprojectlead(bo).subscribe(res=>{
-  //         this.resp3 = res;
-  //         this.showToast(this.success_status, this.title, this.edit_success_content);
-  //         ref.close();
-  //         this.ngOnInit();
-  //         this.uniqueId='';
-  //       },(err)=>{
-  //         this.showToast(this.failure_status, this.title, this.edit_failure_content);
-  //       });
-  //     }       
-  //   }
-  // }
+  else{
+    event.confirm.reject();
+  }
+}
 
   private showToast(type: NbComponentStatus, title: string, body: string) {
     const config = {
@@ -272,6 +405,31 @@ export class AnnexureDetailsComponent implements OnInit {
   closeHandle(ref:any){
     ref.close();
     this.uniqueId='';
+    this.totalLength=[];
+    this.areadata=[];
+    this.acData1=[];
+    this.formAddEdit=this.formBuilder.group({
+      'accessories':this.formBuilder.array([this.createAccessories()]),
+    })
     this.formAddEdit.reset();
   }
+  public convetToPDF(){
+    var data = document.getElementById('content');
+    html2canvas(data).then(canvas => {
+    // Few necessary setting options
+    var imgWidth = 208;
+    var pageHeight = 295;
+    var imgHeight = canvas.height * imgWidth / canvas.width;
+    var heightLeft = imgHeight;
+    
+    const contentDataURL = canvas.toDataURL('image/png')
+    let pdf = new jspdf('p', 'mm', 'a4'); // A4 size page of PDF
+    var position = 0;
+    pdf.addImage(contentDataURL, 'PNG', 1, position, imgWidth, imgHeight)
+    pdf.save('Annexure.pdf'); // Generated PDF
+  });
+}
+
+
+
 }

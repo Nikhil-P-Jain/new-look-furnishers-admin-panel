@@ -1,9 +1,10 @@
-
-
 <nb-card>
-    <nb-card-header>
-      Specified Products for Purchase Order id: {{poid}}
-    </nb-card-header>
+    <nb-card-header class="d-flex justify-content-between">
+      <span>Specified Products for Purchase Order id: {{poid}}</span>
+      <button nbButton status="primary" (click)="open(dialog)">View PO</button>
+      <!-- <button nbButton (click)="open2(dialog)">Open Dialog with template</button> -->
+  </nb-card-header>
+  
   
     <nb-card-body>
       <ng2-smart-table [source]="prodInfo" [settings]="settings"> -->
@@ -11,41 +12,57 @@
       <!-- <ng2-smart-table></ng2-smart-table> -->
     </nb-card-body>
 </nb-card>
-<button class="btn btn-success" ngxPrint printTitle="PurchaseOrder" printSectionId="content">Print</button>
-<div #content id="content">
-<table style="width: 100%;" *ngIf="poData">
-  <tbody>
-    <tr>
-      <td style="text-align: center;" colspan="4">Purchase Order</td>
-    </tr>
-    
-    <tr>
-      <td style="border-right: 0px;" colspan="2">{{poData.po_number}}</td>
-      <td style="text-align: right; border-left: 0px;" colspan="2">{{poData.purchase_order_date}}</td>
-    </tr>
-    <tr>
-      <td colspan="4">To,<br>{{poData.supplier_name}}<br><br>Dear Sir,<br>We are pleased to place an order on you for
-        <span *ngFor="let dd of prodInfo"><strong>{{dd.product_name}} &nbsp; &nbsp;</strong></span></td>
-    </tr>
-    <tr>
-      <td>Sr. No.</td>
-      <td>Particulars</td>
-      <td>Unit</td>
-      <td>Quantity</td>
-    </tr>
-    <tr *ngFor="let daat of poData.productinfo;let i=index">
-      <td>{{i+1}}</td>
-      <td>{{daat.product_name}}<br>{{daat.product_specification_name}}</td>
-      <td>{{daat.unit_name}}</td>
-      <td>{{daat.purchase_order_specified_product_quantity}}</td>
-    </tr>
-    <tr>
-      <td colspan="2">Billing Address/ Corresponance Address<br>New Look Furnishers<br>Plot No.6, New corporation Colony,<br>North Ambhajhari Road, Nagpur-440010.<br>GST No. 27AAIFN5742L1ZT</td>
-      <td colspan="2">Dispatch Address<br>{{poData.site_name}}<br>{{poData.site_address}}</td>
-    </tr>
-    <tr>
-      <td style="text-align: left;" colspan="4">For New Look Furnishers</td>
-    </tr>
-  </tbody>
-</table>
-</div>
+
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card style="width: 1080px !important;">
+    <nb-card-header class="d-flex justify-content-between">
+      <button nbButton status="primary" (click)="convetToPDF()">Save PDF</button>
+      <!-- <button nbButton (click)="open2(dialog)">Open Dialog with template</button> -->
+    </nb-card-header>
+    <nb-card-body>
+      <div #content id="content">
+        <table style="width: 100%;" *ngIf="poData">
+          <tbody>
+            <tr>
+              <td style="text-align: center;" colspan="4"><strong>Purchase Order</strong></td>
+            </tr>
+            
+            <tr>
+              <td style="border-right: 0px;" colspan="2"><strong>{{poData.po_number}}</strong></td>
+              <td style="text-align: right; border-left: 0px;" colspan="2"><strong>{{poData.purchase_order_date}}</strong></td>
+            </tr>
+            <tr>
+              <td colspan="4"><strong>To,<br>{{poData.supplier_name}}</strong><br><br>Dear Sir,<br>We are pleased to place an order on you for
+                <span *ngFor="let dd of prodInfo"><strong>{{dd.product_name}} &nbsp; &nbsp;</strong></span></td>
+            </tr>
+            <tr style="background-color: cadetblue; font-weight: bold; color: white;">
+              <td>Sr. No.</td>
+              <td>Particulars</td>
+              <td>Unit</td>
+              <td>Quantity</td>
+            </tr>
+            <tr *ngFor="let daat of poData.productinfo;let i=index">
+              <td>{{i+1}}</td>
+              <td><strong>{{daat.product_name}}</strong><br>{{daat.product_specification_name}}</td>
+              <td>{{daat.unit_name}}</td>
+              <td>{{daat.purchase_order_specified_product_quantity}}</td>
+            </tr>
+            <tr>
+              <td colspan="2"><b><u>Billing Address/ Corresponance Address</u></b><br><strong>New Look Furnishers</strong><br>Plot No.6, New corporation Colony,<br>North Ambhajhari Road, Nagpur-440010.<br><strong>GST No. 27AAIFN5742L1ZT</strong></td>
+              <td colspan="2"><b><u>Dispatch Address</u></b><br>{{poData.site_name}}<br>{{poData.site_address}}<br><strong>Contact Person: {{poData.contact_name}} ({{poData.phone}})</strong></td>
+            </tr>
+            <tr>
+              <td style="text-align: left;" colspan="4"><br><br>For New Look Furnishers</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton (click)="ref.close()">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<!-- <button  ngxPrint printTitle="PurchaseOrder" printSectionId="content">Print</button> -->
+<!-- <button class="btn btn-success" (click)="convetToPDF()">print</button> -->

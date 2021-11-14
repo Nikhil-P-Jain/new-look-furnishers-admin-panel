@@ -192,15 +192,18 @@ export class AnnexureComponent implements OnInit {
       for(var i=1;i<adInfo.length;i++){
         this.products1.push(this.createProducts());
       }
+      this.totalLength=[];
+      this.areadata=[];
 
       for(var j=0;j<=this.products1.length;j++){
               this.products1.controls[j].get('product_id').patchValue(JSON.stringify(adInfo[j].product_id));
               this.products1.controls[j].get('length').patchValue(adInfo[j].length);
               this.products1.controls[j].get('quantity').patchValue(adInfo[j].quantity);
-              this.products1.controls[j].get('total_length').patchValue(adInfo[j].total_length);
+              // this.products1.controls[j].get('total_length').patchValue(adInfo[j].total_length);
               this.products1.controls[j].get('module').patchValue(adInfo[j].module);
-              this.products1.controls[j].get('area').patchValue(adInfo[j].area);
-              // this.products1.controls[j].get('total_area').patchValue(adInfo[j].total_area);
+              this.totalLength.push(adInfo[j].length);
+              this.areadata.push(adInfo[j].area);
+              // this.products1.controls[j].get('area').patchValue(adInfo[j].area);
       }
       console.log(this.formAddEdit,"formaddedit");
     })
@@ -278,7 +281,7 @@ export class AnnexureComponent implements OnInit {
       this.totalLength=[];
       this.formAddEdit.get('products').value.forEach((element,i) => {
         if(element.length != null && element.quantity != null){
-          this.totalLength.push(parseFloat(element.length) * parseFloat(element.quantity))
+          this.totalLength.push((parseFloat(element.length) * parseFloat(element.quantity))/1000)
           // get('total_length').patchValue()
         }else{
           this.totalLength.push('')
@@ -292,7 +295,7 @@ export class AnnexureComponent implements OnInit {
     this.totaldata=[];
     this.formAddEdit.get('products').value.forEach((element,i) => {
       if(element.module != null && this.totalLength.length != 0){
-        var sum = ((parseFloat(element.module) * parseFloat(this.totalLength[i]))/100);
+        var sum = ((parseFloat(element.module) * parseFloat(this.totalLength[i]))/1000);
         this.areadata.push(sum);
         this.totaldata.push({
           "prodid":element.product_id,
@@ -389,6 +392,9 @@ async onSubmit(ref:any){
     this.uniqueId1='';
     this.totalLength=[];
     this.areadata=[];
+    this.formAddEdit=this.formBuilder.group({
+      'products':this.formBuilder.array([this.createProducts()]),
+    })
     this.formAddEdit.reset();
   }
 

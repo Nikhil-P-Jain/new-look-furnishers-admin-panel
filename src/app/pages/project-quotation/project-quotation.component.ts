@@ -412,6 +412,20 @@ export class ProjectQuotationComponent implements OnInit {
   closeHandle(ref:any){
     ref.close();
     this.uniqueId='';
+    this.formAddEdit=this.formBuilder.group({
+      'project_lead_id':['',[Validators.required]],
+      'client_name':['',[Validators.required]],
+      'main_contractor':['',[Validators.required]],
+      'user_id':['',[Validators.required]],
+      'quotation_number':['',[Validators.required]],
+      'quotation_amount':['',[Validators.required]],
+      // 'product_name':[],
+      'remarks':['',[Validators.required]],
+      // 'order_status':['',[Validators.required]],
+      'date':['',[Validators.required]],
+      'status':[''],
+      'products':this.formBuilder.array([this.createProducts()]),
+    })
     this.formAddEdit.reset();
   }
 }

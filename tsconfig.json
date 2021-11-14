@@ -1,5 +1,6 @@
 {
   "compileOnSave": false,
+  "strict": true,
   "compilerOptions": {
     "importHelpers": true,
     "module": "es2020",
@@ -19,5 +20,10 @@
     "plugins": [
       { "name": "tslint-language-service"}
     ]
-  }
+  },
+  // "angularCompilerOptions": {
+    // "enableI18nLegacyMessageIdFormat": false,
+    // "strictInjectionParameters": true,
+    // ...
+  // }
 }
