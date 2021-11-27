@@ -65,6 +65,7 @@ export class PurchaseOrderComponent implements OnInit {
     private formBuilder: FormBuilder,) { }
   
   ngOnInit(){
+    this.poData=[];
     this.isSubmitted=false;
     this.poservice.getproduct().subscribe(res=>{
       this.resp1=res;
@@ -92,7 +93,7 @@ export class PurchaseOrderComponent implements OnInit {
       console.log(this.supData,"Sup data");
     });
     this.formAddEdit=this.formBuilder.group({
-      'project_order_id':['',[Validators.required]],
+      'project_order_id':[''],
       'po_number':['',[Validators.required]],
       'purchase_order_date':['',[Validators.required]],
       'purchase_order_description':['',[Validators.required]],
@@ -160,22 +161,13 @@ export class PurchaseOrderComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
-      New1: //or something
-      {
-        title:'Annexures',
-        type:'html',
-        valuePrepareFunction:(cell,row)=>{
-          return `<a href=http://localhost:4200/#/pages/annexure/${row.purchase_order_id}>Annexure</a>`
-          // return `<a href=http://veritrack.co.in/newlook/#/pages/annexure/${row.purchase_order_id}>Annexure</a>`
-        },
+      po_number:{
+        title: 'PO Number',
+        type:'string'
       },
       project_lead_name: {
         title: 'Project',
         type: 'string',
-      },
-      po_number:{
-        title: 'PO Number',
-        type:'string'
       },
       purchase_order_date: {
         title: 'Order Date',
@@ -197,10 +189,10 @@ export class PurchaseOrderComponent implements OnInit {
       //   title:'Product Specification',
       //   type:'string',
       // },
-      purchase_order_status: {
-        title: 'Order Status',
-        type: 'string',
-      },
+      // purchase_order_status: {
+      //   title: 'Order Status',
+      //   type: 'string',
+      // },
       purchase_order_created_date: {
         title: 'Created Date',
         type: 'string',
@@ -214,12 +206,21 @@ export class PurchaseOrderComponent implements OnInit {
       title:'Details',
       type:'html',
       valuePrepareFunction:(cell,row)=>{
-        return `<a href=http://localhost:4200/#/pages/purchase-order-details/${row.purchase_order_id}> Product Details</a>`
-        // return `<a href=http://veritrack.co.in/newlook/#/pages/purchase-order-details/${row.purchase_order_id}>Product Details</a>`
+        // return `<a href=http://localhost:4200/#/pages/purchase-order-details/${row.purchase_order_id}>Details</a>`
+        return `<a href=http://veritrack.co.in/newlook/#/pages/purchase-order-details/${row.purchase_order_id}>Details</a>`
 
       },
       filter:false       
       },
+      // New1: //or something
+      // {
+      //   title:'Annexures',
+      //   type:'html',
+      //   valuePrepareFunction:(cell,row)=>{
+      //     return `<a href=http://localhost:4200/#/pages/annexure/${row.purchase_order_id}>Annexure</a>`
+      //     // return `<a href=http://veritrack.co.in/newlook/#/pages/annexure/${row.purchase_order_id}>Annexure</a>`
+      //   },
+      // },
     },
   };
 
@@ -330,7 +331,7 @@ export class PurchaseOrderComponent implements OnInit {
         }
         if(!this.uniqueId){
           var body={
-            "project_order_id":this.formAddEdit.value.project_order_id,
+            "project_order_id":this.formAddEdit.value.project_order_id==""?0:this.formAddEdit.value.project_order_id,
             "po_number":this.formAddEdit.value.po_number,
             "purchase_order_date":this.formAddEdit.value.purchase_order_date,
             "purchase_order_description":this.formAddEdit.value.purchase_order_description,

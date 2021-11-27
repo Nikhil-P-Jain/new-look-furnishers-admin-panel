@@ -169,8 +169,8 @@ export class AnnexureComponent implements OnInit {
       title:'Details',
       type:'html',
       valuePrepareFunction:(cell,row)=>{
-        return `<a href=http://localhost:4200/#/pages/annexure-details/${row.annexure_id}>Annexure Details</a>`
-        // return `<a href=http://veritrack.co.in/newlook/#/pages/annexure-details/${row.annexure_id}>Annexure Details</a>`
+        // return `<a href=http://localhost:4200/#/pages/annexure-details/${row.annexure_id}>Annexure Details</a>`
+        return `<a href=http://veritrack.co.in/newlook/#/pages/annexure-details/${row.annexure_id}>Annexure Details</a>`
 
         },
       },
@@ -227,7 +227,7 @@ export class AnnexureComponent implements OnInit {
   // }
   
   open1(dialog:TemplateRef<any>){
-    this.formAddEdit.reset();
+    this.ngOnInit();
     this.ds.open(dialog);
   }
 
@@ -311,10 +311,10 @@ export class AnnexureComponent implements OnInit {
     });
     this.area=0;
     this.totaldata.forEach(element => {
-      console.log("Geting selected Prod", this.selectProdId , element.prodid , element.sum);
+      // console.log("Geting selected Prod", this.selectProdId , element.prodid , element.sum);
       if(this.selectProdId == element.prodid){
         this.area=this.area+ element.sum
-        console.log("total area", this.area);
+        // console.log("total area", this.area);
         if(this.area>this.prodInfoqty){
           this.flag=true;
           }else{

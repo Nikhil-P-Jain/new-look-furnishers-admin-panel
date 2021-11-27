@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
-import { NgxPrintModule } from 'ngx-print';
+
 import { AppRoutingModule } from './app-routing.module';
 import {
   NbChatModule,
@@ -36,7 +36,6 @@ const formSetting: any = {
   declarations: [AppComponent,],
   imports: [
     BrowserModule,
-    NgxPrintModule,
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
@@ -57,8 +56,8 @@ const formSetting: any = {
       strategies: [
         NbPasswordAuthStrategy.setup({
           name: 'email',
-          // baseEndpoint: 'http://apinewlook.mehtaindia.co.in/api',
-          baseEndpoint: 'http://localhost:3000/api',
+          baseEndpoint: 'http://apinewlook.mehtaindia.co.in/api',
+          // baseEndpoint: 'http://localhost:3000/api',
           token: {
             class: NbAuthJWTToken,
             key: 'data.jsontoken',
@@ -92,7 +91,6 @@ const formSetting: any = {
   providers: [
     // ...
     AuthGuard,
-    NgxPrintModule
   ],
   bootstrap: [AppComponent],
 })

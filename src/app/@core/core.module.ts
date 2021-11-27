@@ -108,7 +108,9 @@ export const NB_CORE_PROVIDERS = [
     strategies: [
       NbPasswordAuthStrategy.setup({
         name: 'email',
-        baseEndpoint: 'localhost:3000/api',
+        // baseEndpoint: 'localhost:3000/api',
+        baseEndpoint: 'http://apinewlook.mehtaindia.co.in/api',
+
 
         login: {
           endpoint: '/user/login',

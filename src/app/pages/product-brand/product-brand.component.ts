@@ -70,13 +70,13 @@ export class ProductBrandComponent implements OnInit {
           element.product_brand_status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'product_brand_name':['',[Validators.required]],
-        'product_brand_status':[]
-      })
       // console.log(res,"PERMISSION");
       this.source.load(this.pcData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      'product_brand_name':['',[Validators.required]],
+      'product_brand_status':[]
+    })
   }
 
   get f(){

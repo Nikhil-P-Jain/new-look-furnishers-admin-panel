@@ -224,7 +224,7 @@ export class ProjectLostComponent implements OnInit {
   }
   
   open1(dialog:TemplateRef<any>){
-    this.formAddEdit.reset();
+    this.ngOnInit();
     this.ds.open(dialog);
   }
 

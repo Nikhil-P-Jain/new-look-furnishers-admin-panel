@@ -81,24 +81,24 @@ export class UserComponent implements OnInit {
           element.status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'first_name':['',[Validators.required]],
-        'middle_name':[],
-        'last_name':['',[Validators.required]],
-        'address1':['',[Validators.required]],
-        'address2':[],
-        'phone':['',[Validators.required]],
-        'email':['',[Validators.required]],
-        'username':['',[Validators.required]],
-        'password':['',[Validators.required]],
-        'photo':[''],
-        'role_id':['',[Validators.required]],
-        'site_id':['',[Validators.required]],
-        'status':[]
-      })
       // console.log(res,"PERMISSION");
       this.source.load(this.userData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      'first_name':['',[Validators.required]],
+      'middle_name':[''],
+      'last_name':['',[Validators.required]],
+      'address1':['',[Validators.required]],
+      'address2':[''],
+      'phone':['',[Validators.required]],
+      'email':['',[Validators.required]],
+      'username':['',[Validators.required]],
+      'password':['',[Validators.required]],
+      'photo':[''],
+      'role_id':['',[Validators.required]],
+      'site_id':['',[Validators.required]],
+      'status':['']
+    })
   }
 
   get f(){
@@ -229,7 +229,7 @@ export class UserComponent implements OnInit {
   }
   
   open1(dialog:TemplateRef<any>){
-    this.formAddEdit.reset();
+    this.ngOnInit();
     this.ds.open(dialog);
   }
   
@@ -323,6 +323,8 @@ export class UserComponent implements OnInit {
               this.imgURL="";
               this.ngOnInit();
             },err=>{
+              console.log(err,"error");
+              
               this.showToast(this.failure_status, this.title, this.add_failure_content);
               this.ngOnInit();
             });
@@ -383,6 +385,7 @@ export class UserComponent implements OnInit {
     ref.close();
     this.uniqueId='';
     this.imgURL='';
+    this.pic='';
     this.formAddEdit.reset();
   }
 }

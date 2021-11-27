@@ -83,22 +83,22 @@ export class ProjectLeadComponent implements OnInit {
           element.status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'project_lead_name':['',[Validators.required]],
-        'architect_name':['',[Validators.required]],
-        'department_name':['',[Validators.required]],
-        'project_value':['',[Validators.required]],
-        'user_id':['',[Validators.required]],
-        'product_name':[],
-        'project_lead_remarks':['',[Validators.required]],
-        'project_current_status':['',[Validators.required]],
-        'order_status':['',[Validators.required]],
-        'project_lead_date':['',[Validators.required]],
-        'status':['']
-      })
-      console.log(this.formAddEdit,"formaddedit");
       this.source.load(this.plData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      'project_lead_name':['',[Validators.required]],
+      'architect_name':['',[Validators.required]],
+      'department_name':['',[Validators.required]],
+      'project_value':['',[Validators.required]],
+      'user_id':['',[Validators.required]],
+      'product_name':[],
+      'project_lead_remarks':['',[Validators.required]],
+      'project_current_status':['',[Validators.required]],
+      'order_status':['',[Validators.required]],
+      'project_lead_date':['',[Validators.required]],
+      'status':['']
+    })
+    console.log(this.formAddEdit,"formaddedit");
     // this.onCustomAction(this.event1);
   }
 
@@ -182,7 +182,7 @@ export class ProjectLeadComponent implements OnInit {
       title:'Details',
       type:'html',
       valuePrepareFunction:(cell,row)=>{
-        // return `<a href=http://localhost:4200/pages/project-quotation-updates/${row.project_quotation_id}>View</a>`
+        // return `<a href=http://localhost:4200/#/pages/project-lead-updates/${row.project_lead_id}>View</a>`
         return `<a href=http://veritrack.co.in/newlook/#/pages/project-lead-updates/${row.project_lead_id}>View</a>`
       },
       filter:false       
@@ -219,7 +219,7 @@ export class ProjectLeadComponent implements OnInit {
   }
   
   open1(dialog:TemplateRef<any>){
-    this.formAddEdit.reset();
+    this.ngOnInit();
     this.ds.open(dialog);
   }
 

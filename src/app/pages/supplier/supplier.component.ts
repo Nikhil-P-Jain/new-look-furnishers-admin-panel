@@ -67,19 +67,20 @@ export class SupplierComponent implements OnInit {
           element.supplier_status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'supplier_name':['',[Validators.required]],
-        'supplier_company':['',[Validators.required]],
-        'supplier_address':['',[Validators.required]],
-        'city_id':['',[Validators.required]],
-        'supplier_contact_no':['',[Validators.required]],
-        'supplier_email_id':[],
-        'supplier_gst':['',[Validators.required]],
-        'supplier_status':[]
-      })
-      // console.log(res,"PERMISSION");
       this.source.load(this.supplierData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      'supplier_name':['',[Validators.required]],
+      'supplier_company':['',[Validators.required]],
+      'supplier_address':['',[Validators.required]],
+      'city_id':['',[Validators.required]],
+      'supplier_contact_no':['',[Validators.required]],
+      'supplier_email_id':[],
+      'supplier_gst':[],
+      'supplier_status':[]
+    })
+    console.log(this.formAddEdit,"formAddedit");
+
   }
 
   get f(){
@@ -175,7 +176,7 @@ export class SupplierComponent implements OnInit {
   }
   
   open1(dialog:TemplateRef<any>){
-    this.formAddEdit.reset();
+    this.ngOnInit();
     this.ds.open(dialog);
   }
   

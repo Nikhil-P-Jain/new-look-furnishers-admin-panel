@@ -46,6 +46,7 @@ import { PurchaseOrderComponent } from './purchase-order/purchase-order.componen
 import { PurchaseOrderSpecifiedProductComponent } from './purchase-order/purchase-order-specified-product/purchase-order-specified-product.component';
 import { AnnexureComponent } from './purchase-order/annexure/annexure.component';
 import { AnnexureDetailsComponent } from './purchase-order/annexure/annexure-details/annexure-details.component';
+import { NgxPrintModule } from 'ngx-print';
 
 @NgModule({
   
@@ -60,6 +61,7 @@ import { AnnexureDetailsComponent } from './purchase-order/annexure/annexure-det
     ECommerceModule,
     NbCardModule,
     MiscellaneousModule,
+    NgxPrintModule,
     NbCheckboxModule,
     ThemeModule,
     NbInputModule,

@@ -70,7 +70,7 @@ export class ProjectLeadUpdatesComponent implements OnInit{
   ngOnInit(): void {
     this.isSubmitted=false;
 
-    console.log(this.activatedroute,"ar");
+    // console.log(this.activatedroute,"ar");
     
     this.project_lead_id=this.activatedroute.snapshot.params.id;
     console.log(this.project_lead_id,"pid");

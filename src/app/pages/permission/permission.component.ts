@@ -98,17 +98,17 @@ export class PermissionComponent implements OnInit {
           element.permission_delete=this.dataYes;
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'Role_Name':['',[Validators.required]],
-        'activities_name':['',[Validators.required]],
-        'permission_view':[],
-        'permission_create':[],
-        'permission_update':[],
-        'permission_delete':[]
-      })
       // console.log(res,"PERMISSION");
       this.source.load(this.permissionData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      'Role_Name':['',[Validators.required]],
+      'activities_name':['',[Validators.required]],
+      'permission_view':[],
+      'permission_create':[],
+      'permission_update':[],
+      'permission_delete':[]
+    })
   }
 
   get f(){

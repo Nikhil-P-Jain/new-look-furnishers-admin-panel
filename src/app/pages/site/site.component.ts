@@ -75,15 +75,15 @@ export class SiteComponent implements OnInit {
           element.site_status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'site_name':['',[Validators.required]],
-        'site_address':['',[Validators.required]],
-        'site_city_id':['',[Validators.required]],
-        'site_status':[]
-      })
       // console.log(res,"PERMISSION");
       this.source.load(this.siteData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      'site_name':['',[Validators.required]],
+      'site_address':['',[Validators.required]],
+      'site_city_id':['',[Validators.required]],
+      'site_status':[]
+    })
   }
 
   get f(){

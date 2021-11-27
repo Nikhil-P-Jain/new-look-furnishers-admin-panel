@@ -71,10 +71,10 @@
         <div class="form-group row">
           <label class="label col-sm-2 col-form-label">Vendor GST</label>
             <div class="col-sm-4">
-              <input type="text" class="form-control" nbInput shape="rectangle" formControlName="supplier_gst" class="col-md-12" placeholder="Enter GST No. of Vendor" [ngClass]="{'is-invalid': isSubmitted && f.supplier_gst.errors}">
-              <div *ngIf="isSubmitted && f.supplier_gst.errors" class="text-danger">
+              <input type="text" class="form-control" nbInput shape="rectangle" formControlName="supplier_gst" class="col-md-12" placeholder="Enter GST No. of Vendor">
+              <!-- <div *ngIf="isSubmitted && f.supplier_gst.errors" class="text-danger">
                 <div *ngIf="f.supplier_gst.errors.required">This field is required</div>
-            </div>
+            </div> -->
             </div>
             <label class="label col-sm-2 col-form-label">Vendor Status</label>
             <div class="col-sm-4">

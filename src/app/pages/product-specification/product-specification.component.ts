@@ -77,15 +77,15 @@ export class ProductSpecificationComponent implements OnInit {
           element.product_specification_status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'product_specification_name':['',[Validators.required]],
-        'product_id':['',[Validators.required]],
-        'product_brand_id':['',[Validators.required]],
-        'product_specification_status':[]
-      })
       // console.log(res,"PERMISSION");
       this.source.load(this.psData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      'product_specification_name':['',[Validators.required]],
+      'product_id':['',[Validators.required]],
+      'product_brand_id':['',[Validators.required]],
+      'product_specification_status':[]
+    })
   }
 
   loadsubproduct(event:any)

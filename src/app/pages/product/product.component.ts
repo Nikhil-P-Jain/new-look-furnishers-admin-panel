@@ -76,15 +76,15 @@ export class ProductComponent implements OnInit {
           element.product_status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'product_brand_id':['',[Validators.required]],
-        'product_name':['',[Validators.required]],
-        'category_id':['',[Validators.required]],
-        'product_status':[]
-      })
       // console.log(res,"PERMISSION");
       this.source.load(this.productData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      'product_brand_id':['',[Validators.required]],
+      'product_name':['',[Validators.required]],
+      'category_id':['',[Validators.required]],
+      'product_status':[]
+    })
   }
 
   get f(){

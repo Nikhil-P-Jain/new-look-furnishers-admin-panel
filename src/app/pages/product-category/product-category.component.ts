@@ -68,13 +68,13 @@ export class ProductCategoryComponent implements OnInit {
           element.product_category_status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'product_category_name':['',[Validators.required]],
-        'product_category_status':[]
-      })
       // console.log(res,"PERMISSION");
       this.source.load(this.pcData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      'product_category_name':['',[Validators.required]],
+      'product_category_status':[]
+    })
   }
 
   get f(){

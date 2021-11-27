@@ -16,6 +16,7 @@ import { ProductService } from '../../../service/product.service';
   styleUrls: ['./annexure-details.component.scss']
 })
 export class AnnexureDetailsComponent implements OnInit {
+  // radioGroupValue = 2;
   isSubmitted=false;
   formAddEdit:FormGroup;
   accessories:FormArray;
@@ -57,6 +58,8 @@ export class AnnexureDetailsComponent implements OnInit {
   uniqueId:any;
   totalLength:any=[];
   areadata:any=[];
+  mid:any=[];
+  ind:any=0;
    source: LocalDataSource = new LocalDataSource();
   source1: LocalDataSource = new LocalDataSource();
   
@@ -77,6 +80,7 @@ export class AnnexureDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.isSubmitted=false;
     this.poid=this.activatedroute.snapshot.params.id;
+    this.mid.splice(0,0,2);
     console.log(this.poid,"annexure id");
     // this.getpoData();
     this.adservice.getannexure_detailsby_annexure_id(this.poid).subscribe(res=>{
@@ -91,12 +95,6 @@ export class AnnexureDetailsComponent implements OnInit {
       console.log(this.acData,"acData");
     })
     this.formAddEdit=this.formBuilder.group({
-      // 'accessories_name':['',[Validators.required]],
-      // 'accessories_quantity':['',[Validators.required]],
-      // 'accessories_length':['',[Validators.required]],
-      // 'accessories_total_length':['',[Validators.required]],
-      // 'accessories_module':['',[Validators.required]],
-      // 'accessories_area':['',[Validators.required]],
       'accessories':this.formBuilder.array([this.createAccessories()]),
     })
     this.adservice.get_annexure_details_json(this.poid).subscribe(res=>{
@@ -119,6 +117,7 @@ export class AnnexureDetailsComponent implements OnInit {
     return this.formBuilder.group({
       accessories_name:'',
       accessories_quantity:'',
+      radiobtn:2,
       accessories_length:'',
       accessories_total_length:'',
       accessories_module:'',
@@ -129,6 +128,7 @@ export class AnnexureDetailsComponent implements OnInit {
     return this.formAddEdit.get('accessories') as FormArray;
   }
   addAccessory(){
+    this.mid.push(2)
     this.accessories=this.formAddEdit.get('accessories') as FormArray;
     this.accessories.push(this.createAccessories());
     }
@@ -157,7 +157,7 @@ export class AnnexureDetailsComponent implements OnInit {
        type:'string'
      },
      quantity:{
-       title:'quantity',
+       title:'Quantity',
        type:'string'
      },
      total_length:{
@@ -192,17 +192,18 @@ export class AnnexureDetailsComponent implements OnInit {
  };
  settings1 = {
   mode: 'external',
-  actions:{edit:false,},
-    add: {
-      addButtonContent: '<i class="nb-edit"></i>',
-      createButtonContent: '<i class="nb-checkmark"></i>',
-      cancelButtonContent: '<i class="nb-close"></i>',
-      confirmCreate:true,
-    },
-    delete: {
-      deleteButtonContent: '<i class="nb-trash"></i>',
-      confirmDelete: true,
-    },
+  // actions:{edit:false,},
+  //   add: {
+  //     addButtonContent: '<i class="nb-edit"></i>',
+  //     createButtonContent: '<i class="nb-checkmark"></i>',
+  //     cancelButtonContent: '<i class="nb-close"></i>',
+  //     confirmCreate:true,
+  //   },
+  //   delete: {
+  //     deleteButtonContent: '<i class="nb-trash"></i>',
+  //     confirmDelete: true,
+  //   },
+  actions:false,
   columns: {
   accessories_name: {
      title: 'Accessories',
@@ -296,12 +297,18 @@ export class AnnexureDetailsComponent implements OnInit {
     });
 }
 
+UseQty(id:any,index:any){
+  this.mid.splice(index,0,id);
+}
+
 findArea(){
   this.areadata=[];
   this.formAddEdit.get('accessories').value.forEach((element,i) => {
     if(element.accessories_module != null && this.totalLength.accessories_length != 0){
       var sum = ((parseFloat(element.accessories_module) * parseFloat(this.totalLength[i]))/1000);
       this.areadata.push(sum);
+    }else{
+      this.areadata.push(0);
     }
   });
 }
@@ -310,6 +317,17 @@ findArea(){
 async onSubmit(ref:any){
   console.log("Clicked on submit");
   this.isSubmitted = true;
+  this.formAddEdit.get('accessories').value.forEach((element,i) => {
+    console.log(element,"Nan Element");
+    
+    // if(isNaN(element.accessories_length || element.accessories_quantity || element.accessories_total_length || element.accessories_area)){
+    //   console.log("isNaN",element.accessories_area[i]);
+    //   element.accessories_module=0;
+    //   element.accessories_total_length=0;
+    //   element.accessories_length=0;
+    //   element.accessories_area=0;
+    // }
+  });
     if (this.formAddEdit.invalid) {
       console.log("form add edit invalid",this.formAddEdit.invalid);
       return;

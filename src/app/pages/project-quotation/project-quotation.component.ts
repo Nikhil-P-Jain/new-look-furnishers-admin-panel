@@ -102,23 +102,24 @@ export class ProjectQuotationComponent implements OnInit {
           element.status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        'project_lead_id':['',[Validators.required]],
-        'client_name':['',[Validators.required]],
-        'main_contractor':['',[Validators.required]],
-        'user_id':['',[Validators.required]],
-        'quotation_number':['',[Validators.required]],
-        'quotation_amount':['',[Validators.required]],
-        // 'product_name':[],
-        'remarks':['',[Validators.required]],
-        // 'order_status':['',[Validators.required]],
-        'date':['',[Validators.required]],
-        'status':[''],
-        'products':this.formBuilder.array([this.createProducts()]),
-      })
-      console.log(this.formAddEdit,"formaddedit");
       this.source.load(this.pqData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      'project_lead_id':['',[Validators.required]],
+      'client_name':['',[Validators.required]],
+      'main_contractor':['',[Validators.required]],
+      'user_id':['',[Validators.required]],
+      'quotation_number':['',[Validators.required]],
+      'quotation_amount':['',[Validators.required]],
+      // 'product_name':[],
+      'remarks':['',[Validators.required]],
+      // 'order_status':['',[Validators.required]],
+      'date':['',[Validators.required]],
+      'status':[''],
+      'products':this.formBuilder.array([this.createProducts()]),
+    })
+    console.log(this.formAddEdit,"formaddedit");
+
   }
 
   get f(){
@@ -220,7 +221,7 @@ export class ProjectQuotationComponent implements OnInit {
       title:'Details',
       type:'html',
       valuePrepareFunction:(cell,row)=>{
-        // return `<a href=http://localhost:4200/pages/project-quotation-updates/${row.project_quotation_id}>View</a>`
+        // return `<a href=http://localhost:4200/#/pages/project-quotation-updates/${row.project_quotation_id}>View</a>`
         return `<a href=http://veritrack.co.in/newlook/#/pages/project-quotation-updates/${row.project_quotation_id}>View</a>`
       },
       filter:false       
@@ -281,7 +282,7 @@ export class ProjectQuotationComponent implements OnInit {
   }
   
   open1(dialog:TemplateRef<any>){
-    this.formAddEdit.reset();
+    this.ngOnInit();
     this.ds.open(dialog);
   }
 

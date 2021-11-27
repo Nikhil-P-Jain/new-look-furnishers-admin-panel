@@ -98,20 +98,20 @@ export class ProjectOrderComponent implements OnInit {
           element.project_order_status=this.dataActive
         }
       });
-      this.formAddEdit=this.formBuilder.group({
-        // 'project_name':[''],
-        // 'project_quotation_id':['',[Validators.required]],
-        'project_quotation_id':[''],
-        'project_order_date':['',[Validators.required]],
-        'project_order_description':['',[Validators.required]],
-        'site_id':['',[Validators.required]],
-        'project_order_status':[],
-        'products':this.formBuilder.array([this.createProducts()]),
-      })
-      console.log(this.formAddEdit,"formAddEdor");
-      
       this.source.load(this.poData);
     });
+    this.formAddEdit=this.formBuilder.group({
+      // 'project_name':[''],
+      // 'project_quotation_id':['',[Validators.required]],
+      'project_quotation_id':[''],
+      'project_order_date':['',[Validators.required]],
+      'project_order_description':['',[Validators.required]],
+      'site_id':['',[Validators.required]],
+      'project_order_status':[],
+      'products':this.formBuilder.array([this.createProducts()]),
+    })
+    console.log(this.formAddEdit,"formAddEdor");
+    
   }
 
   createProducts():FormGroup{
@@ -196,7 +196,7 @@ export class ProjectOrderComponent implements OnInit {
       title:'Details',
       type:'html',
       valuePrepareFunction:(cell,row)=>{
-        // return `<a href=http://localhost:4200/pages/project-order-details/${row.project_order_id}>View</a>`
+        // return `<a href=http://localhost:4200/#/pages/project-order-details/${row.project_order_id}>View</a>`
         return `<a href=http://veritrack.co.in/newlook/#/pages/project-order-details/${row.project_order_id}>View</a>`
 
       },
@@ -257,7 +257,7 @@ export class ProjectOrderComponent implements OnInit {
   }
   
   open1(dialog:TemplateRef<any>){
-    this.formAddEdit.reset();
+    this.ngOnInit();
     this.ds.open(dialog);
   }
   
