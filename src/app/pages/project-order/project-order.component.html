@@ -14,7 +14,7 @@
 <ng-template #dialog let-data let-ref="dialogRef">
     <nb-card style="width: 1080px !important;">
       <nb-card-header>Project Order</nb-card-header>
-      <nb-card-body>
+      <nb-card-body style="overflow: auto;max-height:550px;">
           <!-- <form [ngSubmit]="save()"> -->
           <form [formGroup]="formAddEdit">
             
@@ -37,21 +37,25 @@
                      <div *ngIf="f.project_quotation_id.errors.required">This field is required</div>
                 </div>  
             </div> -->
-            <label class="label col-sm-2 col-form-label">Order Date</label>
+            <label class="label col-sm-2 col-form-label">Order Date <span style="color: red;"></span></label>
             <div class="col-sm-4">
-                <input type="date" nbInput class="form-control" formControlName="project_order_date">
+                <!-- <input type="date" nbInput class="form-control" formControlName="project_order_date"> -->
+                <input type="date" class="form-control" nbInput shape="rectangle" formControlName="project_order_date" class="col-md-12" placeholder="Select Date" [ngClass]="{'is-invalid': isSubmitted && f.project_order_date.errors}">
+                <div *ngIf="isSubmitted && f.project_order_date.errors" class="text-danger">
+                    <div *ngIf="f.project_order_date.errors.required">This field is required</div>
+                </div>
             </div>
           </div>
           
           <div class="form-group row">
-              <label class="label col-sm-2 col-form-label">Order Description</label>
+              <label class="label col-sm-2 col-form-label">Order Description <span style="color: red;"></span></label>
               <div class="col-sm-4">
                 <textarea rows="4" class="form-control" formControlName="project_order_description" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Description" [ngClass]="{'is-invalid': isSubmitted && f.project_order_description.errors}"></textarea>
                 <div *ngIf="isSubmitted && f.project_order_description.errors" class="text-danger">
                   <div *ngIf="f.project_order_description.errors.required">This field is required</div>
                 </div>
               </div>
-              <label class="label col-sm-2 col-form-label">Site</label>
+              <label class="label col-sm-2 col-form-label">Site <span style="color: red;"></span></label>
                 <div class="col-sm-4">
                     <nb-select formControlName="site_id" style="padding: 0;" placeholder="Select Site" [ngClass]="{'is-invalid': isSubmitted && f.site_id.errors}" class="col-md-12">
                         <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
@@ -74,86 +78,46 @@
             </div>
         </div>
 
-        <!-- <ng-container *ngFor="let formAddEdit of formAddEdit.controls |keyvalue">
-          <div style="margin:20px;" [formGroup]="formAddEdit.value">
-            <label class="label col-sm-1 col-form-label">Products</label>
+        <div style="border: none;" formArrayName="products" *ngFor="let product of formAddEdit.get('products')['controls']; let i=index;">
+          <div [formGroupName]="i" class="form-group row">
+              <label class="label col-sm-1 col-form-label" style="padding: 15px 0px;">Product Brand <span style="color: red;"></span></label>
+              <div class="col-sm-3">
+                  <nb-select formControlName="product_brand_id" style="padding: 0;"  placeholder="Select Product Brand" (selectedChange)="brandToCategory($event)" class="col-md-6">
+                      <nb-option *ngFor="let pb of pbData" value={{pb.product_brand_id}}>{{pb.product_brand_name}}</nb-option>
+                  </nb-select>
+              </div>
+              <label class="label col-sm-1 col-form-label" style="padding: 15px 0px;">Product Category <span style="color: red;"></span></label>
+              <div class="col-sm-3">
+                  <nb-select formControlName="product_category_id" style="padding: 0;"  placeholder="Select Product" (selectedChange)="catToProduct($event)" class="col-md-6">
+                      <nb-option *ngFor="let pc of brandCatData" value={{pc.product_category_id}}>{{pc.product_category_name}}</nb-option>
+                  </nb-select>
+              </div>
+              
+              <label class="label col-sm-1 col-form-label" style="padding: 15px 0px;">Product <span style="color: red;"></span></label>
+              <div class="col-sm-3">
+                  <nb-select formControlName="product_id" style="padding: 0;"  placeholder="Select Product" class="col-md-6">
+                      <nb-option *ngFor="let product of catProductData" value={{product.product_id}}>{{product.product_name}}</nb-option>
+                  </nb-select>
+              </div>
+              <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Quantity <span style="color: red;"></span></label>
+              <div class="col-sm-3">
+                  <input type="number" nbInput shape="rectangle" formControlName="quantity" placeholder="Enter Quantity" class="col-md-6">
+              </div> 
+              <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Unit <span style="color: red;"></span></label>
+              <div class="col-sm-3">
+                  <nb-select formControlName="unit" style="padding: 0;" placeholder="Select Unit" class="col-md-6">
+                      <nb-option *ngFor="let unit of unitData" value={{unit.unit_id}}>{{unit.unit_name}}</nb-option>
+                  </nb-select>
+              </div>
+          </div>
+      </div>
+      <div style="padding:0;" class="col-sm-12 mt-4 row">
+          <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
             <div class="col-sm-2">
-              <nb-select formControlName="i"  placeholder="Select Product" (selectedChange)="changeprod($event)" class="col-md-6">
-                <nb-option *ngFor="let product of prodData" value={{product.product_id}}>{{product.product_name}}</nb-option>
-              </nb-select>
-            </div>
-            <label class="label col-sm-1 col-form-label">Specification</label>
-            <div class="col-sm-2">
-              <nb-select formControlName="i" style="padding: 0;" placeholder="Select Specification" class="col-md-6">
-                <nb-option *ngFor="let ps of psData" value={{ps.product_specification_id}}>{{ps.product_specification_name}}</nb-option>
-              </nb-select>
-            </div>
-            <label class="label col-sm-1 col-form-label">Quantity</label>
-            <div class="col-sm-2">
-              <input type="number" nbInput shape="rectangle" formControlName="i" placeholder="Enter Quantity" class="col-md-6">
-            </div> 
-            <label class="label col-sm-1 col-form-label">Unit</label>
-            <div class="col-sm-2">
-              <nb-select formControlName="i" style="padding: 0;" placeholder="Select Unit" class="col-md-6">
-                <nb-option *ngFor="let unit of unitData" value={{unit.unit_id}}>{{unit.unit_name}}</nb-option>
-              </nb-select>
-            </div>
-          <button type="button" class="btn btn-primary" nbButton status="primary" (click)="addProduct()"> Add Product</button>
-            <label for="" class="label col-sm-1 col-form-label">Products</label>
-            <div class="col-sm-2">
-              <nb-select formControlName="product_id" [formControlName]="i" placeholder="Select Product" (selectedChange)="changeprod($event)" class="col-md-6">
-                <nb-option *ngFor="let product of prodData" value={{product.product_id}}>{{product.product_name}}</nb-option>
-              </nb-select>
-            </div>
-            <label for="" class="label col-sm-1 col-form-label">Specification</label>
-            <div class="col-sm-2">
-              <nb-select formControlName="specification_id" [formControlName]="i" style="padding: 0;" placeholder="Select Specification" class="col-md-6">
-                <nb-option *ngFor="let ps of psData" value={{ps.product_specification_id}}>{{ps.product_specification_name}}</nb-option>
-              </nb-select>
-            </div>
-            <label for="" class="label col-sm-1 col-form-label">Quantity</label>
-            <div class="col-sm-2">
-              <input type="number" [formControlName]="i" nbInput shape="rectangle" formControlName="quantity" placeholder="Enter Quantity" class="col-md-6">
-            </div> 
-            <label for="" class="label col-sm-1 col-form-label">Unit</label>
-            <div class="col-sm-2">
-              <nb-select formControlName="unit" [formControlName]="i" style="padding: 0;" placeholder="Select Unit" class="col-md-6">
-                <nb-option *ngFor="let unit of unitData" value={{unit.unit_id}}>{{unit.unit_name}}</nb-option>
-              </nb-select>
-            </div>
-                <button (click)="removeProducts(group.value,i)">remove</button>
-            </div>
-        </ng-container> -->
-
-        <div formArrayName="products" style="border: none;" class="form-control mt-2" *ngFor="let product of formAddEdit.get('products')['controls']; let i=index;">
-            <div [formGroupName]="i" class="form-group row">
-            <label class="label col-sm-1 col-form-label" style="padding: 15px 0px;">Products</label>
-            <div class="col-sm-2">
-              <nb-select formControlName="product_id" style="padding: 0;"  placeholder="Select Product" (selectedChange)="changeprod($event)" class="col-md-6">
-                <nb-option *ngFor="let product of prodData" value={{product.product_id}}>{{product.product_name}}</nb-option>
-              </nb-select>
-            </div>
-            <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Specification</label>
-            <div class="col-sm-2">
-              <nb-select formControlName="specification_id" style="padding: 0;" placeholder="Select Specification" class="col-md-6">
-                <nb-option *ngFor="let ps of psData" value={{ps.product_specification_id}}>{{ps.product_specification_name}}</nb-option>
-              </nb-select>
-            </div>
-            <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Quantity</label>
-            <div class="col-sm-2">
-              <input type="number" nbInput shape="rectangle" formControlName="quantity" placeholder="Enter Quantity" class="col-md-6">
-            </div> 
-            <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Unit</label>
-            <div class="col-sm-2">
-              <nb-select formControlName="unit" style="padding: 0;" placeholder="Select Unit" class="col-md-6">
-                <nb-option *ngFor="let unit of unitData" value={{unit.unit_id}}>{{unit.unit_name}}</nb-option>
-              </nb-select>
-            </div>
-            </div>
-        </div>
-
-        <div class="col-sm-12 mt-4" style="padding:0px;">
-          <button style="margin-right: 10px;" type="button" class="btn btn-primary" nbButton status="primary" (click)="addProduct()">Add</button>
+              <input  nbInput shape="rectangle" placeholder="Enter Total Area" class="col-md-6" readonly>
+            </div>  -->
+            
+          <button type="button" style="margin-right: 10px;" class="btn btn-primary" nbButton status="primary" (click)="addProduct()">Add</button>
           <button type="button" class="btn btn-primary" nbButton status="primary" (click)="removeProducts()">Remove</button>
         </div>
 

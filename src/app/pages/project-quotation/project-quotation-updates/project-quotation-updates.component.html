@@ -1,7 +1,7 @@
 <h5 class="grid-h">Project Details</h5>
 <div class="table-responsive">
     <table class="table table-bordered table-striped">
-        <tbody>
+        <tbody *ngIf="pqData">
             <tr>
                 <th class="text-nowrap" scope="row">Project Name</th>
                 <td>{{pqData.project_lead_name}}</td>

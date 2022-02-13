@@ -1,0 +1,81 @@
+<nb-card>
+    <nb-card-header>
+      Branch Table
+    </nb-card-header>
+  
+    <nb-card-body>
+      <ng2-smart-table [source]="getBranchData" [settings]="settings" (create)="open1(dialog)" (edit)="open2(dialog,$event)" (delete)="deleteBranch($event)">
+      </ng2-smart-table>
+    </nb-card-body>
+</nb-card>
+
+<div class="row d-flex">
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card style="width: 1000px !important; overflow: auto !important;">
+      <nb-card-header>Branch</nb-card-header>
+      <nb-card-body>
+          <form [formGroup]="formAddEdit">
+          <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">Branch Name<span style="color: red;">*</span></label>
+            <div class="col-sm-4">
+                <input type="text" class="form-control" nbInput shape="rectangle" [ngClass]="{'is-invalid': isSubmitted && f.branchName.errors}" formControlName="branchName" class="col-md-12" placeholder="Enter branch name">
+                <div *ngIf="isSubmitted && f.branchName.errors" class="text-danger">
+                  <div *ngIf="f.branchName.errors.required">This field is required</div>
+                </div>
+            </div>
+            <label class="label col-sm-2 col-form-label">GST No.<span style="color: red;">*</span></label>
+            <div class="col-sm-4">
+              <input type="text" class="form-control" nbInput shape="rectangle" [ngClass]="{'is-invalid': isSubmitted && f.gstNo.errors}" formControlName="gstNo" class="col-md-12" placeholder="Enter GST No.">
+              <div *ngIf="isSubmitted && f.gstNo.errors" class="text-danger">
+                <div *ngIf="f.gstNo.errors.required">This field is required</div>
+              </div>
+            </div>
+          </div>
+        <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">Branch Address<span style="color: red;">*</span></label>
+            <div class="col-sm-10">
+                <textarea rows="2" class="form-control" [ngClass]="{'is-invalid': isSubmitted && f.branchAddress.errors}" formControlName="branchAddress" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Enter branch address"></textarea>
+                <div *ngIf="isSubmitted && f.branchAddress.errors" class="text-danger">
+                  <div *ngIf="f.branchAddress.errors.required">This field is required</div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">Header image for branch</label>
+            <div class="col-sm-4">
+              <input nbInput type="file" formControlName="headerImage" (change)="selectHeader($event)" class="col-md-12"/>
+              <img [src]="headerURL" class="img-thumbnail img-responsive" style="height:50%;width:20%;">
+            </div>
+            <label class="label col-sm-2 col-form-label">Footer image for branch</label>
+            <div class="col-sm-4">
+              <input nbInput type="file" formControlName="footerImage" (change)="selectFooter($event)" class="col-md-12"/>
+              <img [src]="footerURL" class="img-thumbnail img-responsive" style="height:50%;width:20%;">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="label col-sm-2 col-form-label">City<span style="color: red;">*</span></label>
+            <div class="col-sm-4">
+                <nb-select formControlName="cityId" style="padding: 0;" placeholder="Select City" [ngClass]="{'is-invalid': isSubmitted && f.cityId.errors}" class="col-md-12">
+                    <nb-option *ngFor="let city of getCityData" value={{city.city_id}} >{{city.city_name}}</nb-option>
+                </nb-select>
+                <div *ngIf="isSubmitted && f.cityId.errors" class="text-danger">
+                  <div *ngIf="f.cityId.errors.required">This field is required</div>
+                </div>
+            </div>
+            <label class="label col-sm-2 col-form-label">Status<span style="color: red;">*</span></label>
+            <div class="col-sm-4">
+                <nb-select formControlName="status" style="padding: 0;" placeholder="Select Status" class="col-md-12">
+                    <nb-option value='Active'>Active</nb-option>
+                    <nb-option value='Deactive'>Deactive</nb-option>
+                </nb-select>
+            </div>
+        </div>
+        </form>
+      </nb-card-body>
+      <nb-card-footer>
+        <button type="submit" style="margin-right: 20px;" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
+        <button nbButton (click)="closeHandle(ref)">Close</button>
+      </nb-card-footer>
+    </nb-card>
+  </ng-template>
+  </div>

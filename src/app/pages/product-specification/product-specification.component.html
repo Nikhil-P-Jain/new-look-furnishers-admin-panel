@@ -17,7 +17,7 @@
         <nb-card-body>
             <form [formGroup]="formAddEdit">
                 <div class="form-group row">
-                    <label class="label col-sm-3 col-form-label">Product Specification Name</label>
+                    <label class="label col-sm-3 col-form-label">Product Specification Name<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
                         <textarea rows="4" class="form-control" formControlName="product_specification_name" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Enter Product Specification" [ngClass]="{'is-invalid': isSubmitted && f.product_specification_name.errors}"></textarea>
                         <div *ngIf="isSubmitted && f.product_specification_name.errors" class="text-danger">
@@ -26,7 +26,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="label col-sm-3 col-form-label">Product Name</label>
+                    <label class="label col-sm-3 col-form-label">Product Name<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
                         <nb-select formControlName="product_brand_id" (selectedChange)="loadsubproduct($event)" placeholder="Select Product" style="padding: 0;" [ngClass]="{'is-invalid': isSubmitted && f.product_brand_id.errors}" class="col-md-12">
                             <nb-option *ngFor="let productbrand of productbrandData" value={{productbrand.product_brand_id}}>{{productbrand.product_brand_name}}</nb-option>
@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="label col-sm-3 col-form-label">Subproduct</label>
+                    <label class="label col-sm-3 col-form-label">Subproduct<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
                         <nb-select formControlName="product_id" style="padding: 0;" placeholder="Select Subproduct" [ngClass]="{'is-invalid': isSubmitted && f.product_id.errors}" class="col-md-12" >
                             <nb-option *ngFor="let product of productData" value={{product.product_id}} >{{product.product_name}}</nb-option>
@@ -49,7 +49,7 @@
                 </div>
               
                 <div class="form-group row">
-                    <label class="label col-sm-3 col-form-label">Product Specification Status</label>
+                    <label class="label col-sm-3 col-form-label">Product Specification Status<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
                         <nb-select formControlName="product_specification_status" placeholder="Select Status" style="padding: 0;" class="col-md-12">
                             <nb-option value='Active'>Active</nb-option>

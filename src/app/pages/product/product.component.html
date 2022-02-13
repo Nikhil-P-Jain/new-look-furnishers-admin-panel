@@ -1,6 +1,6 @@
 <nb-card>
     <nb-card-header>
-        Subproduct Table
+        Product Table
     </nb-card-header>
 
     <nb-card-body>
@@ -12,44 +12,41 @@
 
 
 <ng-template #dialog let-data let-ref="dialogRef">
-    <nb-card style="width: 350px !important;">
-        <nb-card-header>Subproduct</nb-card-header>
+    <nb-card style="width: 500px !important;">
+        <nb-card-header>Product</nb-card-header>
         <nb-card-body>
             <form [formGroup]="formAddEdit">
                 <div class="form-group row">
-                    <label class="label col-sm-3 col-form-label">Product</label>
+                    <label class="label col-sm-3 col-form-label">Product<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
-                        <nb-select formControlName="product_brand_id" style="padding: 0;" placeholder="Select Product" [ngClass]="{'is-invalid': isSubmitted && f.product_brand_id.errors}" class="col-md-12">
-                            <nb-option *ngFor="let prod of pbData" value={{prod.product_brand_id}} >{{prod.product_brand_name}}</nb-option>
-                        </nb-select>
-                        <div *ngIf="isSubmitted && f.category_id.errors" class="text-danger">
-                            <div *ngIf="f.category_id.errors.required">This field is required</div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="form-group row">
-                    <label class="label col-sm-3 col-form-label">Subproduct</label>
-                    <div class="col-sm-9">
-                        <input type="text" class="form-control" nbInput shape="rectangle" formControlName="product_name" class="col-md-12" placeholder="Enter Subproduct" [ngClass]="{'is-invalid': isSubmitted && f.product_name.errors}">
+                        <input type="text" class="form-control" nbInput shape="rectangle" formControlName="product_name" class="col-md-12" placeholder="Enter Product" [ngClass]="{'is-invalid': isSubmitted && f.product_name.errors}">
                         <div *ngIf="isSubmitted && f.product_name.errors" class="text-danger">
                             <div *ngIf="f.product_name.errors.required">This field is required</div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="label col-sm-3 col-form-label">Product Category</label>
+                    <label class="label col-sm-3 col-form-label">Product Category<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
-                        <nb-select formControlName="category_id" style="padding: 0;" placeholder="Select Category" [ngClass]="{'is-invalid': isSubmitted && f.category_id.errors}" class="col-md-12">
+                        <nb-select formControlName="product_category_id" style="padding: 0;" placeholder="Select Category" [ngClass]="{'is-invalid': isSubmitted && f.product_category_id.errors}" class="col-md-12">
                             <nb-option *ngFor="let category of categoryData" value={{category.product_category_id}} >{{category.product_category_name}}</nb-option>
                         </nb-select>
-                        <div *ngIf="isSubmitted && f.category_id.errors" class="text-danger">
-                            <div *ngIf="f.category_id.errors.required">This field is required</div>
+                        <div *ngIf="isSubmitted && f.product_category_id.errors" class="text-danger">
+                            <div *ngIf="f.product_category_id.errors.required">This field is required</div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label class="label col-sm-3 col-form-label">Subproduct Status</label>
+                    <label class="label col-sm-3 col-form-label">Product Specification<span style="color: red;">*</span></label>
+                    <div class="col-sm-9">
+                        <textarea rows="4" class="form-control" formControlName="product_specification" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Enter Product Specification" [ngClass]="{'is-invalid': isSubmitted && f.product_specification.errors}"></textarea>
+                        <div *ngIf="isSubmitted && f.product_specification.errors" class="text-danger">
+                            <div *ngIf="f.product_specification.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="label col-sm-3 col-form-label">Product Status<span style="color: red;">*</span></label>
                     <div class="col-sm-9">
                         <nb-select formControlName="product_status" style="padding: 0;" placeholder="Select Status" class="col-md-12">
                             <nb-option value='Active'>Active</nb-option>
@@ -65,7 +62,7 @@
             </form>
         </nb-card-body>
         <nb-card-footer>
-            <button nbButton (click)="ref.close()">Close</button>
+            <button nbButton (click)="closeHandle(ref)">Close</button>
         </nb-card-footer>
     </nb-card>
 </ng-template>

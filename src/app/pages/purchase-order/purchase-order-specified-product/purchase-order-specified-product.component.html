@@ -19,7 +19,7 @@
 
 <!-- Code for pdf -->
 <ng-template #dialog let-data let-ref="dialogRef">
-  <nb-card style="width: 1080px !important;">
+  <nb-card style="max-height: 100%; overflow-y: hidden;">
     <nb-card-header class="d-flex justify-content-between">
       <!-- <button nbButton status="primary" (click)="convetToPDF()">Save PDF</button> -->
       <button nbButton status="primary" ngxPrint [useExistingCss]="true" printTitle="Purchase Order {{po_poData.po_number}}"  printSectionId="pdf">Print</button>
@@ -124,7 +124,11 @@
                             <!-- <div>Please Input lower amount for area as it exceeds the total quantity mentioned in Purchase Order</div> -->
                             <div *ngIf="selectProdId == totaldata[i].prodid">Area Exceeds the total Area</div>
                           </div>
-                        </div> 
+                        </div>
+                        <div class="col-sm-2">
+                          <!-- <input readonly [(ngModel)]="prodInfoarea"> -->
+                          {{prodInfoarea}}
+                        </div>
                         <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
                         <div class="col-sm-2">
                           <input  nbInput shape="rectangle" formControlName="total_area" placeholder="Enter Total Area" class="col-md-6" readonly>

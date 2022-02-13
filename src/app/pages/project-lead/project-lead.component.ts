@@ -8,6 +8,7 @@ import { ProductBrandService } from '../service/product-brand.service';
 import { ProductService } from '../service/product.service';
 import { ProjectLeadService } from '../service/project-lead.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'ngx-project-lead',
@@ -183,7 +184,7 @@ export class ProjectLeadComponent implements OnInit {
       type:'html',
       valuePrepareFunction:(cell,row)=>{
         // return `<a href=http://localhost:4200/#/pages/project-lead-updates/${row.project_lead_id}>View</a>`
-        return `<a href=http://veritrack.co.in/newlook/#/pages/project-lead-updates/${row.project_lead_id}>View</a>`
+        return `<a href=${environment.APP_URL}project-lead-updates/${row.project_lead_id}>View</a>`
       },
       filter:false       
       },

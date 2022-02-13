@@ -182,5 +182,4 @@ export class ProjectLeadUpdatesComponent implements OnInit{
     const titleContent = title ? `${title}` : '';
     this.toastrService.show(body,`${titleContent}`,config);
   }
- 
 }

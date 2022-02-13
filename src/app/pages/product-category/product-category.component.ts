@@ -3,6 +3,7 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus, NbDialogService, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
+import { ProductBrandService } from '../service/product-brand.service';
 import { ProductCategoriesService } from '../service/product-categories.service';
 
 @Component({
@@ -16,10 +17,12 @@ export class ProductCategoryComponent implements OnInit {
   formAddEdit:FormGroup;
   pcData:any;
   pcData1:any;
+  pbData:any;
   resp:any;
   resp1:any;
   resp3:any;
   resp2:any;
+  pb_resp:any;
   config: NbToastrConfig;
   destroyByClick = true;
   duration = 2000;
@@ -42,6 +45,7 @@ export class ProductCategoryComponent implements OnInit {
   uniqueId:any;
   constructor(private ds:NbDialogService,
     private pcservice:ProductCategoriesService,
+    private pbservice:ProductBrandService,
     public http:HttpClient,
     private toastrService: NbToastrService,
     private formBuilder: FormBuilder,) { }
@@ -56,6 +60,10 @@ export class ProductCategoryComponent implements OnInit {
   
   ngOnInit(){
     this.isSubmitted=false;
+    this.pbservice.getproduct_brand().subscribe(res=>{
+      this.pb_resp=res;
+      this.pbData=this.pb_resp.data.results;
+    })
     this.pcservice.getproduct_category().subscribe(res=>{
       this.resp1=res;
       this.pcData=this.resp1.data.results;
@@ -73,6 +81,7 @@ export class ProductCategoryComponent implements OnInit {
     });
     this.formAddEdit=this.formBuilder.group({
       'product_category_name':['',[Validators.required]],
+      'product_brand_id':['',[Validators.required]],
       'product_category_status':[]
     })
   }
@@ -109,6 +118,10 @@ export class ProductCategoryComponent implements OnInit {
         title: 'Category Name',
         type: 'string',
       },
+      product_brand_name:{
+        title:'Product Brand',
+        type:'string'
+      },
       product_category_status: {
         title: 'Product Category Status',
         type: 'string',
@@ -140,6 +153,7 @@ export class ProductCategoryComponent implements OnInit {
       console.log("Getting res",this.pcData);
       this.formAddEdit.reset({
         'product_category_name':this.pcData1.product_category_name,
+        'product_brand_id':JSON.stringify(this.pcData1.product_brand_id),
         'product_category_status':this.pcData1.product_category_status==0?"Deactive":"Active"
         })
       console.log(this.formAddEdit,"formaddedit");
@@ -226,6 +240,7 @@ export class ProductCategoryComponent implements OnInit {
             if(!this.uniqueId){
               var body={
                 "product_category_name":this.formAddEdit.value.product_category_name,
+                "product_brand_id":this.formAddEdit.value.product_brand_id,
                 "product_category_status":this.formAddEdit.value.product_category_status,
                 }
                 console.log(body,"body");
@@ -242,6 +257,7 @@ export class ProductCategoryComponent implements OnInit {
             else{
               var bo={
                 "product_category_name":this.formAddEdit.value.product_category_name,
+                'product_brand_id':this.formAddEdit.value.product_brand_id,
                 "product_category_status":this.formAddEdit.value.product_category_status,
                 "product_category_id":this.uniqueId 
               }

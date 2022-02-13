@@ -10,7 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
-
+import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import {
   NbChatModule,
@@ -56,17 +56,17 @@ const formSetting: any = {
       strategies: [
         NbPasswordAuthStrategy.setup({
           name: 'email',
-          baseEndpoint: 'http://apinewlook.mehtaindia.co.in/api',
+          baseEndpoint: environment.BASE_URL,
           // baseEndpoint: 'http://localhost:3000/api',
           token: {
             class: NbAuthJWTToken,
             key: 'data.jsontoken',
           },
           login: {
-            endpoint: '/user/login',
+            endpoint: 'user/login',
             method: 'post',
             redirect: {
-              success: '/pages/role',
+              success: 'pages/role',
               failure: null, // stay on the same page
             },
           },

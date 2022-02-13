@@ -3,28 +3,28 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus, NbDialogService, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
-import { roleservice } from '../service/role.service';
-// import { SiteService } from '../service/site.service';
-import { UserService } from '../service/user.service';
+import { BranchService } from '../service/branch.service';
 import { environment } from '../../../environments/environment';
+import { CityService } from '../service/city.service';
 const URL = environment.BASE_URL+'upload/file';
 @Component({
-  selector: 'ngx-user',
-  templateUrl: './user.component.html',
-  styleUrls: ['./user.component.scss']
+  selector: 'ngx-branch',
+  templateUrl: './branch.component.html',
+  styleUrls: ['./branch.component.scss']
 })
-export class UserComponent implements OnInit {
+export class BranchComponent implements OnInit {
   hide : boolean = true;
   isSubmitted=false;
   formAddEdit:FormGroup;
-  userData:any;
-  userData1:any;
+  getBranchData:any;
+  getBranchByIdData:any;
+  getCityResp:any;
   siteData:any;
-  roleData:any;
-  resp:any;
-  resp1:any;
-  resp3:any;
-  resp2:any;
+  getCityData:any;
+  upataBranchResp:any;
+  getBranchResp:any;
+  getBranchByIdResp:any;
+  deleteBranchResp:any;
   config: NbToastrConfig;
   destroyByClick = true;
   duration = 2000;
@@ -45,35 +45,39 @@ export class UserComponent implements OnInit {
   dataActive='Active';
   dataDeactive='Deactive';
   uniqueId:any='';
-  imgURL:any;
-  images:any;
-  pic:any;
+  headerURL:any;
+  headerImage:any;
+  headerImagePath:any;
+  footerURL:any;
+  footerImage:any;
+  footerImagePath:any;
   constructor(private ds:NbDialogService,
     // private siteservice:SiteService,
     public http:HttpClient,
-    private roleservice: roleservice,
-    private userservice:UserService,
+    private cityservice: CityService,
+    private branchservice:BranchService,
     private toastrService: NbToastrService,
     private formBuilder: FormBuilder,) { }
 
   ngOnInit(){
     this.isSubmitted=false;
-    this.imgURL='';
-    this.roleservice.getrole().subscribe(res=>{
-      this.resp1=res;
-      this.roleData=this.resp1.data.results;
-      console.log(this.roleData,"Role data");
+    this.headerURL='';
+    this.footerURL='';
+    this.cityservice.getcity().subscribe(res=>{
+      this.getCityResp=res;
+      this.getCityData=this.getCityResp.data.results;
+      console.log(this.getCityData,"getCityData");
     });
     // this.siteservice.getsite().subscribe(res=>{
-    //   this.resp1=res;
-    //   this.siteData=this.resp1.data.results;
+    //   this.getBranchResp=res;
+    //   this.siteData=this.getBranchResp.data.results;
     //   console.log(this.siteData,"site data");
     // });
-    this.userservice.getuser().subscribe(res=>{
-      this.resp1=res;
-      this.userData=this.resp1.data.results;
-      console.log("userdata",this.userData);
-      this.userData.forEach(element => {
+    this.branchservice.getBranch().subscribe(res=>{
+      this.getBranchResp=res;
+      this.getBranchData=this.getBranchResp.data.results;
+      console.log("getBranchData",this.getBranchData);
+      this.getBranchData.forEach(element => {
         console.log(element.status);  
         if(element.status == 0){
           element.status=this.dataDeactive
@@ -81,22 +85,15 @@ export class UserComponent implements OnInit {
           element.status=this.dataActive
         }
       });
-      // console.log(res,"PERMISSION");
-      this.source.load(this.userData);
+      this.source.load(this.getBranchData);
     });
     this.formAddEdit=this.formBuilder.group({
-      'first_name':['',[Validators.required]],
-      'middle_name':[''],
-      'last_name':['',[Validators.required]],
-      'address1':['',[Validators.required]],
-      'address2':[''],
-      'phone':['',[Validators.required]],
-      'email':['',[Validators.required]],
-      'username':['',[Validators.required]],
-      'password':['',[Validators.required]],
-      'photo':[''],
-      'role_id':['',[Validators.required]],
-      // 'site_id':['',[Validators.required]],
+      'branchName':['',[Validators.required]],
+      'branchAddress':['',[Validators.required]],
+      'gstNo':['',[Validators.required]],
+      'headerImage':[''],
+      'footerImage':[''],
+      'cityId':['',[Validators.required]],
       'status':['']
     })
   }
@@ -111,12 +108,6 @@ export class UserComponent implements OnInit {
       createButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
       confirmCreate:true,
-      // columns: {
-      //   Role_Name: {
-      //     title: 'Role Name',
-      //     type: 'string',
-      //   },
-      // },
     },
       edit: {
         confirmSave: true,
@@ -129,97 +120,60 @@ export class UserComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
-      first_name: {
-        title: 'First  Name',
+      branch_name: {
+        title: 'Branch  Name',
         type: 'string',
       },
-      middle_name: {
-        title: 'Middle  Name',
+      branch_address: {
+        title: 'Branch Name',
         type: 'string',
       },
-      last_name: {
-        title: 'Last  Name',
+      city_name:{
+        title:'City',
+        type:'string',
+      },
+      gst_no: {
+        title: 'GST Number',
         type: 'string',
       },
-      address1:{
-        title:'Primary Address',
-        type:'string',
-      },
-      address2:{
-        title:'Secondary Address',
-        type:'string',
-      },
-      phone:{
-        title:'Phone',
-        type:'string',
-      },
-      email:{
-        title:'Email',
-        type:'string',
-      },
-      username:{
-        title:'Username',
-        type:'string',
-      },
-      photo:{
-        title:'Photo',
+      header:{
+        title:'Header',
         // type:'string',
         type: 'html', 
         valuePrepareFunction: (value) => { return '<img height="150px" width="150px" src= ' + value + '  />' }
       },
-      
-      role_name: {
-        title: 'Role Name',
-        type: 'string',
+      footer:{
+        title:'Footer',
+        // type:'string',
+        type: 'html', 
+        valuePrepareFunction: (value) => { return '<img height="150px" width="150px" src= ' + value + '  />' }
       },
-      // site_name: {
-      //   title: 'Site Name',
-      //   type: 'string',
-      // },
       status: {
         title: 'Status',
         type: 'string',
       },
-      created_date: {
-        title: 'Created Date',
-        type: 'string',
-      },
-      updated_date: {
-        title: 'Updated Date',
-        type: 'string',
-      },
     },
   };
-  // open3() {
-  //   this.dialogService.open(DialogNamePromptComponent)
-  //     .onClose.subscribe(name => name && this.names.push(name));
-  // }
-
   source: LocalDataSource = new LocalDataSource();
   open2(dialog: TemplateRef<any>,event:any) {
     
     console.log("open2 function called");
     console.log(event, "event inside dailog");
-    this.uniqueId=event.data.user_id;
-    this.userservice.getuserbyid(this.uniqueId).subscribe(res=>{
-      this.resp2=res;
-      this.userData1=this.resp2.data.results[0];
-      console.log("Getting res",this.userData1);
-      this.imgURL=this.userData1.photo;
-      this.pic=this.userData1.photo;
+    this.uniqueId=event.data.branch_id;
+    this.branchservice.getBranchById(this.uniqueId).subscribe(res=>{
+      this.getBranchByIdResp=res;
+      this.getBranchByIdData=this.getBranchByIdResp.data.results[0];
+      console.log("Getting res",this.getBranchByIdData);
+      this.headerURL=this.getBranchByIdData.header;
+      this.headerImagePath=this.getBranchByIdData.header;
+      this.footerURL=this.getBranchByIdData.footer;
+      this.footerImagePath=this.getBranchByIdData.footer;
       this.formAddEdit.reset({
-        'first_name':this.userData1.first_name,
-        'middle_name':this.userData1.middle_name,
-        'last_name':this.userData1.last_name,
-        'address1':this.userData1.address1,
-        'address2':this.userData1.address2,
-        'phone':this.userData1.phone,
-        'email':this.userData1.email,
-        'username':this.userData1.username,
-        'password':this.userData1.password,
-        'role_id':JSON.stringify(this.userData1.role_id),
-        // 'site_id':JSON.stringify(this.userData1.site_id),
-        'status':this.userData1.status==0?"Deactive":"Active"
+        'branchName':this.getBranchByIdData.branch_name,
+        'branchAddress':this.getBranchByIdData.branch_address,
+        'gstNo':this.getBranchByIdData.gst_no,
+        'cityId':JSON.stringify(this.getBranchByIdData.city_id),
+        'status':this.getBranchByIdData.status==0?"Deactive":"Active"
       })
       console.log(this.formAddEdit,"formaddedit");
     })
@@ -234,12 +188,12 @@ export class UserComponent implements OnInit {
   }
   
 
-  deleteUser(event) {
+  deleteBranch(event) {
     console.log("ID",event.data);
     if(window.confirm('Are you sure you want to delete?')) {
-      this.userservice.deleteuser(event.data.user_id).subscribe(res=>{
-        this.resp=res;
-        if(this.resp.success==1){
+      this.branchservice.deleteBranch(event.data.branch_id).subscribe(res=>{
+        this.deleteBranchResp=res;
+        if(this.deleteBranchResp.success==1){
           this.showToast(this.success_status, this.title, this.delete_success_content);
           this.ngOnInit();
         }
@@ -257,48 +211,52 @@ export class UserComponent implements OnInit {
     }
   }
 
-  async selectFile(event){
+  async selectHeader(event){
     if (event.target.files && event.target.files[0]) {
       var reader = new FileReader();  
       reader.readAsDataURL(event.target.files[0]); // read file as data url
       reader.onload = (event:any) => {
         if(event != undefined){
-          this.imgURL = event.target.result;
+          this.headerURL = event.target.result;
         }
       }
     }
     if(event.target.files.length>0){
       const file = event.target.files[0];
-      this.images = file;
+      this.headerImage = file;
       const formData = new FormData();
-      formData.append('file', this.images);
-      // console.log("formdata append",formData.append('file', this.images));
+      formData.append('file', this.headerImage);
       this.http.post<any>(URL, formData).subscribe(res=>{
         console.log("file path",res.file.path);
-        // this.pic = "http://apinewlook.mehtaindia.co.in/"+res.file.path;
-        this.pic = "http://localhost:3000/"+res.file.path;
-
-        // this.disabled();
-        console.log("Getting Image :-", this.pic);
+        // this.headerImagePath = "http://apinewlook.mehtaindia.co.in/"+res.file.path;
+        this.headerImagePath = "http://localhost:3000/"+res.file.path;
+        console.log("Getting Image :-", this.headerImagePath);
       });
     }
   }
-  showPwd() {
-
-    // var x = (<HTMLInputElement>document.getElementById("password"));
-    // if (x.type === "password") {
-    //   x.type = "text";
-    // } else {
-    //   x.type = "password";
-    // } or u can use below code 
-
-    this.hide = !this.hide;
-    
-    // var y = (<HTMLInputElement>document.getElementById("eye"));
-    // y.classList.toggle("far fa-eye-slash");
+  async selectFooter(event){
+    if (event.target.files && event.target.files[0]) {
+      var reader = new FileReader();  
+      reader.readAsDataURL(event.target.files[0]); // read file as data url
+      reader.onload = (event:any) => {
+        if(event != undefined){
+          this.footerURL = event.target.result;
+        }
+      }
+    }
+    if(event.target.files.length>0){
+      const file = event.target.files[0];
+      this.footerImage = file;
+      const formData = new FormData();
+      formData.append('file', this.footerImage);
+      this.http.post<any>(URL, formData).subscribe(res=>{
+        console.log("file path",res.file.path);
+        // this.footerImagePath = "http://apinewlook.mehtaindia.co.in/"+res.file.path;
+        this.footerImagePath = "http://localhost:3000/"+res.file.path;
+        console.log("Getting Image :-", this.footerImagePath);
+      });
+    }
   }
- 
-
   async onSubmit(ref:any){
     console.log("Clicked on submit");
     this.isSubmitted = true;
@@ -314,27 +272,22 @@ export class UserComponent implements OnInit {
         else if(this.formAddEdit.value.status==this.dataDeactive){
                 this.formAddEdit.value.status=0;
         }
-        if(!this.uniqueId){
+        if(!this.uniqueId){          
           var body={
-            'first_name':this.formAddEdit.value.first_name,
-            'middle_name':this.formAddEdit.value.middle_name,
-            'last_name':this.formAddEdit.value.last_name,
-            'address1':this.formAddEdit.value.address1,
-            'address2':this.formAddEdit.value.address2,
-            'phone':this.formAddEdit.value.phone,
-            'email':this.formAddEdit.value.email,
-            'username':this.formAddEdit.value.username,
-            'password':this.formAddEdit.value.password,
-            'photo':this.pic,
-            'role_id':this.formAddEdit.value.role_id,
-            // 'site_id':this.formAddEdit.value.site_id,
-            'status':this.formAddEdit.value.status
+            'branch_name':this.formAddEdit.value.branchName,
+            'branch_address':this.formAddEdit.value.branchAddress,
+            'gst_no':this.formAddEdit.value.gstNo,
+            'header':this.headerImagePath,
+            'footer':this.footerImagePath,
+            'city_id':this.formAddEdit.value.cityId,
+            'status':this.formAddEdit.value.status==0?"Deactive":"Active"
             }
             console.log(body,"body");
-            this.userservice.createuser(body).subscribe(res=>{
+            this.branchservice.createBranch(body).subscribe(res=>{
               this.showToast(this.success_status, this.title, this.add_success_content);
               ref.close();
-              this.imgURL="";
+              this.headerURL="";
+              this.footerURL="";
               this.ngOnInit();
             },err=>{
               console.log(err,"error");
@@ -344,33 +297,30 @@ export class UserComponent implements OnInit {
             });
         }
         else{
+          console.log(this.formAddEdit.value,"Formaddedit inside update");
+
           var bo={
-            'first_name':this.formAddEdit.value.first_name,
-            'middle_name':this.formAddEdit.value.middle_name,
-            'last_name':this.formAddEdit.value.last_name,
-            'address1':this.formAddEdit.value.address1,
-            'address2':this.formAddEdit.value.address2,
-            'phone':this.formAddEdit.value.phone,
-            'email':this.formAddEdit.value.email,
-            'username':this.formAddEdit.value.username,
-            // 'password':this.formAddEdit.value.password,
-            'photo':this.pic,
-            'role_id':this.formAddEdit.value.role_id,
-            // 'site_id':this.formAddEdit.value.site_id,
+            'branch_name':this.formAddEdit.value.branchName,
+            'branch_address':this.formAddEdit.value.branchAddress,
+            'gst_no':this.formAddEdit.value.gstNo,
+            'header':this.headerImagePath,
+            'footer':this.footerImagePath,
+            'city_id':this.formAddEdit.value.cityId,
             'status':this.formAddEdit.value.status,
-            'user_id':this.uniqueId 
+            'branch_id':this.uniqueId 
           }
           console.log("bo",bo);
-          this.userservice.updateuser(bo).subscribe(res=>{
-            this.resp3 = res;
-            console.log("resp3",this.resp3);
+          this.branchservice.updateBranch(bo).subscribe(res=>{
+            this.upataBranchResp = res;
+            console.log("upataBranchResp",this.upataBranchResp);
             
             // this.message = this.rep.message;
             this.showToast(this.success_status, this.title, this.edit_success_content);
             ref.close();
             this.ngOnInit();
             this.uniqueId='';
-            this.imgURL='';
+            this.headerURL='';
+            this.footerURL='';
           },(err)=>{
              this.showToast(this.failure_status, this.title, this.edit_failure_content);
             
@@ -398,8 +348,11 @@ export class UserComponent implements OnInit {
   closeHandle(ref:any){
     ref.close();
     this.uniqueId='';
-    this.imgURL='';
-    this.pic='';
+    this.headerURL='';
+    this.headerImagePath='';
+    this.footerURL='';
+    this.footerImagePath='';
     this.formAddEdit.reset();
   }
 }
+

@@ -52,7 +52,7 @@
            [(ngModel)]="user.password"
            #password="ngModel"
            name="password"
-           type="password"
+           [type]="hide ? 'password' : 'text'"
            id="input-password"
            placeholder="Password"
            fieldSize="large"
@@ -61,6 +61,10 @@
            [minlength]="getConfigValue('forms.validation.password.minLength')"
            [maxlength]="getConfigValue('forms.validation.password.maxLength')"
            [attr.aria-invalid]="password.invalid && password.touched ? true : null">
+            <i id="eye" style="float: right;
+              margin-top: -26px;
+              padding-right: 10px;
+              position: relative;" [class]="hide? 'far fa-eye':'far fa-eye-slash'" (click)="showPwd()"></i>
     <ng-container *ngIf="password.invalid && password.touched ">
       <p class="caption status-danger" *ngIf="password.errors?.required">
         Password is required!

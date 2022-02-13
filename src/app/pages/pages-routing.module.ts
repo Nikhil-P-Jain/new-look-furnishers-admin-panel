@@ -30,6 +30,8 @@ import { PurchaseOrderComponent } from './purchase-order/purchase-order.componen
 import { PurchaseOrderSpecifiedProductComponent } from './purchase-order/purchase-order-specified-product/purchase-order-specified-product.component';
 import { AnnexureComponent } from './purchase-order/annexure/annexure.component';
 import { AnnexureDetailsComponent } from './purchase-order/annexure/annexure-details/annexure-details.component';
+import { BranchComponent } from './branch/branch.component';
+import { TermsComponent } from './terms/terms.component';
 
 const routes: Routes = [{
   path: '',
@@ -89,7 +91,7 @@ const routes: Routes = [{
       data:{breadcrumb:'Poduct Brand'}
     },
     {
-      path:'product-specification',
+      path:'product-specification-removed',
       component:ProductSpecificationComponent,
       data:{breadcrumb:'Product Specification'}
     },
@@ -172,6 +174,16 @@ const routes: Routes = [{
       path:'annexure-details/:id',
       component:AnnexureDetailsComponent,
       data:{breeadcrumb:'Annexure Details'}
+    },
+    {
+      path:'branch',
+      component:BranchComponent,
+      data:{breeadcrumb:'Branch'}
+    },
+    {
+      path:'quotation-terms',
+      component:TermsComponent,
+      data:{breeadcrumb:'Quotation Terms'}
     },
     {
       path: 'layout',

@@ -58,7 +58,7 @@
                 <input type="hidden" value={{pluData.project_lead_id}} class="form-control" formControlName="project_lead_id">
             </div> -->
            <div class="form-group row">
-              <label class="label col-sm-3 col-form-label">Remarks</label>
+              <label class="label col-sm-3 col-form-label">Remarks<span style="color: red;">*</span></label>
               <div class="col-sm-9">
                 <input type="text" class="form-control" nbInput shape="rectangle" formControlName="project_lead_updates_remarks" class="col-md-12" placeholder="Enter Remarks" [ngClass]="{'is-invalid': isSubmitted && f.project_lead_updates_remarks.errors}">
                 <div *ngIf="isSubmitted && f.project_lead_updates_remarks.errors" class="text-danger">
@@ -67,7 +67,7 @@
               </div>
           </div>
           <div class="form-group row">
-            <label class="label col-sm-3 col-form-label">Lead Updates Date</label>
+            <label class="label col-sm-3 col-form-label">Lead Updates Date<span style="color: red;">*</span></label>
             <div class="col-sm-9">
                 <input type="date" class="form-control" formControlName="project_lead_updates_date">
             </div>

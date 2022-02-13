@@ -3,6 +3,10 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus, NbDialogService, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
+import { environment } from '../../../environments/environment';
+import { ProductBrandService } from '../service/product-brand.service';
+import { ProductCategoriesService } from '../service/product-categories.service';
+import { ProductService } from '../service/product.service';
 import { ProjectOrderService } from '../service/project-order.service';
 import { ProjectQuotationService } from '../service/project-quotation.service';
 import { PurchaseOrderServiceService } from '../service/purchase-order-service.service';
@@ -27,14 +31,23 @@ export class PurchaseOrderComponent implements OnInit {
   unitData:any;
   supData:any;
   psData:any;
+  allpsData:any;
   resp:any;
   resp1:any;
   resp3:any;
   resp4:any;
   resp5:any;
   resp6:any;
+  resp7:any;
+  resp8:any;
   resp2:any;
+  pbData:any;
+  pcData:any;
   resp9:any;
+  brandCatResp:any;
+  brandCatData:any;
+  catProductResp:any;
+  catProductData:any;
   config: NbToastrConfig;
   destroyByClick = true;
   duration = 2000;
@@ -58,6 +71,9 @@ export class PurchaseOrderComponent implements OnInit {
   constructor(private ds:NbDialogService,
     private proservice:ProjectOrderService,
     private poservice:PurchaseOrderServiceService,
+    public productservice:ProductService,
+    public pbservice:ProductBrandService,
+    public pcservice: ProductCategoriesService,
     public http:HttpClient,
     private siteservice: SiteService,
     private supservice: SupplierService,
@@ -69,8 +85,8 @@ export class PurchaseOrderComponent implements OnInit {
     this.isSubmitted=false;
     this.poservice.getproduct().subscribe(res=>{
       this.resp1=res;
-      this.prodData=this.resp1.data.results;
-      console.log("Getting ProdData", this.prodData);
+      this.psData=this.resp1.data.results;
+      console.log("Getting ProdData", this.psData);
     })
     this.proservice.getprojectorder().subscribe(res=>{
       this.resp9=res;
@@ -92,6 +108,17 @@ export class PurchaseOrderComponent implements OnInit {
       this.supData=this.resp3.data.results;
       console.log(this.supData,"Sup data");
     });
+    this.pcservice.getproduct_category().subscribe(res=>{
+      this.resp7=res;
+      this.pcData=this.resp7.data.results;
+      console.log(this.pcData,"pcData");
+    })
+    this.pbservice.getproduct_brand().subscribe(res=>{
+      this.resp8=res;
+      this.pbData=this.resp8.data.results;
+      console.log(this.pbData,"pbData");
+      
+    })
     this.formAddEdit=this.formBuilder.group({
       'project_order_id':[''],
       'po_number':['',[Validators.required]],
@@ -122,14 +149,32 @@ export class PurchaseOrderComponent implements OnInit {
 
   createProducts():FormGroup{
     return this.formBuilder.group({
+      product_brand_id:'',
+      product_category_id:'',
       product_id:'',
-      specification_id:'',
       quantity:'',
       unit:''
     })
   }
   get products1():FormArray{
     return this.formAddEdit.get('products') as FormArray;
+  }
+  brandToCategory(e:any){
+    console.log("Brandtocat",e);
+    
+    this.pcservice.get_product_category_by_brand_id(e).subscribe(res=>{
+      this.brandCatResp=res;
+      this.brandCatData=this.brandCatResp.data.results;
+      console.log("brandcatdata",this.brandCatData);
+      
+    })
+  }
+  catToProduct(e:any){
+    console.log("catToprod",e);
+    this.productservice.get_product_by_category_id(e).subscribe(res=>{
+      this.catProductResp=res;
+      this.catProductData=this.catProductResp.data.results;
+    })
   }
   addProduct(){
     this.products=this.formAddEdit.get('products') as FormArray;
@@ -207,7 +252,7 @@ export class PurchaseOrderComponent implements OnInit {
       type:'html',
       valuePrepareFunction:(cell,row)=>{
         // return `<a href=http://localhost:4200/#/pages/purchase-order-details/${row.purchase_order_id}>Details</a>`
-        return `<a href=http://veritrack.co.in/newlook/#/pages/purchase-order-details/${row.purchase_order_id}>Details</a>`
+        return `<a href=${environment.APP_URL}purchase-order-details/${row.purchase_order_id}>Details</a>`
 
       },
       filter:false       
@@ -218,7 +263,7 @@ export class PurchaseOrderComponent implements OnInit {
       //   type:'html',
       //   valuePrepareFunction:(cell,row)=>{
       //     return `<a href=http://localhost:4200/#/pages/annexure/${row.purchase_order_id}>Annexure</a>`
-      //     // return `<a href=http://veritrack.co.in/newlook/#/pages/annexure/${row.purchase_order_id}>Annexure</a>`
+      //     // return `<a href=${environment.APP_URL}annexure/${row.purchase_order_id}>Annexure</a>`
       //   },
       // },
     },
@@ -226,7 +271,17 @@ export class PurchaseOrderComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
   open2(dialog: TemplateRef<any>,event:any) {
-    
+    this.formAddEdit=this.formBuilder.group({
+      'project_order_id':[''],
+      'po_number':['',[Validators.required]],
+      'purchase_order_date':['',[Validators.required]],
+      'purchase_order_description':['',[Validators.required]],
+      'site_id':['',[Validators.required]],
+      'supplier_id':['',[Validators.required]],
+      'purchase_order_status':[],
+      'products':this.formBuilder.array([this.createProducts()]),
+    })
+    this.formAddEdit.reset();
     console.log("open2 function called");
     console.log(event, "event inside dailog");
     this.uniqueId=event.data.purchase_order_id;
@@ -244,42 +299,42 @@ export class PurchaseOrderComponent implements OnInit {
         'supplier_id':JSON.stringify(this.poData1.supplier_id),
         'purchase_order_status':this.poData1.purchase_order_status==0?"Deactive":"Active"
       })
-
-      this.poservice.getallspecification().subscribe(res=>{
-        this.resp6=res;
-        this.psData=this.resp6.data.results;
-        console.log("Getting Spesification Data", this.psData)
+      this.productservice.getproduct().subscribe(res=>{
+        this.brandCatResp=res;
+        this.brandCatData=this.brandCatResp.data.results;
+        console.log(this.brandCatData,"brandcatdfata");
+        
+        this.catProductResp=res;
+        this.catProductData=this.catProductResp.data.results;
       })
+      // this.poservice.getallspecification().subscribe(res=>{
+      //   this.resp6=res;
+      //   this.psData=this.resp6.data.results;
+      //   console.log("Getting Specification Data", this.psData)
+      // })
 
-      for(var i=1;i<prodInfo.length;i++){
+      for(var i=1;i<prodInfo.length;i++){
         this.products1.push(this.createProducts());
       }
 
-      for(var j=0;j<=this.products1.length;j++){
-              this.products1.controls[j].get('product_id').patchValue(JSON.stringify(prodInfo[j].product_id));
-              this.products1.controls[j].get('specification_id').patchValue(JSON.stringify(prodInfo[j].specification_id));
-              this.products1.controls[j].get('quantity').patchValue(prodInfo[j].purchase_order_specified_product_quantity);
-              this.products1.controls[j].get('unit').patchValue(JSON.stringify(prodInfo[j].unit_id));
-    }
+      for(var j=0;j<this.products1.length;j++){
+        this.products1.controls[j].get('product_brand_id').patchValue(JSON.stringify(prodInfo[j].product_brand_id));
+        this.products1.controls[j].get('product_category_id').patchValue(JSON.stringify(prodInfo[j].product_category_id));
+        this.products1.controls[j].get('product_id').patchValue(JSON.stringify(prodInfo[j].product_id));
+        // this.products1.controls[j].get('specification_id').patchValue(JSON.stringify(prodInfo[j].product_specification_id));
+        this.products1.controls[j].get('quantity').patchValue(prodInfo[j].purchase_order_specified_product_quantity);
+        this.products1.controls[j].get('unit').patchValue(JSON.stringify(prodInfo[j].unit_id));
+      }
       console.log(this.formAddEdit,"formaddedit");
     })
-    this.ds.open(
-      dialog,
-      { context: 'this is some additional data passed to dialog' });
+    this.ds.open(dialog,{ hasScroll:true });
   }
 
-  changeprod(e:any){
-    console.log("Getting selected id", e);
-      this.poservice.getproductspecificationbyproductid(e).subscribe(res=>{
-      this.resp6=res;
-      this.psData=this.resp6.data.results;
-      console.log("Getting Spesification Data", this.psData)
-    })
-  }
   
   open1(dialog:TemplateRef<any>){
     // this.formAddEdit.reset();
-    this.ds.open(dialog);
+    this.ngOnInit();
+    this.ds.open(dialog,{ hasScroll:true });
   }
   
 
@@ -318,7 +373,7 @@ export class PurchaseOrderComponent implements OnInit {
         var prodinfo=[];
         this.formAddEdit.get('products').value.forEach(x => {
           prodinfo.push({
-            specification_id:parseInt(x.specification_id),
+            product_id:parseInt(x.product_id),
             purchase_order_specified_product_quantity:parseInt(x.quantity),
             unit_id:parseInt(x.unit)
           })
@@ -396,17 +451,6 @@ export class PurchaseOrderComponent implements OnInit {
   closeHandle(ref:any){
     ref.close();
     this.uniqueId='';
-    this.formAddEdit=this.formBuilder.group({
-      'project_order_id':['',[Validators.required]],
-      'po_number':['',[Validators.required]],
-      'purchase_order_date':['',[Validators.required]],
-      'purchase_order_description':['',[Validators.required]],
-      'site_id':['',[Validators.required]],
-      'supplier_id':['',[Validators.required]],
-      'purchase_order_status':[],
-      'products':this.formBuilder.array([this.createProducts()]),
-    })
-    this.formAddEdit.reset();
   }
   
 }

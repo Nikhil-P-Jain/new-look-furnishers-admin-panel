@@ -41,7 +41,13 @@ export const MENU_ITEMS: NbMenuItem[] = [
       icon: 'pin-outline',
       title:'City',
       link:'/pages/city',
-    },]
+    },
+    {
+      icon:'home-outline',
+      title:'New Look Branches',
+      link:'/pages/branch'
+    }
+  ]
   },
   {
     icon:'shopping-cart-outline',
@@ -53,25 +59,26 @@ export const MENU_ITEMS: NbMenuItem[] = [
     title:"Products",
     children:[
       {
+        icon: 'behance-outline',
+        title:'Product Brand',
+        link:'/pages/product-brand',
+      },
+      {
         icon: 'archive-outline',
         title:'Product Category',
         link:'/pages/product-category',
       },
       {
-      icon: 'behance-outline',
-      title:'Product',
-      link:'/pages/product-brand',
-    },
-    {
-      icon:'briefcase-outline',
-      title:'Sub Product',
-      link:'/pages/product'
-    },
-    {
-      icon:'file-text-outline',
-      title:'Product Specification',
-      link:'/pages/product-specification',
-    }]
+        icon:'briefcase-outline',
+        title:'Product',
+        link:'/pages/product'
+      },
+      // {
+      //   icon:'file-text-outline',
+      //   title:'Product Specification',
+      //   link:'/pages/product-specification',
+      // }
+    ]
   },
   {
     icon: 'bar-chart-outline',
@@ -96,6 +103,11 @@ export const MENU_ITEMS: NbMenuItem[] = [
         icon:'inbox-outline',
         title:'Project Lead',
         link:'/pages/project-lead'
+      },
+      {
+        icon:'checkmark-square-2-outline',
+        title:'Project Quotation Terms',
+        link:'/pages/quotation-terms'
       },
       {
         icon:'clipboard-outline',

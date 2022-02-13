@@ -92,6 +92,7 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
       this.userData=this.resp1.data.results;
       console.log(this.userData,"User data");
     });
+    
     this.pquservice.getprojectquotationupdates(this.project_quotation_id).subscribe(res=>{
       this.resp1=res;
       this.pquData=this.resp1.data.results;
@@ -147,8 +148,8 @@ export class ProjectQuotationUpdatesComponent implements OnInit {
        title: 'Product Name',
        type: 'string',
      },
-     product_specification_name: {
-       title: 'Product Specification Name',
+     product_specification: {
+       title: 'Product Specification',
        type: 'string',
      },
      pq_specified_products_quantity: {

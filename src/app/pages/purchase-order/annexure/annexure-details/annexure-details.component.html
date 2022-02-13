@@ -23,7 +23,7 @@
 </nb-card>
 
 <ng-template #dialog let-data let-ref="dialogRef">
-    <nb-card style="width: 1080px !important;">
+    <nb-card style="max-height: 100%; overflow-y: hidden;">
       <nb-card-header class="d-flex justify-content-between">
         <!-- <button nbButton status="primary" (click)="convetToPDF()">Save PDF</button> -->
         <button nbButton status="primary" ngxPrint [useExistingCss]="true" printTitle="Annexure {{pdfData.po_number}}"  printSectionId="pdf">Print</button>
@@ -102,9 +102,6 @@
               <div [formGroupName]="i" class="form-group row">
                     <label class="label col-sm-1 col-form-label" style="padding: 15px 0px;">Accessory</label>
                     <div class="col-sm-3">
-                      <!-- <nb-select formControlName="product_id" style="padding: 0;"  placeholder="Select Product" class="col-md-6" (selectedChange)="changeprod($event)">
-                        <nb-option *ngFor="let product of prodInfo" value={{product.product_id}}>{{product.product_name}}</nb-option>
-                      </nb-select> -->
                       <input type="text" nbInput shape="rectangle" formControlName="accessories_name" placeholder="Enter Accessory" class="col-md-12">
                     </div>
                     <label style="padding: 15px 0px; display: inline-block;" class="label col-sm-1 col-form-label">Select Metrics</label>
@@ -131,15 +128,15 @@
                     <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Total Length</label>
                     <div class="col-sm-2" *ngIf="mid[i] == 2">
                       <input  nbInput shape="rectangle" formControlName="accessories_total_length" placeholder="Enter Total Length" class="col-md-6" [(ngModel)]="totalLength[i]" readonly>
-                    </div> 
+                    </div>
                     <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Module</label>
                     <div class="col-sm-2" *ngIf="mid[i] == 2">
                       <input type="number" nbInput shape="rectangle" formControlName="accessories_module" placeholder="Enter Module" class="col-md-6" (input)="findArea()">
-                    </div> 
+                    </div>
                     <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Area</label>
                     <div class="col-sm-2" *ngIf="mid[i] == 2">
                       <input type="number" nbInput shape="rectangle" formControlName="accessories_area" placeholder="Enter Area" class="col-md-6" readonly [(ngModel)]="areadata[i]">
-                    </div> 
+                    </div>
                   </div>
                 </div>
                 <div style="padding:0;" class="col-sm-12 mt-4 row">

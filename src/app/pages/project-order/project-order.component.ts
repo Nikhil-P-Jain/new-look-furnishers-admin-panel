@@ -3,6 +3,10 @@ import { Component, OnInit, TemplateRef } from '@angular/core';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus, NbDialogService, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
+import { environment } from '../../../environments/environment';
+import { ProductBrandService } from '../service/product-brand.service';
+import { ProductCategoriesService } from '../service/product-categories.service';
+import { ProductService } from '../service/product.service';
 import { ProjectOrderService } from '../service/project-order.service';
 import { ProjectQuotationService } from '../service/project-quotation.service';
 import { SiteService } from '../service/site.service';
@@ -21,9 +25,13 @@ export class ProjectOrderComponent implements OnInit {
   siteData:any;
   plData:any;
   pqData:any;
-  prodData:any;
+  productData:any;
   unitData:any;
   psData:any;
+  brandCatResp:any;
+  brandCatData:any;
+  catProductResp:any;
+  catProductData:any;
   resp:any;
   resp1:any;
   resp3:any;
@@ -31,6 +39,10 @@ export class ProjectOrderComponent implements OnInit {
   resp5:any;
   resp6:any;
   resp7:any;
+  resp8:any;
+  resp9:any;
+  pbData:any;
+  pcData:any;
   resp2:any;
   config: NbToastrConfig;
   destroyByClick = true;
@@ -57,6 +69,9 @@ export class ProjectOrderComponent implements OnInit {
     public http:HttpClient,
     private siteservice: SiteService,
     private pqservice: ProjectQuotationService,
+    public productservice:ProductService,
+    public pcservice: ProductCategoriesService,
+    public pbservice: ProductBrandService,
     private toastrService: NbToastrService,
     private formBuilder: FormBuilder,) { }
   
@@ -64,8 +79,8 @@ export class ProjectOrderComponent implements OnInit {
     this.isSubmitted=false;
     this.poservice.getproduct().subscribe(res=>{
       this.resp1=res;
-      this.prodData=this.resp1.data.results;
-      console.log("Getting ProdData", this.prodData);
+      this.productData=this.resp1.data.results;
+      console.log("Getting ProductData", this.productData);
     })
     this.poservice.getproject_lead_name().subscribe(res=>{
       this.resp7=res;
@@ -86,6 +101,22 @@ export class ProjectOrderComponent implements OnInit {
       this.pqData=this.resp4.data.results;
       console.log(this.pqData,"Project Quotation data");
     });
+    this.pcservice.getproduct_category().subscribe(res=>{
+      this.resp7=res;
+      this.pcData=this.resp7.data.results;
+      console.log(this.pcData,"pcData");
+    })
+    this.pbservice.getproduct_brand().subscribe(res=>{
+      this.resp8=res;
+      this.pbData=this.resp8.data.results;
+      console.log(this.pbData,"pbData");
+      
+    })
+    // this.productservice.getproduct().subscribe(res=>{
+    //   this.resp6=res;
+    //   this.psData=this.resp6.data.results;
+    //   console.log("Getting Specification Data", this.psData)
+    // });
     this.poservice.getprojectorder().subscribe(res=>{
       this.resp5=res;
       this.poData=this.resp5.data.results;
@@ -107,23 +138,27 @@ export class ProjectOrderComponent implements OnInit {
       'project_order_date':['',[Validators.required]],
       'project_order_description':['',[Validators.required]],
       'site_id':['',[Validators.required]],
-      'project_order_status':[],
+      'project_order_status':[''],
       'products':this.formBuilder.array([this.createProducts()]),
     })
     console.log(this.formAddEdit,"formAddEdor");
-    
   }
-
+  get f(){
+    return this.formAddEdit.controls;
+  }
   createProducts():FormGroup{
     return this.formBuilder.group({
+      product_brand_id:'',
+      product_category_id:'',
       product_id:'',
-      specification_id:'',
+      // specification_id:'',
       quantity:'',
       unit:''
     })
   }
   get products1():FormArray{
     return this.formAddEdit.get('products') as FormArray;
+    // console.log(this.formAddEdit.get('products'));    
   }
   addProduct(){
     this.products=this.formAddEdit.get('products') as FormArray;
@@ -132,9 +167,6 @@ export class ProjectOrderComponent implements OnInit {
   removeProducts()
   {
     (this.formAddEdit.get('products') as FormArray).removeAt(length-1);
-  }
-  get f(){
-    return this.formAddEdit.controls;
   }
    settings = {
      mode: 'external',
@@ -197,7 +229,7 @@ export class ProjectOrderComponent implements OnInit {
       type:'html',
       valuePrepareFunction:(cell,row)=>{
         // return `<a href=http://localhost:4200/#/pages/project-order-details/${row.project_order_id}>View</a>`
-        return `<a href=http://veritrack.co.in/newlook/#/pages/project-order-details/${row.project_order_id}>View</a>`
+        return `<a href=${environment.APP_URL}project-order-details/${row.project_order_id}>View</a>`
 
       },
       filter:false       
@@ -207,7 +239,17 @@ export class ProjectOrderComponent implements OnInit {
 
   source: LocalDataSource = new LocalDataSource();
   open2(dialog: TemplateRef<any>,event:any) {
-    
+    this.formAddEdit=this.formBuilder.group({
+      // 'project_name':[''],
+      // 'project_quotation_id':['',[Validators.required]],
+      'project_quotation_id':[''],
+      'project_order_date':['',[Validators.required]],
+      'project_order_description':['',[Validators.required]],
+      'site_id':['',[Validators.required]],
+      'project_order_status':[''],
+      'products':this.formBuilder.array([this.createProducts()]),
+    })
+    this.formAddEdit.reset();
     console.log("open2 function called");
     console.log(event, "event inside dailog");
     this.uniqueId=event.data.project_order_id;
@@ -215,7 +257,7 @@ export class ProjectOrderComponent implements OnInit {
       this.resp2=res;
       this.poData1=this.resp2.data.results[0];
       var prodInfo=this.poData1.productinfo;
-      console.log("Getting res",this.poData1.productinfo);
+      console.log("Getting res",prodInfo);
       this.formAddEdit.reset({
         'project_quotation_id':JSON.stringify(this.poData1.project_quotation_id),
         'project_order_date':this.poData1.project_order_date,
@@ -223,42 +265,72 @@ export class ProjectOrderComponent implements OnInit {
         'site_id':JSON.stringify(this.poData1.site_id),
         'project_order_status':this.poData1.project_order_status==0?"Deactive":"Active"
       })
-
-      this.poservice.getallspecification().subscribe(res=>{
-        this.resp6=res;
-        this.psData=this.resp6.data.results;
-        console.log("Getting Spesification Data", this.psData)
+      this.productservice.getproduct().subscribe(res=>{
+        this.brandCatResp=res;
+        this.brandCatData=this.brandCatResp.data.results;
+        console.log(this.brandCatData,"brandcatdfata");
+        
+        this.catProductResp=res;
+        this.catProductData=this.catProductResp.data.results;
+        console.log(this.catProductData,"catProductData");
+        
       })
+      // this.poservice.getallspecification().subscribe(res=>{
+      //   this.resp6=res;
+      //   this.psData=this.resp6.data.results;
+      //   console.log("Getting Spesification Data", this.psData)
+      // })
 
-      for(var i=1;i<prodInfo.length;i++){
+      for(var i=1;i<prodInfo.length;i++){
         this.products1.push(this.createProducts());
       }
 
-      for(var j=0;j<=this.products1.length;j++){
-              this.products1.controls[j].get('product_id').patchValue(JSON.stringify(prodInfo[j].product_id));
-              this.products1.controls[j].get('specification_id').patchValue(JSON.stringify(prodInfo[j].specification_id));
-              this.products1.controls[j].get('quantity').patchValue(prodInfo[j].project_order_specified_product_quantity);
-              this.products1.controls[j].get('unit').patchValue(JSON.stringify(prodInfo[j].unit_id));
-    }
+      for(var j=0;j<this.products1.length;j++){
+        console.log(this.products1.controls[j],"value of j ",j,"products1",prodInfo[j]);
+
+        this.products1.controls[j].get('product_brand_id').patchValue(JSON.stringify(prodInfo[j].product_brand_id));
+        this.products1.controls[j].get('product_category_id').patchValue(JSON.stringify(prodInfo[j].product_category_id));
+        this.products1.controls[j].get('product_id').patchValue(JSON.stringify(prodInfo[j].product_id));
+        // this.products1.controls[j].get('specification_id').patchValue(JSON.stringify(prodInfo[j].product_specification_id));
+        this.products1.controls[j].get('quantity').patchValue(prodInfo[j].project_order_specified_product_quantity);
+        this.products1.controls[j].get('unit').patchValue(JSON.stringify(prodInfo[j].unit_id));
+      }
       console.log(this.formAddEdit,"formaddedit");
+      
     })
     this.ds.open(
       dialog,
-      { context: 'this is some additional data passed to dialog' });
+      { hasScroll:true});
   }
 
-  changeprod(e:any){
-    console.log("Getting selected id", e);
-      this.poservice.getproductspecificationbyproductid(e).subscribe(res=>{
-      this.resp6=res;
-      this.psData=this.resp6.data.results;
-      console.log("Getting Spesification Data", this.psData)
+  // changeprod(e:any){
+  //   console.log("Getting selected id", e);
+  //     this.poservice.getproductspecificationbyproductid(e).subscribe(res=>{
+  //     this.resp6=res;
+  //     this.psData=this.resp6.data.results;
+  //     console.log("Getting Spesification Data", this.psData)
+  //   })
+  // }
+  brandToCategory(e:any){
+    console.log("Brandtocat",e);
+    
+    this.pcservice.get_product_category_by_brand_id(e).subscribe(res=>{
+      this.brandCatResp=res;
+      this.brandCatData=this.brandCatResp.data.results;
+    })
+  }
+  catToProduct(e:any){
+    console.log("catToprod",e);
+    
+    this.productservice.get_product_by_category_id(e).subscribe(res=>{
+      this.catProductResp=res;
+      this.catProductData=this.catProductResp.data.results;
     })
   }
   
   open1(dialog:TemplateRef<any>){
     this.ngOnInit();
-    this.ds.open(dialog);
+    this.ds.open(dialog),{ hasScroll:true };
   }
   
 
@@ -289,7 +361,7 @@ export class ProjectOrderComponent implements OnInit {
     console.log("Clicked on submit");
     this.isSubmitted = true;
       if (this.formAddEdit.invalid) {
-        // console.log("form add edit invalid",this.formAddEdit.invalid);
+        console.log("form add edit invalid",this.formAddEdit.invalid);
         
         return;
       }else{
@@ -297,7 +369,9 @@ export class ProjectOrderComponent implements OnInit {
         var prodinfo=[];
         this.formAddEdit.get('products').value.forEach(x => {
           prodinfo.push({
-            specification_id:parseInt(x.specification_id),
+            product_id:parseInt(x.product_id),
+            product_category_id:parseInt(x.product_category_id),
+            product_brand_id:parseInt(x.product_brand_id),
             project_order_specified_product_quantity:parseInt(x.quantity),
             unit_id:parseInt(x.unit)
           })
@@ -310,7 +384,7 @@ export class ProjectOrderComponent implements OnInit {
         }
         if(!this.uniqueId){
           var body={
-            "project_quotation_id":this.formAddEdit.value.project_quotation_id,
+            "project_quotation_id":this.formAddEdit.value.project_quotation_id==""?0:this.formAddEdit.value.project_quotation_id,
             "project_order_date":this.formAddEdit.value.project_order_date,
             "project_order_description":this.formAddEdit.value.project_order_description,
             "site_id":this.formAddEdit.value.site_id,
@@ -335,8 +409,8 @@ export class ProjectOrderComponent implements OnInit {
             "project_order_description":this.formAddEdit.value.project_order_description,
             "site_id":this.formAddEdit.value.site_id,
             "project_order_status":this.formAddEdit.value.project_order_status,
-            "project_order_id":this.uniqueId ,
-            "productsinfo":prodinfo
+            "productsinfo":prodinfo,
+            "project_order_id":this.uniqueId
           }
           this.poservice.updateprojectorder(bo).subscribe(res=>{
             this.resp3 = res;
@@ -371,17 +445,6 @@ export class ProjectOrderComponent implements OnInit {
   closeHandle(ref:any){
     ref.close();
     this.uniqueId='';
-    this.formAddEdit=this.formBuilder.group({
-      // 'project_name':[''],
-      // 'project_quotation_id':['',[Validators.required]],
-      'project_quotation_id':[''],
-      'project_order_date':['',[Validators.required]],
-      'project_order_description':['',[Validators.required]],
-      'site_id':['',[Validators.required]],
-      'project_order_status':[],
-      'products':this.formBuilder.array([this.createProducts()]),
-    })
-    this.formAddEdit.reset();
   }
   
 }

@@ -80,9 +80,9 @@ export class ProductComponent implements OnInit {
       this.source.load(this.productData);
     });
     this.formAddEdit=this.formBuilder.group({
-      'product_brand_id':['',[Validators.required]],
       'product_name':['',[Validators.required]],
-      'category_id':['',[Validators.required]],
+      'product_category_id':['',[Validators.required]],
+      'product_specification':['',[Validators.required]],
       'product_status':[]
     })
   }
@@ -109,17 +109,17 @@ export class ProductComponent implements OnInit {
       confirmDelete: true,
     },
     columns: {
-      product_brand_name: {
-        title: 'Product',
-        type: 'string',
-      },
       product_name: {
-        title: 'Subproduct',
+        title: 'Product',
         type: 'string',
       },
       product_category_name:{
         title:'Category Name',
         type:'string',
+      },
+      product_specification:{
+        title:'Product Specification',
+        type:'string'
       },
       product_status: {
         title: 'Subproduct Status',
@@ -147,9 +147,9 @@ export class ProductComponent implements OnInit {
       this.productData1=this.resp2.data.results[0];
       console.log("Getting res",this.productData1);
       this.formAddEdit.reset({
-        'product_brand_id':JSON.stringify(this.productData1.product_brand_id),
         'product_name':this.productData1.product_name,
-        'category_id':JSON.stringify(this.productData1.category_id),
+        'product_category_id':JSON.stringify(this.productData1.product_category_id),
+        'product_specification':this.productData1.product_specification,
         'product_status':this.productData1.product_status==0?"Deactive":"Active"
       })
       console.log(this.formAddEdit,"formaddedit");
@@ -202,8 +202,8 @@ export class ProductComponent implements OnInit {
       if(!this.uniqueId){
         var body={
           "product_name":this.formAddEdit.value.product_name,
-          "product_brand_id":this.formAddEdit.value.product_brand_id,
-          "category_id":this.formAddEdit.value.category_id,
+          "product_category_id":this.formAddEdit.value.product_category_id,
+          "product_specification":this.formAddEdit.value.product_specification,
           "product_status":this.formAddEdit.value.product_status,
         }
         console.log(body,"body");  
@@ -219,8 +219,8 @@ export class ProductComponent implements OnInit {
       else{
         var bo={
           "product_name":this.formAddEdit.value.product_name,
-          "product_brand_id":this.formAddEdit.value.product_brand_id,
-          "category_id":this.formAddEdit.value.category_id,
+          "product_category_id":this.formAddEdit.value.product_category_id,
+          "product_specification":this.formAddEdit.value.product_specification,
           "product_status":this.formAddEdit.value.product_status,
           "product_id":this.uniqueId 
         }
@@ -252,5 +252,10 @@ export class ProductComponent implements OnInit {
       body,
       `${titleContent}`,
       config);
+  }
+  closeHandle(ref:any){
+    ref.close();
+    this.uniqueId='';
+    this.formAddEdit.reset();
   }
 }

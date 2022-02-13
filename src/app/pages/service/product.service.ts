@@ -27,6 +27,10 @@ export class ProductService {
       return this.http.get<any[]>(api+`/getproductbyid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
       .map(res => res);
   }
+  get_product_by_category_id(id:any):Observable<any[]>{
+    return this.http.get<any[]>(api+`/get_product_by_category_id/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+}
 
   createproduct(body:any):Observable<any[]>{
       return this.http.post<any[]>(api+`/createproduct`,body,{headers:new HttpHeaders({'Content-Type':'application/json'})})

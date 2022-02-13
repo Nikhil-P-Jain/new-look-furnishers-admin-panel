@@ -17,7 +17,7 @@
           <!-- <form [ngSubmit]="save()"> -->
           <form [formGroup]="formAddEdit">
           <div class="form-group row">
-            <label class="label col-sm-1 col-form-label">First Name</label>
+            <label class="label col-sm-1 col-form-label">First Name<span style="color: red;">*</span></label>
             <div class="col-sm-3">
                 <input type="text" class="form-control" nbInput shape="rectangle" [ngClass]="{'is-invalid': isSubmitted && f.first_name.errors}" formControlName="first_name" class="col-md-12" placeholder="Enter First Name">
                 <div *ngIf="isSubmitted && f.first_name.errors" class="text-danger">
@@ -28,7 +28,7 @@
             <div class="col-sm-3">
                 <input type="text" class="form-control" nbInput shape="rectangle" formControlName="middle_name" class="col-md-12" placeholder="Enter Middle Name">
             </div>
-            <label class="label col-sm-1 col-form-label">Last Name</label>
+            <label class="label col-sm-1 col-form-label">Last Name<span style="color: red;">*</span></label>
             <div class="col-sm-3">
               <input type="text" class="form-control" [ngClass]="{'is-invalid': isSubmitted && f.last_name.errors}" nbInput shape="rectangle" formControlName="last_name" class="col-md-12" placeholder="Enter Last Name">
               <div *ngIf="isSubmitted && f.last_name.errors" class="text-danger">
@@ -37,7 +37,7 @@
             </div>
           </div>
         <div class="form-group row">
-            <label class="label col-sm-2 col-form-label">Address1</label>
+            <label class="label col-sm-2 col-form-label">Address1<span style="color: red;">*</span></label>
             <div class="col-sm-4">
                 <textarea rows="4" class="form-control" [ngClass]="{'is-invalid': isSubmitted && f.address1.errors}" formControlName="address1" class="col-md-12" nbInput fullWidth shape="round"  placeholder="Enter your Primary Address"></textarea>
                 <div *ngIf="isSubmitted && f.address1.errors" class="text-danger">
@@ -50,14 +50,14 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="label col-sm-2 col-form-label">Phone</label>
+            <label class="label col-sm-2 col-form-label">Phone<span style="color: red;">*</span></label>
             <div class="col-sm-4">
               <input type="text" class="form-control" [ngClass]="{'is-invalid': isSubmitted && f.phone.errors}" nbInput shape="rectangle" formControlName="phone" class="col-md-12" placeholder="Enter Phone">
               <div *ngIf="isSubmitted && f.phone.errors" class="text-danger">
                 <div *ngIf="f.phone.errors.required">This field is required</div>
               </div>
             </div>
-            <label class="label col-sm-2 col-form-label">Email</label>
+            <label class="label col-sm-2 col-form-label">Email<span style="color: red;">*</span></label>
             <div class="col-sm-4">
               <input type="text" class="form-control" [ngClass]="{'is-invalid': isSubmitted && f.email.errors}" nbInput shape="rectangle" formControlName="email" class="col-md-12" placeholder="Enter Email">
               <div *ngIf="isSubmitted && f.email.errors" class="text-danger">
@@ -66,31 +66,33 @@
             </div>
         </div>
         <div class="form-group row">
-            <label class="label col-sm-2 col-form-label">Username</label>
+            <label class="label col-sm-2 col-form-label">Username<span style="color: red;">*</span></label>
             <div class="col-sm-4">
               <input type="text" class="form-control" nbInput shape="rectangle" [ngClass]="{'is-invalid': isSubmitted && f.username.errors}" formControlName="username" class="col-md-12" placeholder="Enter Username">
               <div *ngIf="isSubmitted && f.username.errors" class="text-danger">
                 <div *ngIf="f.username.errors.required">This field is required</div>
               </div>
             </div>
-            <label *ngIf="uniqueId==''" class="label col-sm-2 col-form-label">Password</label>
+            <label *ngIf="uniqueId==''" class="label col-sm-2 col-form-label">Password<span style="color: red;">*</span></label>
             <div *ngIf="uniqueId==''" class="col-sm-4">
-              <input type="text" class="form-control" nbInput shape="rectangle" [ngClass]="{'is-invalid': isSubmitted && f.password.errors}" formControlName="password" class="col-md-12" placeholder="Enter Password">
+              <input  [type]="hide ? 'password' : 'text'" class="form-control" nbInput shape="rectangle" id="password" [ngClass]="{'is-invalid': isSubmitted && f.password.errors}" formControlName="password" class="col-md-12" placeholder="Enter Password"/>
+              <i id="eye" style="float: right;
+              margin-top: -26px;
+              padding-right: 10px;
+              position: relative;" [class]="hide? 'far fa-eye':'far fa-eye-slash'" (click)="showPwd()"></i>
               <div *ngIf="isSubmitted && f.password.errors" class="text-danger">
                 <div *ngIf="f.password.errors.required">This field is required</div>
               </div>
             </div>
         </div>
         <div class="form-group row">
-            <label class="label col-sm-2 col-form-label">Photo</label>
-            <div class="col-sm-2">
+            <label class="label col-sm-1 col-form-label">Photo</label>
+            <div class="col-sm-3">
               <!-- <input type="text" class="form-control" nbInput shape="rectangle" formControlName="photo" class="col-md-4" placeholder="Enter Photo"> -->
-              <input type="file" formControlName="photo" (change)="selectFile($event)">
-                <img [src]="imgURL" class="img-thumbnail img-responsive" style="height:50%;width:20%;">
+              <input nbInput type="file" formControlName="photo" (change)="selectFile($event)" class="col-md-12"/>
+              <img [src]="imgURL" class="img-thumbnail img-responsive" style="height:50%;width:20%;">
             </div>
-        </div>
-        <div class="form-group row">
-            <label class="label col-sm-1 col-form-label">Status</label>
+            <label class="label col-sm-1 col-form-label">Status<span style="color: red;">*</span></label>
             <div class="col-sm-3">
                 <nb-select formControlName="status" style="padding: 0;" placeholder="Select Status" class="col-md-12">
                     <nb-option value='Active'>Active</nb-option>
@@ -98,7 +100,7 @@
                     <!-- <nb-option *ngFor="let pcstatus of pcData" value={{pcstatus.product_category_status}}>{{pcstatus.product_category_status}}</nb-option> -->
                 </nb-select>
             </div>
-            <label class="label col-sm-1 col-form-label">Role</label>
+            <label class="label col-sm-1 col-form-label">Role<span style="color: red;">*</span></label>
             <div class="col-sm-3">
                 <nb-select formControlName="role_id" style="padding: 0;" placeholder="Select Role" [ngClass]="{'is-invalid': isSubmitted && f.role_id.errors}" class="col-md-12">
                     <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
@@ -109,16 +111,15 @@
                 </div>
                 
             </div>
-            <label class="label col-sm-1 col-form-label">Site</label>
+            <!-- <label class="label col-sm-1 col-form-label">Site</label>
             <div class="col-sm-3">
                 <nb-select formControlName="site_id" style="padding: 0;" placeholder="Select Site" [ngClass]="{'is-invalid': isSubmitted && f.site_id.errors}" class="col-md-12">
-                    <!-- <nb-option value="0" disabled>Select Role</nb-option> -->
                     <nb-option *ngFor="let site of siteData" value={{site.site_id}} >{{site.site_name}}</nb-option>
                 </nb-select>
                 <div *ngIf="isSubmitted && f.site_id.errors" class="text-danger">
                   <div *ngIf="f.site_id.errors.required">This field is required</div>
                 </div>
-            </div>
+            </div> -->
         </div>
         </form>
       </nb-card-body>

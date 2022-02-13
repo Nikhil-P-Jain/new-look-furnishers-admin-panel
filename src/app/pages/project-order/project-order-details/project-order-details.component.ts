@@ -37,8 +37,8 @@ export class ProjectOrderDetailsComponent implements OnInit {
        title: 'Product Name',
        type: 'string',
      },
-     product_specification_name: {
-       title: 'Product Specification Name',
+     product_specification: {
+       title: 'Product Specification',
        type: 'string',
      },
      project_order_specified_product_quantity: {

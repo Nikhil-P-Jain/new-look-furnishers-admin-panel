@@ -7,7 +7,10 @@ import { NbLoginComponent } from '@nebular/auth';
 })
 
 export class NgxLoginComponent extends NbLoginComponent {
-
+      hide: boolean=true;
+      showPwd(){
+        this.hide=!this.hide;
+      }
 //   socket: any;
 //   data1:any;
 //   ngOnInit(){

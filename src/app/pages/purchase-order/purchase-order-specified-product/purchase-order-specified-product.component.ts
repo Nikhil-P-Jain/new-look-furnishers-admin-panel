@@ -11,6 +11,7 @@ import { Annexure_detailsDetailsService } from '../../service/annexure-details.s
 import { AnnexureService } from '../../service/annexure.service';
 import { ProductService } from '../../service/product.service';
 import { AccessoriesService } from '../../service/accessories.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'ngx-purchase-order-specified-product',
@@ -201,8 +202,8 @@ ac_findArea(){
        title: 'Product Name',
        type: 'string',
      },
-     product_specification_name: {
-       title: 'Product Specification Name',
+     product_specification: {
+       title: 'Product Specification',
        type: 'string',
      },
      purchase_order_specified_product_quantity: {
@@ -316,7 +317,7 @@ settings1 = {
     type:'html',
     valuePrepareFunction:(cell,row)=>{
       // return `<a href=http://localhost:4200/#/pages/annexure-details/${row.annexure_id}>Annexure Details</a>`
-      return `<a href=http://veritrack.co.in/newlook/#/pages/annexure-details/${row.annexure_id}>Annexure Details</a>`
+      return `<a href=${environment.APP_URL}annexure-details/${row.annexure_id}>Annexure Details</a>`
 
       },
     },
@@ -335,21 +336,21 @@ open2(dialog: TemplateRef<any>,event:any) {
     this.adData1=this.resp4.data.results[0];
     var adInfo=this.adData1.prodinfo;
     console.log("Getting res11",adInfo);
-    for(var i=1;i<adInfo.length;i++){
+    for(var i=1;i<adInfo.length;i++){
       this.products1.push(this.createProducts());
     }
     this.totalLength=[];
     this.areadata=[];
 
-    for(var j=0;j<=this.products1.length;j++){
-            this.products1.controls[j].get('product_id').patchValue(JSON.stringify(adInfo[j].product_id));
-            this.products1.controls[j].get('length').patchValue(adInfo[j].length);
-            this.products1.controls[j].get('quantity').patchValue(adInfo[j].quantity);
-            // this.products1.controls[j].get('total_length').patchValue(adInfo[j].total_length);
-            this.products1.controls[j].get('module').patchValue(adInfo[j].module);
-            this.totalLength.push(adInfo[j].length);
-            this.areadata.push(adInfo[j].area);
-            // this.products1.controls[j].get('area').patchValue(adInfo[j].area);
+    for(var j=0;j<=this.products1.length;j++){
+      this.products1.controls[j].get('product_id').patchValue(JSON.stringify(adInfo[j].product_id));
+      this.products1.controls[j].get('length').patchValue(adInfo[j].length);
+      this.products1.controls[j].get('quantity').patchValue(adInfo[j].quantity);
+      // this.products1.controls[j].get('total_length').patchValue(adInfo[j].total_length);
+      this.products1.controls[j].get('module').patchValue(adInfo[j].module);
+      this.totalLength.push(adInfo[j].length);
+      this.areadata.push(adInfo[j].area);
+      // this.products1.controls[j].get('area').patchValue(adInfo[j].area);
     }
     console.log(this.formAddEdit,"formaddedit");
   })
@@ -359,21 +360,21 @@ open2(dialog: TemplateRef<any>,event:any) {
     this.acData2=this.resp5.data.results;
     var acinfo=this.acData2;
     console.log("Getting res11",acinfo);
-    for(var i=1;i<acinfo.length;i++){
+    for(var i=1;i<acinfo.length;i++){
       this.accessories1.push(this.createAccessories());
     }
     this.ac_totalLength=[];
     this.ac_areadata=[];
-    for(var j=0;j<this.accessories1.length;j++){
-            this.accessories1.controls[j].get('accessories_name').patchValue(acinfo[j].accessories_name);
-            this.accessories1.controls[j].get('accessories_length').patchValue(acinfo[j].accessories_length);
-            this.accessories1.controls[j].get('accessories_quantity').patchValue(acinfo[j].accessories_quantity);
-            // this.accessories1.controls[j].get('accessories_total_length').patchValue(acinfo[j].accessories_total_length);
-            this.accessories1.controls[j].get('accessories_module').patchValue(acinfo[j].accessories_module);
-            this.ac_totalLength.push(acinfo[j].accessories_total_length);
-            this.ac_areadata.push(acinfo[j].accessories_area);
-            // this.accessories1.controls[j].get('accessories_area').patchValue(acinfo[j].accessories_area);
-            // this.accessories1.controls[j].get('total_area').patchValue(acinfo[j].total_area);
+    for(var j=0;j<this.accessories1.length;j++){
+      this.accessories1.controls[j].get('accessories_name').patchValue(acinfo[j].accessories_name);
+      this.accessories1.controls[j].get('accessories_length').patchValue(acinfo[j].accessories_length);
+      this.accessories1.controls[j].get('accessories_quantity').patchValue(acinfo[j].accessories_quantity);
+      // this.accessories1.controls[j].get('accessories_total_length').patchValue(acinfo[j].accessories_total_length);
+      this.accessories1.controls[j].get('accessories_module').patchValue(acinfo[j].accessories_module);
+      this.ac_totalLength.push(acinfo[j].accessories_total_length);
+      this.ac_areadata.push(acinfo[j].accessories_area);
+      // this.accessories1.controls[j].get('accessories_area').patchValue(acinfo[j].accessories_area);
+      // this.accessories1.controls[j].get('total_area').patchValue(acinfo[j].total_area);
     }
   })
   
@@ -462,6 +463,8 @@ findArea(){
     if(element.module != null && this.totalLength.length != 0){
       var sum = ((parseFloat(element.module) * parseFloat(this.totalLength[i]))/1000);
       this.areadata.push(sum);
+      console.log(this.areadata,"areadata");
+      
       this.totaldata.push({
         "prodid":element.product_id,
         "sum":sum

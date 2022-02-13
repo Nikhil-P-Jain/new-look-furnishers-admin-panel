@@ -20,6 +20,10 @@ export class ProductCategoriesService {
       return this.http.get<any[]>(api+`/getproduct_categorybyid/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
       .map(res => res);
   }
+  get_product_category_by_brand_id(id:any):Observable<any[]>{
+    return this.http.get<any[]>(api+`/get_product_category_by_brand_id/`+id,{headers:new HttpHeaders({'Content-Type':'application/json'})})
+    .map(res => res);
+}
 
   createproduct_category(body:any):Observable<any[]>{
       return this.http.post<any[]>(api+`/createproduct_category`,body,{headers:new HttpHeaders({'Content-Type':'application/json'})})

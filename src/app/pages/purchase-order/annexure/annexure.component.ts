@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NbComponentStatus, NbDialogService, NbGlobalPhysicalPosition, NbGlobalPosition, NbToastrConfig, NbToastrService } from '@nebular/theme';
 import { AnyMxRecord } from 'dns';
 import { LocalDataSource } from 'ng2-smart-table';
+import { environment } from '../../../../environments/environment';
 import { Annexure_detailsDetailsService } from '../../service/annexure-details.service';
 import { AnnexureService } from '../../service/annexure.service';
 import { ProductService } from '../../service/product.service';
@@ -170,7 +171,7 @@ export class AnnexureComponent implements OnInit {
       type:'html',
       valuePrepareFunction:(cell,row)=>{
         // return `<a href=http://localhost:4200/#/pages/annexure-details/${row.annexure_id}>Annexure Details</a>`
-        return `<a href=http://veritrack.co.in/newlook/#/pages/annexure-details/${row.annexure_id}>Annexure Details</a>`
+        return `<a href=${environment.APP_URL}annexure-details/${row.annexure_id}>Annexure Details</a>`
 
         },
       },
