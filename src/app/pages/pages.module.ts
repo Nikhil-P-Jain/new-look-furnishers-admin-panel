@@ -51,7 +51,6 @@ import { AnnexureDetailsComponent } from "./purchase-order/annexure/annexure-det
 import { NgxPrintModule } from "ngx-print";
 import { BranchComponent } from "./branch/branch.component";
 import { TermsComponent } from "./terms/terms.component";
-import { EditorsModule } from "./editors/editors.module";
 import { CKEditorModule } from "ng2-ckeditor";
 @NgModule({
   imports: [
@@ -79,7 +78,6 @@ import { CKEditorModule } from "ng2-ckeditor";
     NbSelectModule,
     NbIconModule,
     Ng2SmartTableModule,
-    EditorsModule,
     CKEditorModule,
   ],
   entryComponents: [PermissionComponent, AddPermissionComponent],
