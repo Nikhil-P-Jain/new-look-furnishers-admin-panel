@@ -4,12 +4,14 @@ import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus, NbDialogService, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { environment } from '../../../environments/environment';
+import { BranchService } from '../service/branch.service';
 import { ProductBrandService } from '../service/product-brand.service';
 import { ProductCategoriesService } from '../service/product-categories.service';
 import { ProductService } from '../service/product.service';
 import { ProjectOrderService } from '../service/project-order.service';
 import { ProjectQuotationService } from '../service/project-quotation.service';
 import { SiteService } from '../service/site.service';
+import { TermsService } from '../service/terms.service';
 
 @Component({
   selector: 'ngx-project-order',
@@ -44,6 +46,10 @@ export class ProjectOrderComponent implements OnInit {
   pbData:any;
   pcData:any;
   resp2:any;
+  branchData: any;
+  termData: any;
+  branchResp: any;
+  termResp: any;
   config: NbToastrConfig;
   destroyByClick = true;
   duration = 2000;
@@ -72,6 +78,8 @@ export class ProjectOrderComponent implements OnInit {
     public productservice:ProductService,
     public pcservice: ProductCategoriesService,
     public pbservice: ProductBrandService,
+    public branchService: BranchService,
+    public termService: TermsService,
     private toastrService: NbToastrService,
     private formBuilder: FormBuilder,) { }
   
@@ -110,8 +118,15 @@ export class ProjectOrderComponent implements OnInit {
       this.resp8=res;
       this.pbData=this.resp8.data.results;
       console.log(this.pbData,"pbData");
-      
     })
+    this.branchService.getBranch().subscribe((res) => {
+      this.branchResp = res;
+      this.branchData = this.branchResp.data.results;
+    });
+    this.termService.getTerms().subscribe((res) => {
+      this.termResp = res;
+      this.termData = this.termResp.data.results;
+    });
     // this.productservice.getproduct().subscribe(res=>{
     //   this.resp6=res;
     //   this.psData=this.resp6.data.results;
@@ -138,6 +153,8 @@ export class ProjectOrderComponent implements OnInit {
       'project_order_date':['',[Validators.required]],
       'project_order_description':['',[Validators.required]],
       'site_id':['',[Validators.required]],
+      'branch_id': ['', [Validators.required]],
+      'term_id': ['', [Validators.required]],
       'project_order_status':[''],
       'products':this.formBuilder.array([this.createProducts()]),
     })
@@ -207,6 +224,14 @@ export class ProjectOrderComponent implements OnInit {
         title:'Site',
         type:'string',
       },
+      branch_name: {
+        title: "Branch",
+        type: "string",
+      },
+      term_name: {
+        title: "Terms",
+        type: "string",
+      },
       // product_specification_name:{
       //   title:'Product Specification',
       //   type:'string',
@@ -246,6 +271,8 @@ export class ProjectOrderComponent implements OnInit {
       'project_order_date':['',[Validators.required]],
       'project_order_description':['',[Validators.required]],
       'site_id':['',[Validators.required]],
+      'branch_id': ['', [Validators.required]],
+      'term_id': ['', [Validators.required]],
       'project_order_status':[''],
       'products':this.formBuilder.array([this.createProducts()]),
     })
@@ -263,6 +290,8 @@ export class ProjectOrderComponent implements OnInit {
         'project_order_date':this.poData1.project_order_date,
         'project_order_description':this.poData1.project_order_description,
         'site_id':JSON.stringify(this.poData1.site_id),
+        'branch_id': JSON.stringify(this.poData1.branch_id),
+        'term_id': JSON.stringify(this.poData1.term_id),
         'project_order_status':this.poData1.project_order_status==0?"Deactive":"Active"
       })
       this.productservice.getproduct().subscribe(res=>{
@@ -388,6 +417,8 @@ export class ProjectOrderComponent implements OnInit {
             "project_order_date":this.formAddEdit.value.project_order_date,
             "project_order_description":this.formAddEdit.value.project_order_description,
             "site_id":this.formAddEdit.value.site_id,
+            "branch_id": this.formAddEdit.value.branch_id,
+            "term_id": this.formAddEdit.value.term_id,
             "project_order_status":this.formAddEdit.value.project_order_status,
             "productsinfo":prodinfo
             }
@@ -408,6 +439,8 @@ export class ProjectOrderComponent implements OnInit {
             "project_order_date":this.formAddEdit.value.project_order_date,
             "project_order_description":this.formAddEdit.value.project_order_description,
             "site_id":this.formAddEdit.value.site_id,
+            "branch_id": this.formAddEdit.value.branch_id,
+            "term_id": this.formAddEdit.value.term_id,
             "project_order_status":this.formAddEdit.value.project_order_status,
             "productsinfo":prodinfo,
             "project_order_id":this.uniqueId

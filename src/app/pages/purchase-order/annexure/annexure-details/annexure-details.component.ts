@@ -102,7 +102,7 @@ export class AnnexureDetailsComponent implements OnInit {
       this.pdfData=this.resp9.data.results[0];
       var splitted = this.pdfData.created_date.split(" ",2); 
       this.date1=splitted[0];
-      console.log(this.date1,"date");
+      // console.log(this.date1,"date");
       
       var pdfinfo=this.pdfData.prodinfo;
       console.log(pdfinfo,"pdfData");

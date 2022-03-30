@@ -250,8 +250,8 @@ export class BranchComponent implements OnInit {
       formData.append("file", this.headerImage);
       this.http.post<any>(URL, formData).subscribe((res) => {
         console.log("file path", res.file.path);
-        // this.headerImagePath = "http://apinewlook.mehtaindia.co.in/"+res.file.path;
-        this.headerImagePath = "http://localhost:3000/" + res.file.path;
+        this.headerImagePath = environment.APP_URL+res.file.path;
+        // this.headerImagePath = "http://localhost:3000/" + res.file.path;
         console.log("Getting Image :-", this.headerImagePath);
       });
     }
@@ -273,8 +273,8 @@ export class BranchComponent implements OnInit {
       formData.append("file", this.footerImage);
       this.http.post<any>(URL, formData).subscribe((res) => {
         console.log("file path", res.file.path);
-        // this.footerImagePath = "http://apinewlook.mehtaindia.co.in/"+res.file.path;
-        this.footerImagePath = "http://localhost:3000/" + res.file.path;
+        this.footerImagePath = environment.APP_URL+res.file.path;
+        // this.footerImagePath = "http://localhost:3000/" + res.file.path;
         console.log("Getting Image :-", this.footerImagePath);
       });
     }

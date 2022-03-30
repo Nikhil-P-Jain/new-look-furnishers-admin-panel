@@ -181,9 +181,9 @@ const routes: Routes = [{
       data:{breeadcrumb:'Branch'}
     },
     {
-      path:'quotation-terms',
+      path:'terms',
       component:TermsComponent,
-      data:{breeadcrumb:'Quotation Terms'}
+      data:{breeadcrumb:'Terms'}
     },
     {
       path: 'layout',

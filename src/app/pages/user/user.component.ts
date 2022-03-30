@@ -276,7 +276,7 @@ export class UserComponent implements OnInit {
       this.http.post<any>(URL, formData).subscribe(res=>{
         console.log("file path",res.file.path);
         // this.pic = "http://apinewlook.mehtaindia.co.in/"+res.file.path;
-        this.pic = "http://localhost:3000/"+res.file.path;
+        this.pic = environment.APP_URL+res.file.path;
 
         // this.disabled();
         console.log("Getting Image :-", this.pic);

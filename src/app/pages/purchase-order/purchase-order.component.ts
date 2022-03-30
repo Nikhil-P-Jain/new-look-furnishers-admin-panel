@@ -4,6 +4,7 @@ import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { NbToastrConfig, NbGlobalPosition, NbGlobalPhysicalPosition, NbComponentStatus, NbDialogService, NbToastrService } from '@nebular/theme';
 import { LocalDataSource } from 'ng2-smart-table';
 import { environment } from '../../../environments/environment';
+import { BranchService } from '../service/branch.service';
 import { ProductBrandService } from '../service/product-brand.service';
 import { ProductCategoriesService } from '../service/product-categories.service';
 import { ProductService } from '../service/product.service';
@@ -12,6 +13,7 @@ import { ProjectQuotationService } from '../service/project-quotation.service';
 import { PurchaseOrderServiceService } from '../service/purchase-order-service.service';
 import { SiteService } from '../service/site.service';
 import { SupplierService } from '../service/supplier.service';
+import { TermsService } from '../service/terms.service';
 
 @Component({
   selector: 'ngx-purchase-order',
@@ -41,6 +43,10 @@ export class PurchaseOrderComponent implements OnInit {
   resp7:any;
   resp8:any;
   resp2:any;
+  branchData: any;
+  termData: any;
+  branchResp: any;
+  termResp: any;
   pbData:any;
   pcData:any;
   resp9:any;
@@ -74,6 +80,8 @@ export class PurchaseOrderComponent implements OnInit {
     public productservice:ProductService,
     public pbservice:ProductBrandService,
     public pcservice: ProductCategoriesService,
+    public branchService: BranchService,
+    public termService: TermsService,
     public http:HttpClient,
     private siteservice: SiteService,
     private supservice: SupplierService,
@@ -119,12 +127,22 @@ export class PurchaseOrderComponent implements OnInit {
       console.log(this.pbData,"pbData");
       
     })
+    this.branchService.getBranch().subscribe((res) => {
+      this.branchResp = res;
+      this.branchData = this.branchResp.data.results;
+    });
+    this.termService.getTerms().subscribe((res) => {
+      this.termResp = res;
+      this.termData = this.termResp.data.results;
+    });
     this.formAddEdit=this.formBuilder.group({
       'project_order_id':[''],
       'po_number':['',[Validators.required]],
       'purchase_order_date':['',[Validators.required]],
       'purchase_order_description':['',[Validators.required]],
       'site_id':['',[Validators.required]],
+      'branch_id': ['', [Validators.required]],
+      'term_id': ['', [Validators.required]],
       'supplier_id':['',[Validators.required]],
       'purchase_order_status':[],
       'products':this.formBuilder.array([this.createProducts()]),
@@ -226,6 +244,14 @@ export class PurchaseOrderComponent implements OnInit {
         title:'Site',
         type:'string',
       },
+      branch_name: {
+        title: "Branch",
+        type: "string",
+      },
+      term_name: {
+        title: "Terms",
+        type: "string",
+      },
       supplier_name:{
         title:'Vendor',
         type:'string',
@@ -277,6 +303,8 @@ export class PurchaseOrderComponent implements OnInit {
       'purchase_order_date':['',[Validators.required]],
       'purchase_order_description':['',[Validators.required]],
       'site_id':['',[Validators.required]],
+      'branch_id': ['', [Validators.required]],
+      'term_id': ['', [Validators.required]],
       'supplier_id':['',[Validators.required]],
       'purchase_order_status':[],
       'products':this.formBuilder.array([this.createProducts()]),
@@ -296,6 +324,8 @@ export class PurchaseOrderComponent implements OnInit {
         'purchase_order_date':this.poData1.purchase_order_date,
         'purchase_order_description':this.poData1.purchase_order_description,
         'site_id':JSON.stringify(this.poData1.site_id),
+        'branch_id': JSON.stringify(this.poData1.branch_id),
+        'term_id': JSON.stringify(this.poData1.term_id),
         'supplier_id':JSON.stringify(this.poData1.supplier_id),
         'purchase_order_status':this.poData1.purchase_order_status==0?"Deactive":"Active"
       })
@@ -391,6 +421,8 @@ export class PurchaseOrderComponent implements OnInit {
             "purchase_order_date":this.formAddEdit.value.purchase_order_date,
             "purchase_order_description":this.formAddEdit.value.purchase_order_description,
             "site_id":this.formAddEdit.value.site_id,
+            "branch_id": this.formAddEdit.value.branch_id,
+            "term_id": this.formAddEdit.value.term_id,
             "supplier_id":this.formAddEdit.value.supplier_id,
             "purchase_order_status":this.formAddEdit.value.purchase_order_status,
             "productsinfo":prodinfo
@@ -413,6 +445,8 @@ export class PurchaseOrderComponent implements OnInit {
             "purchase_order_date":this.formAddEdit.value.purchase_order_date,
             "purchase_order_description":this.formAddEdit.value.purchase_order_description,
             "site_id":this.formAddEdit.value.site_id,
+            "branch_id": this.formAddEdit.value.branch_id,
+            "term_id": this.formAddEdit.value.term_id,
             "supplier_id":this.formAddEdit.value.supplier_id,
             "purchase_order_status":this.formAddEdit.value.purchase_order_status,
             "purchase_order_id":this.uniqueId ,

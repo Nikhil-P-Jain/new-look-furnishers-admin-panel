@@ -1,158 +1,186 @@
 <nb-card>
-    <nb-card-header class="d-flex justify-content-between">
-        <span>Product Details Table</span>
-        <button nbButton status="primary" (click)="open(dialog)">View Annexure</button>
-    </nb-card-header>
-    
-    <nb-card-body>
-        <ng2-smart-table [source]="poData" [settings]="settings">
-        </ng2-smart-table>
-    </nb-card-body>
+  <nb-card-header class="d-flex justify-content-between">
+    <span>Product Details Table</span>
+    <button nbButton status="primary" (click)="open(dialog)">View Annexure</button>
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table [source]="poData" [settings]="settings">
+    </ng2-smart-table>
+  </nb-card-body>
 </nb-card>
 
 <nb-card>
   <nb-card-header class="d-flex justify-content-between">
-      <span>Accessories Details Table</span>
-        <!-- <button nbButton status="primary" (click)="open1(dialog1)">Add Accessories</button> -->
+    <span>Accessories Details Table</span>
+    <!-- <button nbButton status="primary" (click)="open1(dialog1)">Add Accessories</button> -->
   </nb-card-header>
-  
+
   <nb-card-body>
-      <ng2-smart-table [source]="acData" [settings]="settings1" (create)="open2(dialog1,acData[0])" (delete)="deleteAccessories($event)">
-      </ng2-smart-table>
+    <ng2-smart-table [source]="acData" [settings]="settings1" (create)="open2(dialog1,acData[0])"
+      (delete)="deleteAccessories($event)">
+    </ng2-smart-table>
   </nb-card-body>
 </nb-card>
 
 <ng-template #dialog let-data let-ref="dialogRef">
-    <nb-card style="max-height: 100%; overflow-y: hidden;">
-      <nb-card-header class="d-flex justify-content-between">
-        <!-- <button nbButton status="primary" (click)="convetToPDF()">Save PDF</button> -->
-        <button nbButton status="primary" ngxPrint [useExistingCss]="true" printTitle="Annexure {{pdfData.po_number}}"  printSectionId="pdf">Print</button>
-      </nb-card-header>
-      <nb-card-body>
-        <div #content id="pdf">
-          <table style="width: 100%;" *ngIf="pdfData">
-            <tbody>
-              <tr>
-                <td style="text-align: center;" colspan="6"><strong>Annexure - {{pdfData.project_lead_name}}</strong></td>
-              </tr>
-              
-              <tr>
-                <td style="border-right: 0px;" colspan="3"><strong>{{pdfData.po_number}}</strong></td>
-                <td style="text-align: right; border-left: 0px;" colspan="3"><strong>{{date1}}</strong></td>
-              </tr>
-              <tr>
-                <td colspan="6"><strong>To,<br>{{pdfData.supplier_name}}</strong><br><br>Dear Sir,<br>We are pleased to place an order on you for
-                  <span *ngFor="let dd of pdfData.prodinfo"><strong>{{dd.product_name}}, &nbsp;</strong></span></td>
-              </tr>
-              <tr style="background-color: cadetblue; font-weight: bold; color: white;">
-                <td>Sr. No.</td>
-                <td>Particulars</td>
-                <td>length</td>
-                <td>QTY</td>
-                <td>Total Length</td>
-                <td>Area</td>
-              </tr>
-              <tr *ngFor="let daat of pdfData.prodinfo;let i=index">
-                <td>{{i+1}}</td>
-                <td><strong>{{daat.product_name}}</strong><br>{{daat.product_specification_name}}</td>
-                <td>{{daat.length}}</td>
-                <td>{{daat.quantity}}</td>
-                <td>{{daat.total_length}}</td>
-                <td>{{daat.area}}</td>
-              </tr>
-              <tr style="background-color: cadetblue; font-weight: bold; color: white;">
-               <td style="text-align: center;" colspan="6">Accessories</td>
-              </tr>
-              <tr *ngFor="let daat of acData;let i=index">
-                <td>{{i+1}}</td>
-                <td><strong>{{daat.accessories_name}}</strong></td>
-                <td>{{daat.accessories_length}}</td>
-                <td>{{daat.accessories_quantity}}</td>
-                <td>{{daat.accessories_total_length}}</td>
-                <td>{{daat.accessories_area}}</td>
-              </tr>
+  <nb-card style="max-height: 100%; overflow-y: hidden;">
+    <nb-card-header class="d-flex justify-content-between">
+      <!-- <button nbButton status="primary" (click)="convetToPDF()">Save PDF</button> -->
+      <button nbButton status="primary" ngxPrint [useExistingCss]="true" printTitle="Annexure {{pdfData.po_number}}"
+        printSectionId="pdf">Print</button>
+    </nb-card-header>
+    <nb-card-body>
+      <div #content id="pdf">
+        <table style="width: 100%;" *ngIf="pdfData">
+          <tbody>
+            <tr>
+              <td colspan="6">
+                <img width="100%" [src]="pdfData.header">
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: center;" colspan="6"><strong>Annexure - {{pdfData.project_lead_name}}</strong></td>
+            </tr>
 
-              <tr>
-                
-                <td colspan="3"><b><u>Billing Address/ Corresponance Address</u></b><br><strong>New Look Furnishers</strong><br>Plot No.6, New corporation Colony,<br>North Ambhajhari Road, Nagpur-440010.<br><strong>GST No. 27AAIFN5742L1ZT</strong></td>
-                <td colspan="3"><b><u>Dispatch Address</u></b><br>{{pdfData.site_name}}<br>{{pdfData.site_address}}<br><strong>Contact Person: {{pdfData.contact_name}} ({{pdfData.phone}})</strong></td>
-              </tr>
-              <tr>
-                <td style="text-align: left;" colspan="6"><br><br>For New Look Furnishers</td>
-              </tr>
-            </tbody>
-          </table>
+            <tr>
+              <td style="border-right: 0px;" colspan="3"><strong>{{pdfData.po_number}}</strong></td>
+              <td style="text-align: right; border-left: 0px;" colspan="3"><strong>{{date1}}</strong></td>
+            </tr>
+            <tr>
+              <td colspan="6"><strong>To,<br>{{pdfData.supplier_name}}</strong><br><br>Dear Sir,<br>We are pleased to
+                place an order on you for
+                <span *ngFor="let dd of pdfData.prodinfo"><strong>{{dd.product_name}}, &nbsp;</strong></span>
+              </td>
+            </tr>
+            <tr style="background-color: cadetblue; font-weight: bold; color: white;">
+              <td>Sr. No.</td>
+              <td>Particulars</td>
+              <td>length</td>
+              <td>QTY</td>
+              <td>Total Length</td>
+              <td>Area</td>
+            </tr>
+            <tr *ngFor="let daat of pdfData.prodinfo;let i=index">
+              <td>{{i+1}}</td>
+              <td><strong>{{daat.product_name}}</strong><br>{{daat.product_specification_name}}</td>
+              <td>{{daat.length}}</td>
+              <td>{{daat.quantity}}</td>
+              <td>{{daat.total_length}}</td>
+              <td>{{daat.area}}</td>
+            </tr>
+            <tr style="background-color: cadetblue; font-weight: bold; color: white;">
+              <td style="text-align: center;" colspan="6">Accessories</td>
+            </tr>
+            <tr *ngFor="let daat of acData;let i=index">
+              <td>{{i+1}}</td>
+              <td><strong>{{daat.accessories_name}}</strong></td>
+              <td>{{daat.accessories_length}}</td>
+              <td>{{daat.accessories_quantity}}</td>
+              <td>{{daat.accessories_total_length}}</td>
+              <td>{{daat.accessories_area}}</td>
+            </tr>
+
+            <tr>
+
+              <td colspan="3"><b><u>Billing Address/ Corresponance
+                    Address</u></b><br><strong>{{pdfData.branch_name}}</strong><br>{{pdfData.branch_address}}<br><strong>GST
+                  No. {{pdfData.gst_no}}</strong></td>
+              <td colspan="3"><b><u>Dispatch
+                    Address</u></b><br>{{pdfData.site_name}}<br>{{pdfData.site_address}}<br><strong>Contact Person:
+                  {{pdfData.contact_name}} ({{pdfData.phone}})</strong></td>
+            </tr>
+            <tr>
+              <td style="text-align: left;" colspan="6"><br><br>For New Look Furnishers</td>
+            </tr>
+            <tr>
+              <td colspan="6">
+                <img width="100%" [src]="pdfData.footer">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton (click)="ref.close()">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+
+<ng-template #dialog1 let-data let-ref="dialogRef">
+  <nb-card style="width: 1080px !important;">
+    <nb-card-header class="d-flex justify-content-between">
+      Add Accessories
+    </nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="formAddEdit">
+        <div formArrayName="accessories"
+          *ngFor="let product of formAddEdit.get('accessories')['controls']; let i=index;">
+          <div [formGroupName]="i" class="form-group row">
+            <label class="label col-sm-1 col-form-label" style="padding: 15px 0px;">Accessory</label>
+            <div class="col-sm-3">
+              <input type="text" nbInput shape="rectangle" formControlName="accessories_name"
+                placeholder="Enter Accessory" class="col-md-12">
+            </div>
+            <label style="padding: 15px 0px; display: inline-block;" class="label col-sm-1 col-form-label">Select
+              Metrics</label>
+            <div style="display: inline-block;" class="col-sm-4">
+              <nb-radio-group style="display: inline-block;" formControlName="radiobtn">
+                <nb-radio style="display: inline-block;" [value]="1" (valueChange)="UseQty(id='1',index=i)">
+                  Quantity (Nos.)
+                </nb-radio>
+                <nb-radio style="display: inline-block;" [value]="2" (valueChange)="UseQty(id='2',index=i)">
+                  Running Meter
+                </nb-radio>
+              </nb-radio-group>
+            </div>
+            <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Length</label>
+            <div class="col-sm-2" *ngIf="mid[i] == 2">
+              <input type="number" nbInput shape="rectangle" formControlName="accessories_length"
+                placeholder="Enter Length" class="col-md-6" (input)="findLength()">
+            </div>
+            <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Quantity</label>
+            <div class="col-sm-2">
+              <input type="number" nbInput shape="rectangle" formControlName="accessories_quantity"
+                placeholder="Enter Quantity" class="col-md-6" (input)="findLength()">
+            </div>
+            <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Total
+              Length</label>
+            <div class="col-sm-2" *ngIf="mid[i] == 2">
+              <input nbInput shape="rectangle" formControlName="accessories_total_length"
+                placeholder="Enter Total Length" class="col-md-6" [(ngModel)]="totalLength[i]" readonly>
+            </div>
+            <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Module</label>
+            <div class="col-sm-2" *ngIf="mid[i] == 2">
+              <input type="number" nbInput shape="rectangle" formControlName="accessories_module"
+                placeholder="Enter Module" class="col-md-6" (input)="findArea()">
+            </div>
+            <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Area</label>
+            <div class="col-sm-2" *ngIf="mid[i] == 2">
+              <input type="number" nbInput shape="rectangle" formControlName="accessories_area" placeholder="Enter Area"
+                class="col-md-6" readonly [(ngModel)]="areadata[i]">
+            </div>
           </div>
-      </nb-card-body>
-      <nb-card-footer>
-        <button nbButton (click)="ref.close()">Close</button>
-      </nb-card-footer>
-    </nb-card>
-  </ng-template>
-
-  
-  <ng-template #dialog1 let-data let-ref="dialogRef">
-    <nb-card style="width: 1080px !important;">
-      <nb-card-header class="d-flex justify-content-between">
-        Add Accessories
-      </nb-card-header>
-      <nb-card-body>
-        <form [formGroup]="formAddEdit">
-          <div formArrayName="accessories" *ngFor="let product of formAddEdit.get('accessories')['controls']; let i=index;">
-              <div [formGroupName]="i" class="form-group row">
-                    <label class="label col-sm-1 col-form-label" style="padding: 15px 0px;">Accessory</label>
-                    <div class="col-sm-3">
-                      <input type="text" nbInput shape="rectangle" formControlName="accessories_name" placeholder="Enter Accessory" class="col-md-12">
-                    </div>
-                    <label style="padding: 15px 0px; display: inline-block;" class="label col-sm-1 col-form-label">Select Metrics</label>
-                    <div style="display: inline-block;" class="col-sm-4">
-                      <nb-radio-group style="display: inline-block;" formControlName="radiobtn">
-                        <nb-radio style="display: inline-block;"
-                          [value]="1" (valueChange)="UseQty(id='1',index=i)">
-                          Quantity (Nos.)
-                        </nb-radio>
-                        <nb-radio style="display: inline-block;"
-                          [value]="2" (valueChange)="UseQty(id='2',index=i)">
-                          Running Meter
-                        </nb-radio>
-                      </nb-radio-group>
-                    </div>
-                    <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Length</label>
-                    <div class="col-sm-2" *ngIf="mid[i] == 2">
-                      <input type="number" nbInput shape="rectangle" formControlName="accessories_length" placeholder="Enter Length" class="col-md-6" (input)="findLength()">
-                    </div> 
-                    <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Quantity</label>
-                    <div class="col-sm-2">
-                      <input type="number" nbInput shape="rectangle" formControlName="accessories_quantity" placeholder="Enter Quantity" class="col-md-6" (input)="findLength()">
-                    </div> 
-                    <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Total Length</label>
-                    <div class="col-sm-2" *ngIf="mid[i] == 2">
-                      <input  nbInput shape="rectangle" formControlName="accessories_total_length" placeholder="Enter Total Length" class="col-md-6" [(ngModel)]="totalLength[i]" readonly>
-                    </div>
-                    <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Module</label>
-                    <div class="col-sm-2" *ngIf="mid[i] == 2">
-                      <input type="number" nbInput shape="rectangle" formControlName="accessories_module" placeholder="Enter Module" class="col-md-6" (input)="findArea()">
-                    </div>
-                    <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Area</label>
-                    <div class="col-sm-2" *ngIf="mid[i] == 2">
-                      <input type="number" nbInput shape="rectangle" formControlName="accessories_area" placeholder="Enter Area" class="col-md-6" readonly [(ngModel)]="areadata[i]">
-                    </div>
-                  </div>
-                </div>
-                <div style="padding:0;" class="col-sm-12 mt-4 row">
-                  <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
+        </div>
+        <div style="padding:0;" class="col-sm-12 mt-4 row">
+          <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
                     <div class="col-sm-2">
                       <input  nbInput shape="rectangle" placeholder="Enter Total Area" class="col-md-6" readonly>
                     </div>  -->
-                    
-                  <button type="button" style="margin-right: 10px;" class="btn btn-primary" nbButton status="primary" (click)="addAccessory()">Add</button>
-                  <button type="button" class="btn btn-primary" nbButton status="primary" (click)="removeAccessory()">Remove</button>
-                </div>
-          </form>
-       </nb-card-body>
-      <nb-card-footer>
-        <button type="submit" style="margin-right: 20px;" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
-        <button nbButton (click)="closeHandle(ref)">Close</button>
-      </nb-card-footer>
-    </nb-card>
-  </ng-template>
+
+          <button type="button" style="margin-right: 10px;" class="btn btn-primary" nbButton status="primary"
+            (click)="addAccessory()">Add</button>
+          <button type="button" class="btn btn-primary" nbButton status="primary"
+            (click)="removeAccessory()">Remove</button>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button type="submit" style="margin-right: 20px;" nbButton status="primary"
+        (click)="onSubmit(ref)">Submit</button>
+      <button nbButton (click)="closeHandle(ref)">Close</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

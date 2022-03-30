@@ -106,8 +106,8 @@ export const MENU_ITEMS: NbMenuItem[] = [
       },
       {
         icon:'checkmark-square-2-outline',
-        title:'Project Quotation Terms',
-        link:'/pages/quotation-terms'
+        title:'Terms',
+        link:'/pages/terms'
       },
       {
         icon:'clipboard-outline',
