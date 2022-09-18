@@ -11,6 +11,8 @@ import {
   NbRadioModule,
   NbSelectModule,
   NbUserModule,
+  NbTabComponent,
+  NbTabsetModule,
 } from "@nebular/theme";
 
 import { HttpClientModule } from "@angular/common/http";
@@ -52,6 +54,11 @@ import { NgxPrintModule } from "ngx-print";
 import { BranchComponent } from "./branch/branch.component";
 import { TermsComponent } from "./terms/terms.component";
 import { CKEditorModule } from "ng2-ckeditor";
+import { MaterialRequisitionItemsComponent } from "./material-requisition-items/material-requisition-items.component";
+import { MaterialRequisitionComponent } from "./material-requisition/material-requisition.component";
+import { MaterialRequisitionDetailsComponent } from "./material-requisition/material-requisition-details/material-requisition-details.component";
+import { LayoutComponent } from "./layout/layout.component";
+import { LayoutModule } from "./layout/layout.module";
 @NgModule({
   imports: [
     PagesRoutingModule,
@@ -61,7 +68,6 @@ import { CKEditorModule } from "ng2-ckeditor";
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
-    ECommerceModule,
     NbCardModule,
     MiscellaneousModule,
     NgxPrintModule,
@@ -72,10 +78,13 @@ import { CKEditorModule } from "ng2-ckeditor";
     NbButtonModule,
     NbActionsModule,
     NbUserModule,
+    NbTabsetModule,
     NbCheckboxModule,
     NbRadioModule,
     NbDatepickerModule,
     NbSelectModule,
+    ECommerceModule,
+    LayoutModule,
     NbIconModule,
     Ng2SmartTableModule,
     CKEditorModule,
@@ -111,6 +120,9 @@ import { CKEditorModule } from "ng2-ckeditor";
     AnnexureDetailsComponent,
     BranchComponent,
     TermsComponent,
+    MaterialRequisitionItemsComponent,
+    MaterialRequisitionComponent,
+    MaterialRequisitionDetailsComponent,
   ],
 })
 export class PagesModule {}

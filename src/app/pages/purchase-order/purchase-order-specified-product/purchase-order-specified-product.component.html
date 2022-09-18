@@ -1,296 +1,315 @@
-<!-- Specified Products for Purchse order -->
+<div class="col-12">
+  <nb-card size="large">
+    <nb-tabset fullWidth>
+      <nb-tab tabTitle="Products specified in PO">
+        <!-- Specified Products for Purchse order -->
+        <nb-card>
+          <nb-card-header class="d-flex justify-content-between">
+            <span *ngIf="po_poData">Products Specified in Purchase Order: {{ po_poData.po_number }}</span>
+            <button nbButton status="primary" (click)="open(dialog)">View PO</button>
+            <!-- <button nbButton (click)="open2(dialog)">Open Dialog with template</button> -->
+          </nb-card-header>
 
-<nb-card>
-  <nb-card-header class="d-flex justify-content-between">
-    <span *ngIf="po_poData">Products Specified in Purchase Order: {{ po_poData.po_number }}</span>
-    <button nbButton status="primary" (click)="open(dialog)">View PO</button>
-    <!-- <button nbButton (click)="open2(dialog)">Open Dialog with template</button> -->
-  </nb-card-header>
+          <nb-card-body>
+            <ng2-smart-table [source]="po_prodInfo" [settings]="settings">
+            </ng2-smart-table>
+            <!-- <ng2-smart-table></ng2-smart-table> -->
+          </nb-card-body>
+        </nb-card>
 
-  <nb-card-body>
-    <ng2-smart-table [source]="po_prodInfo" [settings]="settings">
-    </ng2-smart-table>
-    <!-- <ng2-smart-table></ng2-smart-table> -->
-  </nb-card-body>
-</nb-card>
+        <!-- Code for pdf -->
+        <ng-template #dialog let-data let-ref="dialogRef">
+          <nb-card style="max-height: 100%; overflow-y: hidden">
+            <nb-card-header class="d-flex justify-content-between">
+              <!-- <button nbButton status="primary" (click)="convetToPDF()">Save PDF</button> -->
+              <button nbButton status="primary" ngxPrint [useExistingCss]="true"
+                printTitle="Purchase Order {{ po_poData.po_number }}" printSectionId="pdf">
+                Print
+              </button>
+              <!-- <button nbButton (click)="open2(dialog)">Open Dialog with template</button> -->
+            </nb-card-header>
+            <nb-card-body>
+              <div #content id="pdf">
+                <table style="width: 100%" *ngIf="po_poData">
+                  <tbody>
+                    <tr>
+                      <td colspan="4">
+                        <img width="100%" [src]="po_poData.header">
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center" colspan="4">
+                        <strong>Purchase Order</strong>
+                      </td>
+                    </tr>
 
-<!-- Code for pdf -->
-<ng-template #dialog let-data let-ref="dialogRef">
-  <nb-card style="max-height: 100%; overflow-y: hidden">
-    <nb-card-header class="d-flex justify-content-between">
-      <!-- <button nbButton status="primary" (click)="convetToPDF()">Save PDF</button> -->
-      <button nbButton status="primary" ngxPrint [useExistingCss]="true"
-        printTitle="Purchase Order {{ po_poData.po_number }}" printSectionId="pdf">
-        Print
-      </button>
-      <!-- <button nbButton (click)="open2(dialog)">Open Dialog with template</button> -->
-    </nb-card-header>
-    <nb-card-body>
-      <div #content id="pdf">
-        <table style="width: 100%" *ngIf="po_poData">
-          <tbody>
-            <tr>
-              <td colspan="4">
-                <img width="100%" [src]="po_poData.header">
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: center" colspan="4">
-                <strong>Purchase Order</strong>
-              </td>
-            </tr>
-
-            <tr>
-              <td style="border-right: 0px" colspan="2">
-                <strong>{{ po_poData.po_number }}</strong>
-              </td>
-              <td style="text-align: right; border-left: 0px" colspan="2">
-                <strong>{{ po_poData.purchase_order_date }}</strong>
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4">
-                <strong>To,<br />{{ po_poData.supplier_name }}</strong><br /><br />Dear Sir,<br />We are pleased to
-                place an order on
-                you for
-                <span *ngFor="let dd of po_prodInfo"><strong>{{ dd.product_name }}, &nbsp;</strong></span>
-              </td>
-            </tr>
-            <tr style="
+                    <tr>
+                      <td style="border-right: 0px" colspan="2">
+                        <strong>{{ po_poData.po_number }}</strong>
+                      </td>
+                      <td style="text-align: right; border-left: 0px" colspan="2">
+                        <strong>{{ po_poData.purchase_order_date }}</strong>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4">
+                        <strong>To,<br />{{ po_poData.supplier_name }}</strong><br /><br />Dear Sir,<br />We are pleased
+                        to
+                        place an order on
+                        you for
+                        <span *ngFor="let dd of po_prodInfo"><strong>{{ dd.product_name }}, &nbsp;</strong></span>
+                      </td>
+                    </tr>
+                    <tr style="
                 background-color: cadetblue;
                 font-weight: bold;
                 color: white;
               ">
-              <td>Sr. No.</td>
-              <td>Particulars</td>
-              <td>Unit</td>
-              <td>Quantity</td>
-            </tr>
-            <tr *ngFor="let daat of po_poData.productinfo; let i = index">
-              <td>{{ i + 1 }}</td>
-              <td>
-                <strong>{{ daat.product_name }}</strong><br />{{ daat.product_specification_name }}
-              </td>
-              <td>{{ daat.unit_name }}</td>
-              <td>{{ daat.purchase_order_specified_product_quantity }}</td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <b><u>Billing Address/ Corresponance
-                    Address</u></b><br /><strong>{{po_poData.branch_name}}</strong><br />{{po_poData.branch_address}}<br /><strong>GST
-                  NO. {{po_poData.gst_no}}</strong>
-              </td>
-              <td colspan="2">
-                <b><u>Dispatch Address</u></b><br />{{ poData.site_name }}<br />{{ poData.site_address
-                }}<br />
-                <!-- <strong>Contact Person: {{ po_poData.contact_name }} ({{
+                      <td>Sr. No.</td>
+                      <td>Particulars</td>
+                      <td>Unit</td>
+                      <td>Quantity</td>
+                    </tr>
+                    <tr *ngFor="let daat of po_poData.productinfo; let i = index">
+                      <td>{{ i + 1 }}</td>
+                      <td>
+                        <strong>{{ daat.product_name }}</strong><br />{{ daat.product_specification_name }}
+                      </td>
+                      <td>{{ daat.unit_name }}</td>
+                      <td>{{ daat.purchase_order_specified_product_quantity }}</td>
+                    </tr>
+                    <tr>
+                      <td colspan="2">
+                        <b><u>Billing Address/ Corresponance
+                            Address</u></b><br /><strong>{{po_poData.branch_name}}</strong><br />{{po_poData.branch_address}}<br /><strong>GST
+                          NO. {{po_poData.gst_no}}</strong>
+                      </td>
+                      <td colspan="2">
+                        <b><u>Dispatch Address</u></b><br />{{ poData.site_name }}<br />{{ poData.site_address
+                        }}<br />
+                        <!-- <strong>Contact Person: {{ po_poData.contact_name }} ({{
                   po_poData.phone
                   }})</strong> -->
-              </td>
-            </tr>
-            <tr>
-              <td style="text-align: left" colspan="4">
-                <br /><br />For New Look Furnishers
-              </td>
-            </tr>
-            <tr>
-              <td colspan="4">
-                <img width="100%" [src]="po_poData.footer">
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </nb-card-body>
-    <nb-card-footer>
-      <button nbButton (click)="ref.close()">Close</button>
-    </nb-card-footer>
-  </nb-card>
-</ng-template>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: left" colspan="4">
+                        <br /><br />For New Look Furnishers
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="4">
+                        <img width="100%" [src]="po_poData.footer">
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </nb-card-body>
+            <nb-card-footer>
+              <button nbButton (click)="ref.close()">Close</button>
+            </nb-card-footer>
+          </nb-card>
+        </ng-template>
+      </nb-tab>
 
-<!-- <button  ngxPrint printTitle="PurchaseOrder" printSectionId="content">Print</button> -->
-<!-- <button class="btn btn-success" (click)="convetToPDF()">print</button> -->
+      <nb-tab tabTitle="Annexure against PO">
+        <!-- Code for Annexure Table -->
+        <nb-card>
+          <nb-card-header class="d-flex justify-content-between">
+            <span *ngIf="po_poData">Annexures for Purchase Order: {{ po_poData.po_number }}</span>
+            <!-- <button nbButton status="primary" (click)="open1(dialog2)">Add Annexure</button> -->
+          </nb-card-header>
+          <nb-card-body>
+            <ng2-smart-table [source]="anData" [settings]="settings1" (create)="open1(dialog2)"
+              (edit)="open2(dialog2, $event)" (delete)="deleteProjectLead($event)">
+            </ng2-smart-table>
+            <!-- <ng2-smart-table></ng2-smart-table> -->
+          </nb-card-body>
+        </nb-card>
 
-<!-- Code for Annexure Table -->
-<nb-card>
-  <nb-card-header class="d-flex justify-content-between">
-    <span *ngIf="po_poData">Annexures for Purchase Order: {{ po_poData.po_number }}</span>
-    <!-- <button nbButton status="primary" (click)="open1(dialog2)">Add Annexure</button> -->
-  </nb-card-header>
-  <nb-card-body>
-    <ng2-smart-table [source]="anData" [settings]="settings1" (create)="open1(dialog2)" (edit)="open2(dialog2, $event)"
-      (delete)="deleteProjectLead($event)">
-    </ng2-smart-table>
-    <!-- <ng2-smart-table></ng2-smart-table> -->
-  </nb-card-body>
-</nb-card>
-
-<!-- Code for Product Details for annexure -->
-<div class="row d-flex">
-  <ng-template #dialog2 let-data let-ref="dialogRef">
-    <nb-card>
-      <nb-card-header>Annexure for Purchase Order: {{ po_poData.po_number }}
-      </nb-card-header>
-      <nb-card-body style="max-height: 360px">
-        <form [formGroup]="formAddEdit">
-          <div formArrayName="products" *ngFor="
+        <!-- Code for Product Details for annexure -->
+        <div class="row d-flex">
+          <ng-template #dialog2 let-data let-ref="dialogRef">
+            <nb-card>
+              <nb-card-header>Annexure for Purchase Order: {{ po_poData.po_number }}
+              </nb-card-header>
+              <nb-card-body style="max-height: 360px">
+                <form [formGroup]="formAddEdit">
+                  <div formArrayName="products" *ngFor="
               let product of formAddEdit.get('products')['controls'];
               let i = index
             ">
-            <div [formGroupName]="i" class="form-group row">
-              <label class="label col-sm-1 col-form-label" style="padding: 15px 0px">Products</label>
-              <div class="col-sm-2">
-                <nb-select formControlName="product_id" style="padding: 0" placeholder="Select Product" class="col-md-6"
-                  (selectedChange)="changeprod($event)">
-                  <nb-option *ngFor="let product of prodInfo" value="{{ product.product_id }}">{{ product.product_name
-                    }}</nb-option>
-                </nb-select>
-              </div>
-              <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Length</label>
-              <div class="col-sm-2">
-                <input type="number" nbInput shape="rectangle" formControlName="length" placeholder="Enter Length"
-                  class="col-md-6" (input)="findLength()" />
-              </div>
-              <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Quantity</label>
-              <div class="col-sm-2">
-                <input type="number" nbInput shape="rectangle" formControlName="quantity" placeholder="Enter Quantity"
-                  class="col-md-6" (input)="findLength()" />
-              </div>
-              <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Total Length</label>
-              <div class="col-sm-2">
-                <input nbInput shape="rectangle" formControlName="total_length" placeholder="Enter Total Length"
-                  class="col-md-6" [(ngModel)]="totalLength[i]" readonly />
-              </div>
-              <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Module</label>
-              <div class="col-sm-2">
-                <input type="number" nbInput shape="rectangle" formControlName="module" placeholder="Enter Module"
-                  class="col-md-6" (input)="findArea()" />
-              </div>
-              <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Area</label>
-              <div class="col-sm-2">
-                <input type="number" nbInput shape="rectangle" formControlName="area" placeholder="Enter Area"
-                  class="col-md-6" readonly [(ngModel)]="areadata[i]" />
-                <div *ngIf="flag == true" class="text-danger">
-                  <!-- <div>Please Input lower amount for area as it exceeds the total quantity mentioned in Purchase Order</div> -->
-                  <div *ngIf="selectProdId == totaldata[i].prodid">
-                    Area Exceeds the total Area
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-2">
-                <!-- <input readonly [(ngModel)]="prodInfoarea"> -->
-                {{ prodInfoarea }}
-              </div>
-              <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
+                    <div [formGroupName]="i" class="form-group row">
+                      <label class="label col-sm-1 col-form-label" style="padding: 15px 0px">Products</label>
+                      <div class="col-sm-2">
+                        <nb-select formControlName="product_id" style="padding: 0" placeholder="Select Product"
+                          class="col-md-6" (selectedChange)="changeprod($event)">
+                          <nb-option *ngFor="let product of prodInfo" value="{{ product.product_id }}">{{
+                            product.product_name
+                            }}</nb-option>
+                        </nb-select>
+                      </div>
+                      <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Length</label>
+                      <div class="col-sm-2">
+                        <input type="number" nbInput shape="rectangle" formControlName="length"
+                          placeholder="Enter Length" class="col-md-6" (input)="findLength()" />
+                      </div>
+                      <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Quantity</label>
+                      <div class="col-sm-2">
+                        <input type="number" nbInput shape="rectangle" formControlName="quantity"
+                          placeholder="Enter Quantity" class="col-md-6" (input)="findLength()" />
+                      </div>
+                      <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Total Length</label>
+                      <div class="col-sm-2">
+                        <input nbInput shape="rectangle" formControlName="total_length" placeholder="Enter Total Length"
+                          class="col-md-6" [(ngModel)]="totalLength[i]" readonly />
+                      </div>
+                      <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Module</label>
+                      <div class="col-sm-2">
+                        <input type="number" nbInput shape="rectangle" formControlName="module"
+                          placeholder="Enter Module" class="col-md-6" (input)="findArea()" />
+                      </div>
+                      <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Area</label>
+                      <div class="col-sm-2">
+                        <input type="number" nbInput shape="rectangle" formControlName="area" placeholder="Enter Area"
+                          class="col-md-6" readonly [(ngModel)]="areadata[i]" />
+                        <div *ngIf="flag == true" class="text-danger">
+                          <!-- <div>Please Input lower amount for area as it exceeds the total quantity mentioned in Purchase Order</div> -->
+                          <div *ngIf="selectProdId == totaldata[i].prodid">
+                            Area Exceeds the total Area
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-sm-2">
+                        <!-- <input readonly [(ngModel)]="prodInfoarea"> -->
+                        {{ prodInfoarea }}
+                      </div>
+                      <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
                         <div class="col-sm-2">
                           <input  nbInput shape="rectangle" formControlName="total_area" placeholder="Enter Total Area" class="col-md-6" readonly>
                         </div>  -->
 
-              <!-- <div class="col-sm-0.5">
+                      <!-- <div class="col-sm-0.5">
                             <button type="button" style="margin-left: 60px;" class="btn btn-primary" nbButton status="primary" (click)="removeProducts()">X</button>
                         </div> -->
-            </div>
-          </div>
-          <div style="padding: 0" class="col-sm-12 mt-4 row">
-            <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
+                    </div>
+                  </div>
+                  <div style="padding: 0" class="col-sm-12 mt-4 row">
+                    <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
                         <div class="col-sm-2">
                           <input  nbInput shape="rectangle" placeholder="Enter Total Area" class="col-md-6" readonly>
                         </div>  -->
 
-            <button type="button" style="margin-right: 10px" class="btn btn-primary" nbButton status="primary"
-              (click)="addProduct()">
-              Add
-            </button>
-            <button type="button" class="btn btn-primary" nbButton status="primary" (click)="removeProducts()">
-              Remove
-            </button>
-          </div>
-        </form>
-        <hr />
-        <form [formGroup]="accessoriesAddEdit">
-          <div formArrayName="accessories" *ngFor="
+                    <button type="button" style="margin-right: 10px" class="btn btn-primary" nbButton status="primary"
+                      (click)="addProduct()">
+                      Add
+                    </button>
+                    <button type="button" class="btn btn-primary" nbButton status="primary" (click)="removeProducts()">
+                      Remove
+                    </button>
+                  </div>
+                </form>
+                <hr />
+                <form [formGroup]="accessoriesAddEdit">
+                  <div formArrayName="accessories" *ngFor="
               let product of accessoriesAddEdit.get('accessories')['controls'];
               let i = index
             ">
-            <div [formGroupName]="i" class="form-group row">
-              <label class="label col-sm-1 col-form-label" style="padding: 15px 0px">Accessory</label>
-              <div class="col-sm-3">
-                <!-- <nb-select formControlName="product_id" style="padding: 0;"  placeholder="Select Product" class="col-md-6" (selectedChange)="changeprod($event)">
+                    <div [formGroupName]="i" class="form-group row">
+                      <label class="label col-sm-1 col-form-label" style="padding: 15px 0px">Accessory</label>
+                      <div class="col-sm-3">
+                        <!-- <nb-select formControlName="product_id" style="padding: 0;"  placeholder="Select Product" class="col-md-6" (selectedChange)="changeprod($event)">
                               <nb-option *ngFor="let product of prodInfo" value={{product.product_id}}>{{product.product_name}}</nb-option>
                             </nb-select> -->
-                <input type="text" nbInput shape="rectangle" formControlName="accessories_name"
-                  placeholder="Enter Accessory" class="col-md-12" />
-              </div>
-              <label style="padding: 15px 0px; display: inline-block" class="label col-sm-1 col-form-label">Select
-                Metrics</label>
-              <div style="display: inline-block" class="col-sm-4">
-                <nb-radio-group style="display: inline-block" formControlName="radiobtn">
-                  <nb-radio style="display: inline-block" [value]="1" (valueChange)="UseQty((id = '1'), (index = i))">
-                    Quantity (Nos.)
-                  </nb-radio>
-                  <nb-radio style="display: inline-block" [value]="2" (valueChange)="UseQty((id = '2'), (index = i))">
-                    Running Meter
-                  </nb-radio>
-                </nb-radio-group>
-              </div>
-              <label style="padding: 15px 0px" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Length</label>
-              <div class="col-sm-2" *ngIf="mid[i] == 2">
-                <input type="number" nbInput shape="rectangle" formControlName="accessories_length"
-                  placeholder="Enter Length" class="col-md-6" (input)="ac_findLength()" />
-              </div>
-              <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Quantity</label>
-              <div class="col-sm-2">
-                <input type="number" nbInput shape="rectangle" formControlName="accessories_quantity"
-                  placeholder="Enter Quantity" class="col-md-6" (input)="ac_findLength()" />
-              </div>
-              <label style="padding: 15px 0px" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Total
-                Length</label>
-              <div class="col-sm-2" *ngIf="mid[i] == 2">
-                <input nbInput shape="rectangle" formControlName="accessories_total_length"
-                  placeholder="Enter Total Length" class="col-md-6" [(ngModel)]="ac_totalLength[i]" readonly />
-              </div>
-              <label style="padding: 15px 0px" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Module</label>
-              <div class="col-sm-2" *ngIf="mid[i] == 2">
-                <input type="number" nbInput shape="rectangle" formControlName="accessories_module"
-                  placeholder="Enter Module" class="col-md-6" (input)="ac_findArea()" />
-              </div>
-              <label style="padding: 15px 0px" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Area</label>
-              <div class="col-sm-2" *ngIf="mid[i] == 2">
-                <input type="number" nbInput shape="rectangle" formControlName="accessories_area"
-                  placeholder="Enter Area" class="col-md-6" readonly [(ngModel)]="ac_areadata[i]" />
-              </div>
-            </div>
-          </div>
-          <div style="padding: 0" class="col-sm-12 mt-4 row">
-            <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
+                        <input type="text" nbInput shape="rectangle" formControlName="accessories_name"
+                          placeholder="Enter Accessory" class="col-md-12" />
+                      </div>
+                      <label style="padding: 15px 0px; display: inline-block"
+                        class="label col-sm-1 col-form-label">Select
+                        Metrics</label>
+                      <div style="display: inline-block" class="col-sm-4">
+                        <nb-radio-group style="display: inline-block" formControlName="radiobtn">
+                          <nb-radio style="display: inline-block" [value]="1"
+                            (valueChange)="UseQty((id = '1'), (index = i))">
+                            Quantity (Nos.)
+                          </nb-radio>
+                          <nb-radio style="display: inline-block" [value]="2"
+                            (valueChange)="UseQty((id = '2'), (index = i))">
+                            Running Meter
+                          </nb-radio>
+                        </nb-radio-group>
+                      </div>
+                      <label style="padding: 15px 0px" class="label col-sm-1 col-form-label"
+                        *ngIf="mid[i] == 2">Length</label>
+                      <div class="col-sm-2" *ngIf="mid[i] == 2">
+                        <input type="number" nbInput shape="rectangle" formControlName="accessories_length"
+                          placeholder="Enter Length" class="col-md-6" (input)="ac_findLength()" />
+                      </div>
+                      <label style="padding: 15px 0px" class="label col-sm-1 col-form-label">Quantity</label>
+                      <div class="col-sm-2">
+                        <input type="number" nbInput shape="rectangle" formControlName="accessories_quantity"
+                          placeholder="Enter Quantity" class="col-md-6" (input)="ac_findLength()" />
+                      </div>
+                      <label style="padding: 15px 0px" class="label col-sm-1 col-form-label" *ngIf="mid[i] == 2">Total
+                        Length</label>
+                      <div class="col-sm-2" *ngIf="mid[i] == 2">
+                        <input nbInput shape="rectangle" formControlName="accessories_total_length"
+                          placeholder="Enter Total Length" class="col-md-6" [(ngModel)]="ac_totalLength[i]" readonly />
+                      </div>
+                      <label style="padding: 15px 0px" class="label col-sm-1 col-form-label"
+                        *ngIf="mid[i] == 2">Module</label>
+                      <div class="col-sm-2" *ngIf="mid[i] == 2">
+                        <input type="number" nbInput shape="rectangle" formControlName="accessories_module"
+                          placeholder="Enter Module" class="col-md-6" (input)="ac_findArea()" />
+                      </div>
+                      <label style="padding: 15px 0px" class="label col-sm-1 col-form-label"
+                        *ngIf="mid[i] == 2">Area</label>
+                      <div class="col-sm-2" *ngIf="mid[i] == 2">
+                        <input type="number" nbInput shape="rectangle" formControlName="accessories_area"
+                          placeholder="Enter Area" class="col-md-6" readonly [(ngModel)]="ac_areadata[i]" />
+                      </div>
+                    </div>
+                  </div>
+                  <div style="padding: 0" class="col-sm-12 mt-4 row">
+                    <!-- <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Total Area</label>
                           <div class="col-sm-2">
                             <input  nbInput shape="rectangle" placeholder="Enter Total Area" class="col-md-6" readonly>
                           </div>  -->
 
-            <button type="button" style="margin-right: 10px" class="btn btn-primary" nbButton status="primary"
-              (click)="addAccessory()">
-              Add
-            </button>
-            <button type="button" class="btn btn-primary" nbButton status="primary" (click)="removeAccessory()">
-              Remove
-            </button>
-          </div>
-        </form>
-        <!-- <label style="padding: 15px 0px;" class="label col-sm-1">PO Quantity</label>
+                    <button type="button" style="margin-right: 10px" class="btn btn-primary" nbButton status="primary"
+                      (click)="addAccessory()">
+                      Add
+                    </button>
+                    <button type="button" class="btn btn-primary" nbButton status="primary" (click)="removeAccessory()">
+                      Remove
+                    </button>
+                  </div>
+                </form>
+                <!-- <label style="padding: 15px 0px;" class="label col-sm-1">PO Quantity</label>
               <div class="col-sm-2">
                 <input type="number" nbInput shape="rectangle" readonly [(ngModel)]="prodInfoqty">
               </div>  -->
 
-        <div class="container">
-          <div class="row"></div>
+                <div class="container">
+                  <div class="row"></div>
+                </div>
+              </nb-card-body>
+              <nb-card-footer>
+                <button type="submit" style="margin-right: 20px" nbButton status="primary" (click)="onSubmit(ref)">
+                  Submit
+                </button>
+                <button nbButton (click)="closeHandle(ref)">Close</button>
+              </nb-card-footer>
+            </nb-card>
+          </ng-template>
         </div>
-      </nb-card-body>
-      <nb-card-footer>
-        <button type="submit" style="margin-right: 20px" nbButton status="primary" (click)="onSubmit(ref)">
-          Submit
-        </button>
-        <button nbButton (click)="closeHandle(ref)">Close</button>
-      </nb-card-footer>
-    </nb-card>
-  </ng-template>
+      </nb-tab>
+    </nb-tabset>
+  </nb-card>
 </div>
+
+
+
+<!-- <button  ngxPrint printTitle="PurchaseOrder" printSectionId="content">Print</button> -->
+<!-- <button class="btn btn-success" (click)="convetToPDF()">print</button> -->

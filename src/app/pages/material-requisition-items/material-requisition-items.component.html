@@ -1,0 +1,56 @@
+<nb-card>
+    <nb-card-header>
+        Material Requisition Item Table
+    </nb-card-header>
+
+    <nb-card-body>
+        <ng2-smart-table [source]="materialRequisitionItemData" [settings]="settings" (create)="open1(dialog)"
+            (edit)="open2(dialog,$event)" (delete)="deletepc($event)">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card style="width: 500px !important;">
+        <nb-card-header>Item for Material Requisitions</nb-card-header>
+        <nb-card-body>
+            <!-- <form [ngSubmit]="save()"> -->
+            <form [formGroup]="formAddEdit">
+                <div class="form-group row">
+                    <label class="label col-sm-3 col-form-label">Item for Material Requisitions<span
+                            style="color: red;">*</span></label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" nbInput shape="rectangle"
+                            formControlName="material_requisition_items_name" class="col-md-12"
+                            placeholder="Enter Item for Material Requisitions"
+                            [ngClass]="{'is-invalid': isSubmitted && f.material_requisition_items_name.errors}">
+                        <div *ngIf="isSubmitted && f.material_requisition_items_name.errors" class="text-danger">
+                            <div *ngIf="f.material_requisition_items_name.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="label col-sm-3 col-form-label">Material Requisitions Item Status<span
+                            style="color: red;">*</span></label>
+                    <div class="col-sm-9">
+                        <nb-select formControlName="status" placeholder="Select Status" style="padding: 0;"
+                            class="col-md-12">
+                            <nb-option value='Active'>Active</nb-option>
+                            <nb-option value='Deactive'>Deactive</nb-option>
+                            <!-- <nb-option *ngFor="let pcstatus of pcData" value={{pcstatus.status}}>{{pcstatus.status}}</nb-option> -->
+                        </nb-select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <div class="offset-sm-3 col-sm-9">
+                        <button type="submit" nbButton status="primary" (click)="onSubmit(ref)">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </nb-card-body>
+        <nb-card-footer>
+            <button nbButton (click)="ref.close()">Close</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

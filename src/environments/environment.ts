@@ -10,10 +10,8 @@
 
 export const environment = {
   production: false,
-  // BASE_URL:'http://localhost:3000/api/',
-  BASE_URL:'http://apinewlook.mehtaindia.co.in/api/',
-  // APP_URL:'http://localhost:4200/#/pages/',
-  APP_URL:'http://veritrack.co.in/newlook/#/pages/',
-
-
+  BASE_URL: "http://localhost:3000/api/",
+  // BASE_URL:'http://apinewlook.mehtaindia.co.in/api/',
+  APP_URL: "http://localhost:4200/#/pages/",
+  // APP_URL:'http://veritrack.co.in/newlook/#/pages/',
 };

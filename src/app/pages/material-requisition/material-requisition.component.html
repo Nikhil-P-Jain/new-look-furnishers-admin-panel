@@ -1,0 +1,137 @@
+<nb-card>
+    <nb-card-header>
+        Material Requisition Table
+    </nb-card-header>
+
+    <nb-card-body>
+        <ng2-smart-table [source]="materialRequisitionData" [settings]="settings" (create)="openCreateDialog(dialog)"
+            (edit)="openEditDialog(dialog,$event)" (delete)="delete($event)">
+        </ng2-smart-table>
+    </nb-card-body>
+</nb-card>
+
+
+<ng-template #dialog let-data let-ref="dialogRef">
+    <nb-card style="width: 1080px !important;">
+        <nb-card-header>Material Requisitions</nb-card-header>
+        <nb-card-body>
+            <!-- <form [ngSubmit]="save()"> -->
+            <form [formGroup]="formAddEdit">
+                <div class="form-group row">
+                    <label class="label col-sm-2 col-form-label">Site <span style="color: red;">*</span></label>
+                    <div class="col-sm-4">
+                        <nb-select formControlName="site_id" style="padding: 0;" placeholder="Select Site"
+                            [ngClass]="{'is-invalid': isSubmitted && f.site_id.errors}" class="col-md-12">
+                            <nb-option *ngFor="let site of siteData" value={{site.site_id}}>{{site.site_name}}
+                            </nb-option>
+                        </nb-select>
+                        <div *ngIf="isSubmitted && f.site_id.errors" class="text-danger">
+                            <div *ngIf="f.site_id.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                    <label class="label col-sm-2 col-form-label">Date <span style="color: red;"></span></label>
+                    <div class="col-sm-4">
+                        <input type="date" class="form-control" nbInput shape="rectangle" formControlName="date"
+                            class="col-md-12" placeholder="Select Date"
+                            [ngClass]="{'is-invalid': isSubmitted && f.date.errors}">
+                        <div *ngIf="isSubmitted && f.date.errors" class="text-danger">
+                            <div *ngIf="f.date.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="label col-sm-2 col-form-label">Store Location<span
+                            style="color: red;">*</span></label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" nbInput shape="rectangle"
+                            formControlName="store_location" class="col-md-12" placeholder="Enter Store Location"
+                            [ngClass]="{'is-invalid': isSubmitted && f.store_location.errors}">
+                        <div *ngIf="isSubmitted && f.store_location.errors" class="text-danger">
+                            <div *ngIf="f.store_location.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                    <label class="label col-sm-2 col-form-label">Challan Number<span
+                            style="color: red;">*</span></label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" nbInput shape="rectangle" formControlName="challan_no"
+                            class="col-md-12" placeholder="Enter Challan Number"
+                            [ngClass]="{'is-invalid': isSubmitted && f.challan_no.errors}">
+                        <div *ngIf="isSubmitted && f.challan_no.errors" class="text-danger">
+                            <div *ngIf="f.challan_no.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="label col-sm-2 col-form-label">Material Requisitions Status<span
+                            style="color: red;"></span></label>
+                    <div class="col-sm-4">
+                        <nb-select formControlName="status" placeholder="Select Status" style="padding: 0;"
+                            class="col-md-12">
+                            <nb-option value='Active'>Active</nb-option>
+                            <nb-option value='Deactive'>Deactive</nb-option>
+                        </nb-select>
+                    </div>
+                    <label class="label col-sm-2 col-form-label">Order By<span style="color: red;">*</span></label>
+                    <div class="col-sm-4">
+                        <nb-select formControlName="user_id" style="padding: 0;" placeholder="Select user"
+                            [ngClass]="{'is-invalid': isSubmitted && f.user_id.errors}" class="col-md-12">
+                            <nb-option *ngFor="let user of userData" value={{user.user_id}}>{{user.user_name}}
+                            </nb-option>
+                        </nb-select>
+                        <div *ngIf="isSubmitted && f.user_id.errors" class="text-danger">
+                            <div *ngIf="f.user_id.errors.required">This field is required</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="border: none;" formArrayName="products"
+                    *ngFor="let product of formAddEdit.get('products')['controls']; let i=index;">
+                    <div [formGroupName]="i" class="form-group row">
+                        <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Item <span
+                                style="color: red;"></span></label>
+                        <div class="col-sm-3">
+                            <nb-select formControlName="material_requisition_items_id" style="padding: 0;"
+                                placeholder="Select Product" class="col-md-6">
+                                <nb-option *ngFor="let item of materialRequisitionItemData"
+                                    value={{item.material_requisition_items_id}}>
+                                    {{item.material_requisition_items_name}}
+                                </nb-option>
+                            </nb-select>
+                        </div>
+                        <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Unit <span
+                                style="color: red;"></span></label>
+                        <div class="col-sm-3">
+                            <nb-select formControlName="unit" style="padding: 0;" placeholder="Select Unit"
+                                class="col-md-6">
+                                <nb-option *ngFor="let unit of unitData" value={{unit.unit_id}}>{{unit.unit_name}}
+                                </nb-option>
+                            </nb-select>
+                        </div>
+                        <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Stock at site <span
+                                style="color: red;"></span></label>
+                        <div class="col-sm-3">
+                            <input type="number" nbInput shape="rectangle" formControlName="stock_at_site"
+                                placeholder="Enter stock at site" class="col-md-6">
+                        </div>
+                        <label style="padding: 15px 0px;" class="label col-sm-1 col-form-label">Order Quantity <span
+                                style="color: red;"></span></label>
+                        <div class="col-sm-3">
+                            <input type="number" nbInput shape="rectangle" formControlName="order_quantity"
+                                placeholder="Enter Order Quantity" class="col-md-6">
+                        </div>
+                    </div>
+                </div>
+                <div style="padding:0;" class="col-sm-12 mt-4 row">
+                    <button type="button" style="margin-right: 10px;" class="btn btn-primary" nbButton status="primary"
+                        (click)="addProduct()">Add</button>
+                    <button type="button" class="btn btn-primary" nbButton status="primary"
+                        (click)="removeProducts()">Remove</button>
+                </div>
+            </form>
+        </nb-card-body>
+        <nb-card-footer>
+            <button type="submit" style="margin-right: 20px;" nbButton status="primary"
+                (click)="onSubmit(ref)">Submit</button>
+            <button nbButton (click)="ref.close()">Close</button>
+        </nb-card-footer>
+    </nb-card>
+</ng-template>

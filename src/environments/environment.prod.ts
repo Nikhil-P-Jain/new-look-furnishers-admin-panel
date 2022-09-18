@@ -5,5 +5,6 @@
  */
 export const environment = {
   production: true,
-  BASE_URL:'http://apinewlook.mehtaindia.co.in/api/',
+  BASE_URL: "http://apinewlook.mehtaindia.co.in/api/",
+  APP_URL: "http://veritrack.co.in/newlook/#/pages/",
 };

@@ -1,11 +1,11 @@
-import { NbMenuItem } from '@nebular/theme';
+import { NbMenuItem } from "@nebular/theme";
 
 export const MENU_ITEMS: NbMenuItem[] = [
   {
-    icon: 'people-outline',
-    title:'Role',
-    link:'/pages/role',
-    home:true
+    icon: "people-outline",
+    title: "Role",
+    link: "/pages/role",
+    home: true,
   },
   // {
   //   title: 'E-commerce',
@@ -19,118 +19,123 @@ export const MENU_ITEMS: NbMenuItem[] = [
   //   link: '/pages/iot-dashboard',
   // },
   {
-    icon: 'activity-outline',
-    title:'Activities',
-    link:'/pages/activities',
+    icon: "activity-outline",
+    title: "Activities",
+    link: "/pages/activities",
   },
   {
-    icon: 'alert-triangle-outline',
-    title:'Permission',
-    link:'/pages/permission',
+    icon: "alert-triangle-outline",
+    title: "Permission",
+    link: "/pages/permission",
   },
   {
-    icon:'pin-outline',
-    title:"Location",
-    children:[
-    {
-      icon: 'pin-outline',
-      title:'State',
-      link:'/pages/state',
-    },
-    {
-      icon: 'pin-outline',
-      title:'City',
-      link:'/pages/city',
-    },
-    {
-      icon:'home-outline',
-      title:'New Look Branches',
-      link:'/pages/branch'
-    }
-  ]
-  },
-  {
-    icon:'shopping-cart-outline',
-    title:'Vendor',
-    link:'/pages/vendor'
-  },
-  {
-    icon:'briefcase-outline',
-    title:"Products",
-    children:[
+    icon: "pin-outline",
+    title: "Location",
+    children: [
       {
-        icon: 'behance-outline',
-        title:'Product Brand',
-        link:'/pages/product-brand',
+        icon: "pin-outline",
+        title: "State",
+        link: "/pages/state",
       },
       {
-        icon: 'archive-outline',
-        title:'Product Category',
-        link:'/pages/product-category',
+        icon: "pin-outline",
+        title: "City",
+        link: "/pages/city",
       },
       {
-        icon:'briefcase-outline',
-        title:'Product',
-        link:'/pages/product'
+        icon: "home-outline",
+        title: "New Look Branches",
+        link: "/pages/branch",
       },
-      // {
-      //   icon:'file-text-outline',
-      //   title:'Product Specification',
-      //   link:'/pages/product-specification',
-      // }
-    ]
+    ],
   },
   {
-    icon: 'bar-chart-outline',
-    title:'Unit',
-    link:'/pages/unit',
+    icon: "shopping-cart-outline",
+    title: "Vendor",
+    link: "/pages/vendor",
   },
   {
-    icon: 'map-outline',
-    title:'Site',
-    link:'/pages/site',
+    icon: "briefcase-outline",
+    title: "Products",
+    children: [
+      {
+        icon: "behance-outline",
+        title: "Product Brand",
+        link: "/pages/product-brand",
+      },
+      {
+        icon: "archive-outline",
+        title: "Product Category",
+        link: "/pages/product-category",
+      },
+      {
+        icon: "briefcase-outline",
+        title: "Product",
+        link: "/pages/product",
+      },
+      {
+        icon: "file-text-outline",
+        title: "Material Requisition Item",
+        link: "/pages/material-requisition-item",
+      },
+    ],
   },
   {
-    icon: 'person-outline',
-    title:'User',
-    link:'/pages/user',
+    icon: "bar-chart-outline",
+    title: "Unit",
+    link: "/pages/unit",
   },
   {
-    icon:'folder-outline',
-    title:'Projects',
-    children:[
-      {
-        icon:'inbox-outline',
-        title:'Project Lead',
-        link:'/pages/project-lead'
-      },
-      {
-        icon:'checkmark-square-2-outline',
-        title:'Terms',
-        link:'/pages/terms'
-      },
-      {
-        icon:'clipboard-outline',
-        title:'Project Quotation',
-        link:'/pages/project-quotation'
-      },
-      {
-        icon:'close-square-outline',
-        title:'Project Lost',
-        link:'/pages/project-lost'
-      },
-      {
-        icon:'checkmark-square-2-outline',
-        title:'Project Order',
-        link:'/pages/project-order'
-      }
-    ]
+    icon: "map-outline",
+    title: "Site",
+    link: "/pages/site",
   },
   {
-    icon: 'pricetags-outline',
-    title:'Purchase Order',
-    link:'/pages/purchase-order',
+    icon: "person-outline",
+    title: "User",
+    link: "/pages/user",
   },
+  {
+    icon: "folder-outline",
+    title: "Projects",
+    children: [
+      {
+        icon: "inbox-outline",
+        title: "Project Lead",
+        link: "/pages/project-lead",
+      },
+      {
+        icon: "checkmark-square-2-outline",
+        title: "Terms",
+        link: "/pages/terms",
+      },
+      {
+        icon: "clipboard-outline",
+        title: "Project Quotation",
+        link: "/pages/project-quotation",
+      },
+      {
+        icon: "close-square-outline",
+        title: "Project Lost",
+        link: "/pages/project-lost",
+      },
+      {
+        icon: "checkmark-square-2-outline",
+        title: "Project Order",
+        link: "/pages/project-order",
+      },
+    ],
+  },
+  {
+    icon: "pricetags-outline",
+    title: "Purchase Order",
+    link: "/pages/purchase-order",
+  },
+  // {
+  //   icon: "plus-circle-outline",
+  //   title: "Material Requisition",
+  //   link: "/pages/material-requisition",
+  // },
   // {
   //   icon:'corner-up-right-outline',
   //   title:'Annexures',
